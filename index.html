@@ -8,7 +8,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <style>
-    /* ALL YOUR ORIGINAL SMOOTH CSS STYLES */
+    /* =========================================
+       1. GLOBAL STYLES & TYPOGRAPHY
+       ========================================= */
     :root { --vh: 1vh; --primary: #007aff; --success: #34c759; --warning: #ff9500; --danger: #ff3b30; --ios-bg: #f2f2f7; --glass-bg: rgba(255, 255, 255, 0.65); --glass-border: rgba(255, 255, 255, 0.5); --text-main: #1c1c1e; --text-sub: #8e8e93; --input-bg: rgba(0, 0, 0, 0.04); --card-bg: #ffffff; --spring: cubic-bezier(0.34, 1.56, 0.64, 1); --app-launch: cubic-bezier(0.25, 1, 0.5, 1); --click-x: 50vw; --click-y: 50vh; }
     html.dark-mode { --ios-bg: #000000; --glass-bg: rgba(25, 25, 25, 0.45); --glass-border: rgba(255, 255, 255, 0.15); --text-main: #ffffff; --text-sub: #ebebf5; --input-bg: rgba(255, 255, 255, 0.1); --card-bg: #1c1c1e; color-scheme: dark; }
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none; -webkit-font-smoothing: antialiased; }
@@ -29,16 +31,13 @@
     .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 5px; flex-shrink: 0;}
     .dash-card { border-radius: 20px; padding: 16px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; cursor: pointer; transition: transform 0.2s var(--app-launch), box-shadow 0.2s; }
     .dash-card:active { transform: scale(0.92) !important; } .dash-card .icon { width: 36px; height: 36px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; } .dash-card h4 { font-size: 11px; color: var(--text-sub); font-weight: 700; margin-bottom: 2px; text-transform: uppercase;} .dash-card h2 { font-size: 20px; font-weight: 700; color: var(--text-main); }
-    
     .list-card { background: var(--card-bg); border: 1px solid var(--glass-border); box-shadow: 0 4px 12px rgba(0,0,0,0.03); border-radius: 16px; padding: 12px 16px; position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 12px; }
     .list-info h3 { font-size: 15px; font-weight: 700; margin-bottom: 2px; text-transform: uppercase;} .list-info p { font-size: 11px; color: var(--text-sub); margin-bottom: 2px; font-weight: 600; text-transform: uppercase;}
     .action-group { display: flex; gap: 8px; align-items: center; } .action-btn { width: 35px; height: 35px; border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s ease; background: rgba(0,122,255,0.15); color: var(--primary); } .action-btn.dl-btn { background: rgba(52,199,89,0.15); color: var(--success); } .action-btn:active { transform: scale(0.85); } .action-btn svg { width: 16px; height: 16px; fill: currentColor; pointer-events: none; }
-    
     .search-bar { display: flex; align-items: center; border-radius: 18px; padding: 12px 15px; margin-bottom: 15px; flex-shrink: 0; } .search-bar svg { fill: var(--text-sub); width: 18px; height: 18px; margin-right: 10px; } .search-bar input { border: none; background: transparent; outline: none; font-size: 14px; font-weight: 600; width: 100%; color: var(--text-main); text-align: left;}
     .btn { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 16px; font-size: 15px; font-weight: 700; cursor: pointer; transition: transform 0.2s var(--app-launch), box-shadow 0.2s; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 15px rgba(0,122,255,0.3); text-transform: uppercase;} .btn.image-export { background: var(--success); box-shadow: 0 4px 15px rgba(52,199,89,0.3); margin-top: 15px; } .btn:active { transform: scale(0.92) !important; } 
     .att-btn { padding: 14px; border-radius: 16px; border: none; font-size: 14px; font-weight: 700; width: 100%; margin-bottom: 10px; cursor: pointer; color: white; transition: transform 0.2s var(--app-launch); text-transform: uppercase;} .att-btn.excel-opt { background: var(--input-bg); color: var(--text-main); border: 1px solid var(--glass-border); box-shadow: none; margin-bottom: 12px; } .att-btn:active { transform: scale(0.92) !important; }
     .switch-wrap { display: flex; justify-content: space-between; align-items: center; padding: 16px; border-radius: 18px; margin-bottom: 12px; } .switch-wrap span { font-size: 14px; font-weight: 700; color: var(--text-main); text-transform: uppercase;} .ios-switch { position: relative; display: inline-block; width: 50px; height: 28px; } .ios-switch input { opacity: 0; width: 0; height: 0; } .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; } .slider:before { position: absolute; content: ""; height: 24px; width: 24px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2); } input:checked + .slider { background-color: var(--success); } input:checked + .slider:before { transform: translateX(22px); }
-    
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.45); z-index: 2000; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; } .modal-overlay.show { opacity: 1; visibility: visible; }
     .modal-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; transform-origin: var(--click-x) var(--click-y); transform: scale3d(0.01, 0.01, 1); opacity: 0; transition: transform 0.4s var(--app-launch), opacity 0.3s ease; will-change: transform, opacity; pointer-events: none; } .modal-overlay.show .modal-wrapper { transform: scale3d(1, 1, 1); opacity: 1; pointer-events: auto; }
     .modal-box { width: 90%; max-width: 400px; max-height: 85vh; overflow-y: auto; border-radius: 24px; padding: 24px; position: relative; transform: translateZ(0); -webkit-transform: translateZ(0); backface-visibility: hidden; -webkit-backface-visibility: hidden; contain: layout paint; } .modal-box::-webkit-scrollbar { display: none; } .modal-title { font-size: 18px; font-weight: 700; text-align: center; margin-bottom: 20px; text-transform: uppercase;}
@@ -63,32 +62,17 @@
     <div id="sec1" class="section active">
         <div class="pill-header glass-panel">DASHBOARD</div>
         <div class="dash-grid">
-            <div class="dash-card glass-panel" onclick="openFSModal(event, 'customers')">
-                <div class="icon" style="background:rgba(0,122,255,0.15); color:var(--primary);"><svg viewBox="0 0 24 24" width="20" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div>
-                <h4>CUSTOMERS</h4><h2 id="dash-cust">0</h2>
-            </div>
-            <div class="dash-card glass-panel" onclick="openFSModal(event, 'revenue')">
-                <div class="icon" style="background:rgba(52,199,89,0.15); color:var(--success);"><svg viewBox="0 0 24 24" width="20" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div>
-                <h4>TOTAL REVENUE</h4><h2 id="dash-rev">₹0</h2>
-            </div>
-            <div class="dash-card glass-panel" onclick="openFSModal(event, 'pending')">
-                <div class="icon" style="background:rgba(255,149,0,0.15); color:var(--warning);"><svg viewBox="0 0 24 24" width="20" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg></div>
-                <h4>PENDING AMOUNT</h4><h2 id="dash-pend">₹0</h2>
-            </div>
-            <div class="dash-card glass-panel" onclick="openFSModal(event, 'expenses')">
-                <div class="icon" style="background:rgba(255,59,48,0.15); color:var(--danger);"><svg viewBox="0 0 24 24" width="20" fill="currentColor"><path d="M3 3v18h18V3H3zm16 16H5V5h14v14zM11 7h2v4h4v2h-6V7z"/></svg></div>
-                <h4>EXPENSES</h4><h2 id="dash-exp">₹0</h2>
-            </div>
+            <div class="dash-card glass-panel" onclick="openFSModal(event, 'customers')"><div class="icon" style="background:rgba(0,122,255,0.15); color:var(--primary);"><svg viewBox="0 0 24 24" width="20" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div><h4>CUSTOMERS</h4><h2 id="dash-cust">0</h2></div>
+            <div class="dash-card glass-panel" onclick="openFSModal(event, 'revenue')"><div class="icon" style="background:rgba(52,199,89,0.15); color:var(--success);"><svg viewBox="0 0 24 24" width="20" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div><h4>TOTAL REVENUE</h4><h2 id="dash-rev">₹0</h2></div>
+            <div class="dash-card glass-panel" onclick="openFSModal(event, 'pending')"><div class="icon" style="background:rgba(255,149,0,0.15); color:var(--warning);"><svg viewBox="0 0 24 24" width="20" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg></div><h4>PENDING AMOUNT</h4><h2 id="dash-pend">₹0</h2></div>
+            <div class="dash-card glass-panel" onclick="openFSModal(event, 'expenses')"><div class="icon" style="background:rgba(255,59,48,0.15); color:var(--danger);"><svg viewBox="0 0 24 24" width="20" fill="currentColor"><path d="M3 3v18h18V3H3zm16 16H5V5h14v14zM11 7h2v4h4v2h-6V7z"/></svg></div><h4>EXPENSES</h4><h2 id="dash-exp">₹0</h2></div>
         </div>
         <div class="analytics-section"><div class="circle-chart"><svg viewBox="0 0 42 42" class="circular-chart"><path class="circle-bg" stroke="var(--primary)" d="M21 2 a 19 19 0 1 1 0 38 a 19 19 0 1 1 0 -38"/><path class="circle" id="ring-cust" stroke="var(--primary)" stroke-dasharray="0, 120" d="M21 2 a 19 19 0 1 1 0 38 a 19 19 0 1 1 0 -38"/><path class="circle-bg" stroke="var(--success)" d="M21 6 a 15 15 0 1 1 0 30 a 15 15 0 1 1 0 -30"/><path class="circle" id="ring-rev" stroke="var(--success)" stroke-dasharray="0, 95" d="M21 6 a 15 15 0 1 1 0 30 a 15 15 0 1 1 0 -30"/><path class="circle-bg" stroke="var(--warning)" d="M21 10 a 11 11 0 1 1 0 22 a 11 11 0 1 1 0 -22"/><path class="circle" id="ring-pend" stroke="var(--warning)" stroke-dasharray="0, 70" d="M21 10 a 11 11 0 1 1 0 22 a 11 11 0 1 1 0 -22"/><path class="circle-bg" stroke="var(--danger)" d="M21 14 a 7 7 0 1 1 0 14 a 7 7 0 1 1 0 -14"/><path class="circle" id="ring-exp" stroke="var(--danger)" stroke-dasharray="0, 44" d="M21 14 a 7 7 0 1 1 0 14 a 7 7 0 1 1 0 -14"/></svg></div></div>
     </div>
 
     <!-- CLIENTS TAB (READ ONLY) -->
     <div id="sec2" class="section">
-        <div class="search-bar glass-panel">
-            <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-            <input type="text" id="search-cust" placeholder="SEARCH CUSTOMER..." oninput="renderCustomers()">
-        </div>
+        <div class="search-bar glass-panel"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg><input type="text" id="search-cust" placeholder="SEARCH CUSTOMER..." oninput="renderCustomers()"></div>
         <div id="customer-list"></div>
     </div>
 
@@ -112,20 +96,9 @@
     </div>
 
     <!-- MODALS FOR VIEWER -->
-    <div class="modal-overlay" id="printDataModal">
-        <div class="modal-wrapper" onclick="closeModals(event)">
-            <div class="modal-box glass-panel" onclick="event.stopPropagation()">
-                <button class="close-modal-btn" onclick="forceCloseModals()"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
-                <div class="modal-title">DOWNLOAD IMAGE DATA</div>
-                <button class="att-btn excel-opt" onclick="exportDataImage(event, 'customers')">DOWNLOAD CUSTOMERS DATA</button><button class="att-btn excel-opt" onclick="exportDataImage(event, 'expenses')">DOWNLOAD EXPENSES DATA</button><button class="att-btn excel-opt" onclick="exportDataImage(event, 'workers')">DOWNLOAD WORKERS DATA</button>
-            </div>
-        </div>
-    </div>
+    <div class="modal-overlay" id="printDataModal"><div class="modal-wrapper" onclick="closeModals(event)"><div class="modal-box glass-panel" onclick="event.stopPropagation()"><button class="close-modal-btn" onclick="forceCloseModals()"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button><div class="modal-title">DOWNLOAD IMAGE DATA</div><button class="att-btn excel-opt" onclick="exportDataImage(event, 'customers')">DOWNLOAD CUSTOMERS DATA</button><button class="att-btn excel-opt" onclick="exportDataImage(event, 'expenses')">DOWNLOAD EXPENSES DATA</button><button class="att-btn excel-opt" onclick="exportDataImage(event, 'workers')">DOWNLOAD WORKERS DATA</button></div></div></div>
 
-    <div class="fs-modal glass-panel" id="fsModal" style="border-radius:0; border:none;">
-        <div class="fs-header glass-panel" style="border-radius:0; border-top:none; border-left:none; border-right:none;"><h2 id="fs-title">DATA</h2><button class="close-modal-btn" style="position:static;" onclick="closeFSModal()"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button></div>
-        <div class="fs-content" id="fs-content"></div>
-    </div>
+    <div class="fs-modal glass-panel" id="fsModal" style="border-radius:0; border:none;"><div class="fs-header glass-panel" style="border-radius:0; border-top:none; border-left:none; border-right:none;"><h2 id="fs-title">DATA</h2><button class="close-modal-btn" style="position:static;" onclick="closeFSModal()"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button></div><div class="fs-content" id="fs-content"></div></div>
 
     <nav class="bottom-nav glass-panel">
         <div class="nav-item active" onclick="switchTab(1, this)"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>HOME</span></div>
@@ -137,10 +110,10 @@
 </div>
 <div id="export-container"></div>
 
-<!-- FIREBASE INTEGRATION (READ ONLY) -->
+<!-- CLOUD FIRESTORE INTEGRATION (READ ONLY) -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+    import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyATj9_cJpq0aWsUqqLzPSC-SWPtBuEagwc",
@@ -152,15 +125,15 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-    const dbRef = ref(db, 'techAsarData');
+    const db = getFirestore(app);
+    const docRef = doc(db, 'appData', 'techAsar'); // Syncing with exact same Firestore Document
 
     window.appData = { customers: [], workers: [], expenses: [], settings: { timeIn: '', timeOut: '', halfDay: '', darkMode: false, theme: '#007aff'} };
 
-    // Real-time Data Fetching (Read-Only)
-    onValue(dbRef, (snapshot) => {
-        const val = snapshot.val();
-        if (val) {
+    // Real-time Data Fetching (Read-Only FIRESTORE)
+    onSnapshot(docRef, (docSnap) => {
+        if (docSnap.exists()) {
+            const val = docSnap.data();
             window.appData = {
                 customers: val.customers || [],
                 workers: val.workers || [],
@@ -180,23 +153,11 @@
     // UI Functions
     function lockMobileHeight() { document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`); }
     window.addEventListener('resize', lockMobileHeight); lockMobileHeight();
-
     document.querySelectorAll('.section').forEach(s => { let id = parseInt(s.id.replace('sec', '')); if (id > 1) s.classList.add('slide-right'); });
 
     window.showToast = function(msg) { const toast = document.getElementById('toast'); document.getElementById('toast-msg').innerText = msg.toUpperCase(); toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 1500); };
-    
-    window.switchTab = function(tabId, el) {
-        document.querySelectorAll('.section').forEach(s => { let id = parseInt(s.id.replace('sec', '')); s.classList.remove('active', 'slide-left', 'slide-right'); if (id < tabId) s.classList.add('slide-left'); else if (id > tabId) s.classList.add('slide-right'); });
-        document.getElementById('sec' + tabId).classList.remove('slide-left', 'slide-right'); document.getElementById('sec' + tabId).classList.add('active');
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); el.classList.add('active');
-    };
-
-    window.setOriginFromEvent = function(e) {
-        if (!e) return; let x = e.clientX; let y = e.clientY;
-        if (e.changedTouches && e.changedTouches.length > 0) { x = e.changedTouches[0].clientX; y = e.changedTouches[0].clientY; } else if (e.touches && e.touches.length > 0) { x = e.touches[0].clientX; y = e.touches[0].clientY; }
-        if (x !== undefined && y !== undefined) { document.documentElement.style.setProperty('--click-x', x + 'px'); document.documentElement.style.setProperty('--click-y', y + 'px'); }
-    };
-
+    window.switchTab = function(tabId, el) { document.querySelectorAll('.section').forEach(s => { let id = parseInt(s.id.replace('sec', '')); s.classList.remove('active', 'slide-left', 'slide-right'); if (id < tabId) s.classList.add('slide-left'); else if (id > tabId) s.classList.add('slide-right'); }); document.getElementById('sec' + tabId).classList.remove('slide-left', 'slide-right'); document.getElementById('sec' + tabId).classList.add('active'); document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); el.classList.add('active'); };
+    window.setOriginFromEvent = function(e) { if (!e) return; let x = e.clientX; let y = e.clientY; if (e.changedTouches && e.changedTouches.length > 0) { x = e.changedTouches[0].clientX; y = e.changedTouches[0].clientY; } else if (e.touches && e.touches.length > 0) { x = e.touches[0].clientX; y = e.touches[0].clientY; } if (x !== undefined && y !== undefined) { document.documentElement.style.setProperty('--click-x', x + 'px'); document.documentElement.style.setProperty('--click-y', y + 'px'); } };
     window.openModal = function(e, modalId) { setOriginFromEvent(e); requestAnimationFrame(() => { requestAnimationFrame(() => { document.getElementById(modalId).classList.add('show'); }); }); };
     window.closeModals = function(e) { if(e && e.target.classList.contains('modal-wrapper')) forceCloseModals(); };
     window.forceCloseModals = function() { document.querySelectorAll('.modal-overlay, .fs-modal').forEach(m => m.classList.remove('show')); };
@@ -212,72 +173,22 @@
         requestAnimationFrame(() => { requestAnimationFrame(() => { document.getElementById('fsModal').classList.add('show'); }); });
     };
 
-    window.countUpAnimation = function(element, start, end, duration, prefix = "") {
-        let startTimestamp = null;
-        const step = (timestamp) => {
-            if (!startTimestamp) startTimestamp = timestamp; const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            const easeProgress = 1 - Math.pow(1 - progress, 3); element.innerText = prefix + Math.floor(easeProgress * (end - start) + start);
-            if (progress < 1) window.requestAnimationFrame(step); else element.innerText = prefix + end;
-        }; window.requestAnimationFrame(step);
-    };
+    window.countUpAnimation = function(element, start, end, duration, prefix = "") { let startTimestamp = null; const step = (timestamp) => { if (!startTimestamp) startTimestamp = timestamp; const progress = Math.min((timestamp - startTimestamp) / duration, 1); const easeProgress = 1 - Math.pow(1 - progress, 3); element.innerText = prefix + Math.floor(easeProgress * (end - start) + start); if (progress < 1) window.requestAnimationFrame(step); else element.innerText = prefix + end; }; window.requestAnimationFrame(step); };
 
     window.updateDashboard = function() {
-        let totalRev = 0, totalPend = 0, totalExp = 0;
-        window.appData.customers.forEach(c => { totalRev += c.total; totalPend += c.pending; });
-        window.appData.expenses.forEach(e => { totalExp += e.amount; });
-        countUpAnimation(document.getElementById('dash-cust'), 0, window.appData.customers.length, 1000); countUpAnimation(document.getElementById('dash-rev'), 0, totalRev, 1000, "₹"); countUpAnimation(document.getElementById('dash-pend'), 0, totalPend, 1000, "₹"); countUpAnimation(document.getElementById('dash-exp'), 0, totalExp, 1000, "₹");
-        let maxFin = totalRev + totalPend + totalExp || 1; 
+        let totalRev = 0, totalPend = 0, totalExp = 0; window.appData.customers.forEach(c => { totalRev += c.total; totalPend += c.pending; }); window.appData.expenses.forEach(e => { totalExp += e.amount; });
+        countUpAnimation(document.getElementById('dash-cust'), 0, window.appData.customers.length, 1000); countUpAnimation(document.getElementById('dash-rev'), 0, totalRev, 1000, "₹"); countUpAnimation(document.getElementById('dash-pend'), 0, totalPend, 1000, "₹"); countUpAnimation(document.getElementById('dash-exp'), 0, totalExp, 1000, "₹"); let maxFin = totalRev + totalPend + totalExp || 1; 
         setTimeout(() => { document.getElementById('ring-cust').setAttribute('stroke-dasharray', `${Math.min((window.appData.customers.length / 50) * 120, 120)}, 120`); document.getElementById('ring-rev').setAttribute('stroke-dasharray', `${Math.min((totalRev / maxFin) * 95, 95)}, 95`); document.getElementById('ring-pend').setAttribute('stroke-dasharray', `${Math.min((totalPend / maxFin) * 70, 70)}, 70`); document.getElementById('ring-exp').setAttribute('stroke-dasharray', `${Math.min((totalExp / maxFin) * 44, 44)}, 44`); }, 50);
     };
 
-    window.renderCustomers = function() {
-        const search = document.getElementById('search-cust') ? document.getElementById('search-cust').value.toLowerCase() : ''; const list = document.getElementById('customer-list'); let htmlBatch = '';
-        window.appData.customers.filter(c => c.name.toLowerCase().includes(search) || c.mobile.includes(search)).forEach(c => {
-            htmlBatch += `<div class="list-card"><div class="list-info"><h3>${c.name}</h3><p>${c.date} | ${c.item}</p><p>QTY: ${c.qty} | <strong style="color:var(--danger);">PEND: ₹${c.pending}</strong></p></div><button class="action-btn" onclick="exportReceiptImage(event, ${c.id})"><svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg></button></div>`;
-        }); list.innerHTML = htmlBatch;
-    };
-
-    window.renderWorkers = function() {
-        const list = document.getElementById('worker-list'); let htmlBatch = ''; const today = new Date().toLocaleDateString();
-        window.appData.workers.forEach(w => {
-            let sColor = w.status === 'PRESENT' ? 'var(--success)' : w.status === 'HALF DAY' ? 'var(--warning)' : w.status === 'ABSENT' ? 'var(--danger)' : 'var(--text-sub)';
-            let timeInfo = ''; if(w.timeIn || w.timeOut) { timeInfo = ` | IN: ${w.timeIn || '--'} OUT: ${w.timeOut || '--'}`; }
-            htmlBatch += `<div class="list-card"><div class="list-info"><h3>${w.name}</h3><p style="text-transform:none;">DATE: ${w.date}${timeInfo}</p><p style="color:${sColor}; font-weight:800;">STATUS: ${w.status}</p></div><div class="action-group"><button class="action-btn dl-btn" onclick="exportWorkerImage(event, ${w.id})"><svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg></button></div></div>`;
-        }); list.innerHTML = htmlBatch;
-    };
-
-    window.renderExpenses = function() {
-        const list = document.getElementById('expense-list'); let htmlBatch = ''; let exps = [...window.appData.expenses].sort((a,b) => b.id - a.id);
-        exps.forEach(e => { htmlBatch += `<div class="list-card"><div class="list-info"><h3>${e.type}</h3><p>${e.date}</p></div><div style="font-weight:800; color:var(--danger); font-size:16px;">-₹${e.amount}</div></div>`; }); list.innerHTML = htmlBatch;
-    };
-
-    window.generateAndDownloadHDImage = function(htmlContent, filename) {
-        showToast("GENERATING IMAGE..."); const container = document.getElementById('export-container'); container.innerHTML = htmlContent;
-        html2canvas(container, { scale: 3, useCORS: true, backgroundColor: '#ffffff', logging: false }).then(canvas => { const link = document.createElement('a'); link.download = filename + '.jpg'; link.href = canvas.toDataURL("image/jpeg", 1.0); link.click(); container.innerHTML = ''; showToast("DOWNLOAD COMPLETE"); }).catch(err => { console.error(err); showToast("EXPORT ERROR"); });
-    };
-
-    window.exportReceiptImage = function(e, id) {
-        e.stopPropagation(); const c = window.appData.customers.find(x => x.id === id); if(!c) return; const invNo = "INV-" + Math.floor(1000 + Math.random() * 9000);
-        const content = `<div class="export-invoice-box"><div class="inv-header"><div class="inv-header-left"><h1>TECH ASAR</h1><p>PREMIUM POWDER COATING</p></div><div class="inv-header-right"><h2>INVOICE</h2><p>${c.date}</p></div></div><div class="inv-details"><div><p class="label">BILLED TO</p><p style="font-weight:800; font-size:22px;">${c.name}</p><p style="color:#666; font-size:16px;">+91 ${c.mobile}</p></div><div style="text-align: right;"><p class="label">INVOICE NO</p><p style="font-weight:800; font-size:22px;">#${invNo}</p></div></div><table class="inv-table"><thead><tr><th>DESCRIPTION</th><th class="center">QTY</th><th class="right">AMOUNT</th></tr></thead><tbody><tr><td><span style="font-size:20px; font-weight:800; color:#1c1c1e;">${c.item}</span><br><span style="font-size:15px; color:#888;">RATE: ₹${c.rate}</span></td><td class="center" style="font-size:20px;">${c.qty}</td><td class="right" style="font-size:20px; color:#007aff;">₹${c.total}</td></tr></tbody></table><div style="margin-left: 50%;"><div class="inv-row"><span>SUBTOTAL</span><strong>₹${c.total}</strong></div><div class="inv-row" style="color:#34c759;"><span>ADVANCE PAID</span><strong>- ₹${c.advance}</strong></div><div class="inv-total-row"><span>PENDING DUE</span><span>₹${c.pending}</span></div></div><div class="inv-footer"><p>THANK YOU FOR YOUR BUSINESS!</p></div></div>`;
-        generateAndDownloadHDImage(content, `Receipt_${c.name.replace(/\s+/g, '_')}`);
-    };
-
+    window.renderCustomers = function() { const search = document.getElementById('search-cust') ? document.getElementById('search-cust').value.toLowerCase() : ''; const list = document.getElementById('customer-list'); let htmlBatch = ''; window.appData.customers.filter(c => c.name.toLowerCase().includes(search) || c.mobile.includes(search)).forEach(c => { htmlBatch += `<div class="list-card"><div class="list-info"><h3>${c.name}</h3><p>${c.date} | ${c.item}</p><p>QTY: ${c.qty} | <strong style="color:var(--danger);">PEND: ₹${c.pending}</strong></p></div><button class="action-btn" onclick="exportReceiptImage(event, ${c.id})"><svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg></button></div>`; }); list.innerHTML = htmlBatch; };
+    window.renderWorkers = function() { const list = document.getElementById('worker-list'); let htmlBatch = ''; const today = new Date().toLocaleDateString(); window.appData.workers.forEach(w => { let sColor = w.status === 'PRESENT' ? 'var(--success)' : w.status === 'HALF DAY' ? 'var(--warning)' : w.status === 'ABSENT' ? 'var(--danger)' : 'var(--text-sub)'; let timeInfo = ''; if(w.timeIn || w.timeOut) { timeInfo = ` | IN: ${w.timeIn || '--'} OUT: ${w.timeOut || '--'}`; } htmlBatch += `<div class="list-card"><div class="list-info"><h3>${w.name}</h3><p style="text-transform:none;">DATE: ${w.date}${timeInfo}</p><p style="color:${sColor}; font-weight:800;">STATUS: ${w.status}</p></div><div class="action-group"><button class="action-btn dl-btn" onclick="exportWorkerImage(event, ${w.id})"><svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg></button></div></div>`; }); list.innerHTML = htmlBatch; };
+    window.renderExpenses = function() { const list = document.getElementById('expense-list'); let htmlBatch = ''; let exps = [...window.appData.expenses].sort((a,b) => b.id - a.id); exps.forEach(e => { htmlBatch += `<div class="list-card"><div class="list-info"><h3>${e.type}</h3><p>${e.date}</p></div><div style="font-weight:800; color:var(--danger); font-size:16px;">-₹${e.amount}</div></div>`; }); list.innerHTML = htmlBatch; };
+    window.generateAndDownloadHDImage = function(htmlContent, filename) { showToast("GENERATING IMAGE..."); const container = document.getElementById('export-container'); container.innerHTML = htmlContent; html2canvas(container, { scale: 3, useCORS: true, backgroundColor: '#ffffff', logging: false }).then(canvas => { const link = document.createElement('a'); link.download = filename + '.jpg'; link.href = canvas.toDataURL("image/jpeg", 1.0); link.click(); container.innerHTML = ''; showToast("DOWNLOAD COMPLETE"); }).catch(err => { console.error(err); showToast("EXPORT ERROR"); }); };
+    window.exportReceiptImage = function(e, id) { e.stopPropagation(); const c = window.appData.customers.find(x => x.id === id); if(!c) return; const invNo = "INV-" + Math.floor(1000 + Math.random() * 9000); const content = `<div class="export-invoice-box"><div class="inv-header"><div class="inv-header-left"><h1>TECH ASAR</h1><p>PREMIUM POWDER COATING</p></div><div class="inv-header-right"><h2>INVOICE</h2><p>${c.date}</p></div></div><div class="inv-details"><div><p class="label">BILLED TO</p><p style="font-weight:800; font-size:22px;">${c.name}</p><p style="color:#666; font-size:16px;">+91 ${c.mobile}</p></div><div style="text-align: right;"><p class="label">INVOICE NO</p><p style="font-weight:800; font-size:22px;">#${invNo}</p></div></div><table class="inv-table"><thead><tr><th>DESCRIPTION</th><th class="center">QTY</th><th class="right">AMOUNT</th></tr></thead><tbody><tr><td><span style="font-size:20px; font-weight:800; color:#1c1c1e;">${c.item}</span><br><span style="font-size:15px; color:#888;">RATE: ₹${c.rate}</span></td><td class="center" style="font-size:20px;">${c.qty}</td><td class="right" style="font-size:20px; color:#007aff;">₹${c.total}</td></tr></tbody></table><div style="margin-left: 50%;"><div class="inv-row"><span>SUBTOTAL</span><strong>₹${c.total}</strong></div><div class="inv-row" style="color:#34c759;"><span>ADVANCE PAID</span><strong>- ₹${c.advance}</strong></div><div class="inv-total-row"><span>PENDING DUE</span><span>₹${c.pending}</span></div></div><div class="inv-footer"><p>THANK YOU FOR YOUR BUSINESS!</p></div></div>`; generateAndDownloadHDImage(content, `Receipt_${c.name.replace(/\s+/g, '_')}`); };
     window.formatTimeAMPM = function(timeStr) { if(!timeStr) return '--'; let [h, m] = timeStr.split(':'); let hours = parseInt(h); let ampm = hours >= 12 ? 'PM' : 'AM'; hours = hours % 12; hours = hours ? hours : 12; return `${hours}:${m} ${ampm}`; };
-
-    window.exportWorkerImage = function(e, id) {
-        e.stopPropagation(); const w = window.appData.workers.find(x => x.id === id); if(!w) return; let historyHTML = '';
-        if(w.history && w.history.length > 0) { w.history.forEach(h => { let hColor = h.status === 'PRESENT' ? '#16a34a' : h.status === 'HALF DAY' ? '#ca8a04' : h.status === 'ABSENT' ? '#dc2626' : '#8e8e93'; historyHTML += `<tr><td>${h.date}</td><td style="color:${hColor}; font-weight:bold;">${h.status}</td><td>${formatTimeAMPM(h.timeIn)}</td><td>${formatTimeAMPM(h.timeOut)}</td><td style="color:#007aff; font-weight:bold;">₹${h.adv}</td></tr>`; }); } else { let sColor = w.status === 'PRESENT' ? '#16a34a' : w.status === 'HALF DAY' ? '#ca8a04' : w.status === 'ABSENT' ? '#dc2626' : '#8e8e93'; historyHTML = `<tr><td>${w.date}</td><td style="color:${sColor}; font-weight:bold;">${w.status}</td><td>${formatTimeAMPM(w.timeIn)}</td><td>${formatTimeAMPM(w.timeOut)}</td><td style="color:#007aff; font-weight:bold;">₹${w.advance}</td></tr>`; }
-        const content = `<div style="width: 100%; border: 3px solid #007aff; border-radius: 12px; padding: 25px; text-align: center; background:#ffffff;"><p style="font-size: 20px; color:#007aff; font-weight:800; margin-bottom: 5px; text-transform:uppercase;">WORKER FULL REPORT</p><p style="font-size: 18px; color:#333; margin-bottom: 15px; font-weight:700;">${w.name.toUpperCase()}</p><hr style="border-top:1px solid #007aff; margin-bottom:20px;"><div style="text-align: left; font-size: 16px; margin-bottom: 20px; font-weight:700; color:#000;">TOTAL ADVANCE TAKEN: <span style="color:#007aff;">₹${w.advance}</span></div><table class="export-table" style="width:100%; font-size: 12px; border-collapse: collapse; border: 2px solid #ddd;"><thead><tr><th style="background:#007aff; color:#fff; border: 1px solid #ddd;">DATE</th><th style="background:#007aff; color:#fff; border: 1px solid #ddd;">STATUS</th><th style="background:#007aff; color:#fff; border: 1px solid #ddd;">TIME IN</th><th style="background:#007aff; color:#fff; border: 1px solid #ddd;">TIME OUT</th><th style="background:#007aff; color:#fff; border: 1px solid #ddd;">ADV GIVEN</th></tr></thead><tbody>${historyHTML}</tbody></table></div>`;
-        generateAndDownloadHDImage(content, `Worker_Report_${w.name.replace(/\s+/g, '_')}`);
-    };
-
-    window.exportDataImage = function(e, type) {
-        setOriginFromEvent(e); forceCloseModals(); let tableHTML = '<tr>'; let title = ''; let filename = '';
-        if(type === 'customers') { title = 'CUSTOMER RECORDS EXPORT'; filename = 'Customers_Data'; tableHTML += '<th style="background:#007aff; color:#fff;">DATE</th><th style="background:#007aff; color:#fff;">NAME</th><th style="background:#007aff; color:#fff;">MOBILE</th><th style="background:#007aff; color:#fff;">ITEM</th><th style="background:#007aff; color:#fff;">QTY</th><th style="background:#007aff; color:#fff;">RATE</th><th style="background:#007aff; color:#fff;">TOTAL AMT</th><th style="background:#007aff; color:#fff;">RECEIVED</th><th style="background:#007aff; color:#fff;">PENDING</th></tr>'; let tQty=0, tTotal=0, tRecv=0, tPend=0; window.appData.customers.forEach(c => { tableHTML += `<tr><td>${c.date}</td><td>${c.name}</td><td>${c.mobile}</td><td>${c.item}</td><td>${c.qty}</td><td>${c.rate}</td><td style="color:#0284c7; font-weight:bold;">${c.total}</td><td style="color:#16a34a; font-weight:bold;">${c.advance}</td><td style="color:#dc2626; font-weight:bold;">${c.pending}</td></tr>`; tQty+=c.qty; tTotal+=c.total; tRecv+=c.advance; tPend+=c.pending; }); tableHTML += `<tr style="font-weight: 900; background-color: #f8f9fa;"><td colspan="4" style="text-align:right; color:#000;">GRAND TOTAL:</td><td style="color:#0284c7;">${tQty}</td><td></td><td style="color:#0284c7;">${tTotal}</td><td style="color:#16a34a;">${tRecv}</td><td style="color:#dc2626;">${tPend}</td></tr>`; }
-        else if(type === 'expenses') { title = 'EXPENSE RECORDS EXPORT'; filename = 'Expenses_Data'; tableHTML += '<th style="background:#dc2626; color:#fff;">DATE</th><th style="background:#dc2626; color:#fff;">EXPENSE TYPE</th><th style="background:#dc2626; color:#fff;">AMOUNT</th></tr>'; let tAmt=0; window.appData.expenses.forEach(e => { tableHTML += `<tr><td>${e.date}</td><td>${e.type}</td><td style="color:#dc2626; font-weight:bold;">${e.amount}</td></tr>`; tAmt+=e.amount; }); tableHTML += `<tr style="font-weight: 900; background-color: #f8f9fa;"><td colspan="2" style="text-align:right; color:#000;">TOTAL EXPENSES:</td><td style="color:#dc2626;">${tAmt}</td></tr>`; }
-        else if(type === 'workers') { title = 'WORKERS ATTENDANCE EXPORT'; filename = 'Workers_Data'; tableHTML += '<th style="background:#ca8a04; color:#fff;">DATE</th><th style="background:#ca8a04; color:#fff;">NAME</th><th style="background:#ca8a04; color:#fff;">STATUS</th><th style="background:#ca8a04; color:#fff;">TIME IN</th><th style="background:#ca8a04; color:#fff;">TIME OUT</th><th style="background:#ca8a04; color:#fff;">ADVANCE</th></tr>'; window.appData.workers.forEach(w => { let sColor = w.status === 'PRESENT' ? '#16a34a' : w.status === 'HALF DAY' ? '#ca8a04' : w.status === 'ABSENT' ? '#dc2626' : '#8e8e93'; tableHTML += `<tr><td>${w.date}</td><td>${w.name}</td><td style="color:${sColor}; font-weight:bold;">${w.status}</td><td>${formatTimeAMPM(w.timeIn)}</td><td>${formatTimeAMPM(w.timeOut)}</td><td style="color:#007aff; font-weight:bold;">${w.advance}</td></tr>`; }); }
-        const content = `<div style="width: 100%;"><h2 class="export-title">${title}</h2><table class="export-table">${tableHTML}</table></div>`; setTimeout(() => { generateAndDownloadHDImage(content, filename); }, 350);
-    };
+    window.exportWorkerImage = function(e, id) { e.stopPropagation(); const w = window.appData.workers.find(x => x.id === id); if(!w) return; let historyHTML = ''; if(w.history && w.history.length > 0) { w.history.forEach(h => { let hColor = h.status === 'PRESENT' ? '#16a34a' : h.status === 'HALF DAY' ? '#ca8a04' : h.status === 'ABSENT' ? '#dc2626' : '#8e8e93'; historyHTML += `<tr><td>${h.date}</td><td style="color:${hColor}; font-weight:bold;">${h.status}</td><td>${formatTimeAMPM(h.timeIn)}</td><td>${formatTimeAMPM(h.timeOut)}</td><td style="color:#007aff; font-weight:bold;">₹${h.adv}</td></tr>`; }); } else { let sColor = w.status === 'PRESENT' ? '#16a34a' : w.status === 'HALF DAY' ? '#ca8a04' : w.status === 'ABSENT' ? '#dc2626' : '#8e8e93'; historyHTML = `<tr><td>${w.date}</td><td style="color:${sColor}; font-weight:bold;">${w.status}</td><td>${formatTimeAMPM(w.timeIn)}</td><td>${formatTimeAMPM(w.timeOut)}</td><td style="color:#007aff; font-weight:bold;">₹${w.advance}</td></tr>`; } const content = `<div style="width: 100%; border: 3px solid #007aff; border-radius: 12px; padding: 25px; text-align: center; background:#ffffff;"><p style="font-size: 20px; color:#007aff; font-weight:800; margin-bottom: 5px; text-transform:uppercase;">WORKER FULL REPORT</p><p style="font-size: 18px; color:#333; margin-bottom: 15px; font-weight:700;">${w.name.toUpperCase()}</p><hr style="border-top:1px solid #007aff; margin-bottom:20px;"><div style="text-align: left; font-size: 16px; margin-bottom: 20px; font-weight:700; color:#000;">TOTAL ADVANCE TAKEN: <span style="color:#007aff;">₹${w.advance}</span></div><table class="export-table" style="width:100%; font-size: 12px; border-collapse: collapse; border: 2px solid #ddd;"><thead><tr><th style="background:#007aff; color:#fff; border: 1px solid #ddd;">DATE</th><th style="background:#007aff; color:#fff; border: 1px solid #ddd;">STATUS</th><th style="background:#007aff; color:#fff; border: 1px solid #ddd;">TIME IN</th><th style="background:#007aff; color:#fff; border: 1px solid #ddd;">TIME OUT</th><th style="background:#007aff; color:#fff; border: 1px solid #ddd;">ADV GIVEN</th></tr></thead><tbody>${historyHTML}</tbody></table></div>`; generateAndDownloadHDImage(content, `Worker_Report_${w.name.replace(/\s+/g, '_')}`); };
+    window.exportDataImage = function(e, type) { setOriginFromEvent(e); forceCloseModals(); let tableHTML = '<tr>'; let title = ''; let filename = ''; if(type === 'customers') { title = 'CUSTOMER RECORDS EXPORT'; filename = 'Customers_Data'; tableHTML += '<th style="background:#007aff; color:#fff;">DATE</th><th style="background:#007aff; color:#fff;">NAME</th><th style="background:#007aff; color:#fff;">MOBILE</th><th style="background:#007aff; color:#fff;">ITEM</th><th style="background:#007aff; color:#fff;">QTY</th><th style="background:#007aff; color:#fff;">RATE</th><th style="background:#007aff; color:#fff;">TOTAL AMT</th><th style="background:#007aff; color:#fff;">RECEIVED</th><th style="background:#007aff; color:#fff;">PENDING</th></tr>'; let tQty=0, tTotal=0, tRecv=0, tPend=0; window.appData.customers.forEach(c => { tableHTML += `<tr><td>${c.date}</td><td>${c.name}</td><td>${c.mobile}</td><td>${c.item}</td><td>${c.qty}</td><td>${c.rate}</td><td style="color:#0284c7; font-weight:bold;">${c.total}</td><td style="color:#16a34a; font-weight:bold;">${c.advance}</td><td style="color:#dc2626; font-weight:bold;">${c.pending}</td></tr>`; tQty+=c.qty; tTotal+=c.total; tRecv+=c.advance; tPend+=c.pending; }); tableHTML += `<tr style="font-weight: 900; background-color: #f8f9fa;"><td colspan="4" style="text-align:right; color:#000;">GRAND TOTAL:</td><td style="color:#0284c7;">${tQty}</td><td></td><td style="color:#0284c7;">${tTotal}</td><td style="color:#16a34a;">${tRecv}</td><td style="color:#dc2626;">${tPend}</td></tr>`; } else if(type === 'expenses') { title = 'EXPENSE RECORDS EXPORT'; filename = 'Expenses_Data'; tableHTML += '<th style="background:#dc2626; color:#fff;">DATE</th><th style="background:#dc2626; color:#fff;">EXPENSE TYPE</th><th style="background:#dc2626; color:#fff;">AMOUNT</th></tr>'; let tAmt=0; window.appData.expenses.forEach(e => { tableHTML += `<tr><td>${e.date}</td><td>${e.type}</td><td style="color:#dc2626; font-weight:bold;">${e.amount}</td></tr>`; tAmt+=e.amount; }); tableHTML += `<tr style="font-weight: 900; background-color: #f8f9fa;"><td colspan="2" style="text-align:right; color:#000;">TOTAL EXPENSES:</td><td style="color:#dc2626;">${tAmt}</td></tr>`; } else if(type === 'workers') { title = 'WORKERS ATTENDANCE EXPORT'; filename = 'Workers_Data'; tableHTML += '<th style="background:#ca8a04; color:#fff;">DATE</th><th style="background:#ca8a04; color:#fff;">NAME</th><th style="background:#ca8a04; color:#fff;">STATUS</th><th style="background:#ca8a04; color:#fff;">TIME IN</th><th style="background:#ca8a04; color:#fff;">TIME OUT</th><th style="background:#ca8a04; color:#fff;">ADVANCE</th></tr>'; window.appData.workers.forEach(w => { let sColor = w.status === 'PRESENT' ? '#16a34a' : w.status === 'HALF DAY' ? '#ca8a04' : w.status === 'ABSENT' ? '#dc2626' : '#8e8e93'; tableHTML += `<tr><td>${w.date}</td><td>${w.name}</td><td style="color:${sColor}; font-weight:bold;">${w.status}</td><td>${formatTimeAMPM(w.timeIn)}</td><td>${formatTimeAMPM(w.timeOut)}</td><td style="color:#007aff; font-weight:bold;">${w.advance}</td></tr>`; }); } const content = `<div style="width: 100%;"><h2 class="export-title">${title}</h2><table class="export-table">${tableHTML}</table></div>`; setTimeout(() => { generateAndDownloadHDImage(content, filename); }, 350); };
 </script>
 </body>
 </html>
