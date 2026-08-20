@@ -3,118 +3,130 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Tech Asar - LIVE VIEWER</title>
+<title>Tech Asar - VIEWER APP</title>
 <meta name="color-scheme" content="light dark">
 
 <style>
     /* =========================================
-       1. VIEWER SPECIFIC STYLES & APP CREATOR FIXES
+       1. CORE STYLES & COLORS
        ========================================= */
     :root { 
-        --vh: 1vh; --primary: #4f46e5; --success: #22c55e; --warning: #f59e0b; --danger: #ef4444; 
-        --bg-main: #f8fafc; --glass-bg: rgba(255, 255, 255, 0.85); --glass-border: rgba(255, 255, 255, 0.4); 
-        --text-main: #0f172a; --text-sub: #64748b; --card-bg: #ffffff; 
-        --spring: cubic-bezier(0.34, 1.56, 0.64, 1); --app-launch: cubic-bezier(0.25, 1, 0.5, 1); 
-    }
-    html.dark-mode { 
-        --bg-main: #020617; --glass-bg: rgba(15, 23, 42, 0.75); --glass-border: rgba(255, 255, 255, 0.08); 
-        --text-main: #f8fafc; --text-sub: #94a3b8; --card-bg: #0f172a; color-scheme: dark; 
+        --vh: 1vh; 
+        --primary: #007aff; --primary-grad: linear-gradient(135deg, #007aff, #0056b3);
+        --success: #34c759; --success-grad: linear-gradient(135deg, #34c759, #248a3d);
+        --warning: #ff9500; --warning-grad: linear-gradient(135deg, #ff9500, #b36800);
+        --danger: #ff3b30;  --danger-grad: linear-gradient(135deg, #ff3b30, #b3241e);
+        
+        --bg-main: #f2f2f7; --card-bg: #ffffff; 
+        --text-main: #1c1c1e; --text-sub: #8e8e93; 
+        --glass-bg: rgba(255, 255, 255, 0.85); --glass-border: rgba(255, 255, 255, 0.5);
+        
+        --spring: cubic-bezier(0.34, 1.56, 0.64, 1); 
+        --app-launch: cubic-bezier(0.25, 1, 0.5, 1); 
     }
     
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-font-smoothing: antialiased; }
+    html.dark-mode { 
+        --bg-main: #000000; --card-bg: #1c1c1e; 
+        --text-main: #ffffff; --text-sub: #ebebf5; 
+        --glass-bg: rgba(30, 30, 30, 0.75); --glass-border: rgba(255, 255, 255, 0.1);
+        color-scheme: dark; 
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-font-smoothing: antialiased; }
     body { height: 100vh; height: calc(var(--vh, 1vh) * 100); width: 100%; overflow: hidden; background-color: var(--bg-main); color: var(--text-main); transition: background-color 0.4s ease; }
     
-    .bg-mesh { position: fixed; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 30% 20%, rgba(79, 70, 229, 0.1), transparent 40%), radial-gradient(circle at 70% 80%, rgba(34, 197, 94, 0.08), transparent 40%); z-index: -1; pointer-events: none; animation: pulse 15s ease-in-out infinite alternate; transform: translateZ(0); }
-    html.dark-mode .bg-mesh { background: radial-gradient(circle at 30% 20%, rgba(79, 70, 229, 0.2), transparent 40%), radial-gradient(circle at 70% 80%, rgba(34, 197, 94, 0.15), transparent 40%); }
-    @keyframes pulse { 0% { transform: scale(1); } 100% { transform: scale(1.05); } }
+    /* Subtle Background Mesh */
+    .bg-mesh { position: fixed; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 20% 30%, rgba(0, 122, 255, 0.1), transparent 40%), radial-gradient(circle at 80% 80%, rgba(52, 199, 89, 0.1), transparent 40%); z-index: -1; pointer-events: none; animation: pulse 15s ease-in-out infinite alternate; transform: translateZ(0); }
+    html.dark-mode .bg-mesh { background: radial-gradient(circle at 20% 30%, rgba(0, 122, 255, 0.2), transparent 40%), radial-gradient(circle at 80% 80%, rgba(52, 199, 89, 0.2), transparent 40%); }
+    @keyframes pulse { 0% { transform: scale(1) translate3d(0,0,0); } 100% { transform: scale(1.05) translate3d(-2%, 2%, 0); } }
     
     #app { width: 100%; max-width: 500px; height: 100%; position: absolute; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; overflow: hidden; }
     .glass-panel { background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--glass-border); transform: translateZ(0); }
     
-    /* 2. PREMIUM PILL HEADER (FIXED FOR APP CREATOR 24) */
-    .top-pill-header {
-        position: fixed; top: 15px; left: 50%; transform: translateX(-50%);
-        width: 90%; max-width: 460px; padding: 12px 20px;
-        border-radius: 40px; display: flex; justify-content: space-between; align-items: center;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.06); z-index: 100;
-    }
-    .brand { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 900; letter-spacing: 0.5px; color: var(--primary);}
-    .brand svg { width: 20px; height: 20px; fill: currentColor; }
-    .live-badge { display: flex; align-items: center; gap: 6px; background: rgba(34, 197, 94, 0.15); color: var(--success); padding: 5px 12px; border-radius: 20px; font-size: 10px; font-weight: 800; letter-spacing: 1px;}
-    .live-dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; animation: blink 1.5s infinite; }
-    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-    
-    /* 3. TABS & NAV */
-    .section { position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: 85px 20px calc(env(safe-area-inset-bottom) + 100px); opacity: 0; visibility: hidden; transition: opacity 0.4s var(--app-launch), transform 0.4s var(--app-launch), visibility 0.4s; display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; }
+    /* =========================================
+       2. LAYOUT & NAVIGATION
+       ========================================= */
+    .section { position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: max(env(safe-area-inset-top), 20px) 20px calc(env(safe-area-inset-bottom) + 100px); opacity: 0; visibility: hidden; transition: opacity 0.4s var(--app-launch), transform 0.4s var(--app-launch), visibility 0.4s; display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; will-change: opacity, transform, visibility; }
     .section.active { opacity: 1; visibility: visible; transform: translate3d(0,0,0); z-index: 10; }
     .section.slide-left { transform: translate3d(-50px, 0, 0); } .section.slide-right { transform: translate3d(50px, 0, 0); } .section::-webkit-scrollbar { display: none; }
     
-    .floating-nav { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); border-radius: 30px; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; width: 92%; z-index: 1000; box-shadow: 0 15px 35px rgba(0,0,0,0.1); border: 1px solid var(--glass-border); }
-    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-sub); cursor: pointer; transition: color 0.3s; padding: 5px 10px; flex: 1;}
+    .floating-nav { position: absolute; bottom: max(env(safe-area-inset-bottom), 20px); left: 50%; transform: translateX(-50%); border-radius: 24px; display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; width: 92%; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-sub); cursor: pointer; transition: color 0.3s; padding: 6px; flex: 1;}
     .nav-item.active { color: var(--primary); }
-    .nav-item span { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;}
-    .nav-item svg { width: 22px; height: 22px; fill: currentColor; transition: transform 0.4s var(--spring); }
+    .nav-item span { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;}
+    .nav-item svg { width: 24px; height: 24px; fill: currentColor; transition: transform 0.4s var(--spring); }
     .nav-item.active svg { transform: scale3d(1.15, 1.15, 1) translate3d(0,-2px,0); }
 
-    /* 4. MODERN VERTICAL STAT CARDS (REPLACED ADMIN GRID) */
-    .section-title { font-size: 14px; font-weight: 800; margin: 10px 0 15px; text-transform: uppercase; color: var(--text-sub); letter-spacing: 1px; display: flex; justify-content: space-between; align-items: center;}
-    .stat-card { border-radius: 20px; padding: 20px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 8px 25px rgba(0,0,0,0.04); background: var(--card-bg); border: 1px solid var(--glass-border); }
+    /* =========================================
+       3. COLORFUL DASHBOARD CARDS
+       ========================================= */
+    .stat-card { border-radius: 20px; padding: 22px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; color: white; box-shadow: 0 8px 20px rgba(0,0,0,0.15); transform: translateZ(0); }
+    .stat-card.cust { background: var(--primary-grad); box-shadow: 0 8px 25px rgba(0, 122, 255, 0.3); }
+    .stat-card.rev { background: var(--success-grad); box-shadow: 0 8px 25px rgba(52, 199, 89, 0.3); }
+    .stat-card.pend { background: var(--warning-grad); box-shadow: 0 8px 25px rgba(255, 149, 0, 0.3); }
+    .stat-card.exp { background: var(--danger-grad); box-shadow: 0 8px 25px rgba(255, 59, 48, 0.3); }
+    
     .stat-info { display: flex; flex-direction: column; }
-    .stat-info h4 { font-size: 12px; color: var(--text-sub); font-weight: 700; text-transform: uppercase; margin-bottom: 4px;}
-    .stat-info h2 { font-size: 26px; font-weight: 900; color: var(--text-main); font-variant-numeric: tabular-nums; display: inline-block; min-width: 120px; text-align: left; }
-    .stat-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; }
-    
-    .card-primary .stat-icon { background: rgba(79, 70, 229, 0.1); color: var(--primary); }
-    .card-success .stat-icon { background: rgba(34, 197, 94, 0.1); color: var(--success); }
-    .card-warning .stat-icon { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
-    .card-danger .stat-icon { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+    .stat-info h4 { font-size: 13px; font-weight: 800; text-transform: uppercase; margin-bottom: 4px; opacity: 0.9;}
+    .stat-info h2 { font-size: 28px; font-weight: 900; letter-spacing: -0.5px; font-variant-numeric: tabular-nums; }
+    .stat-icon { width: 50px; height: 50px; border-radius: 14px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; }
+    .stat-icon svg { width: 28px; height: 28px; fill: #ffffff; }
 
-    /* 5. CLEAN LIST CARDS (NO JUMPING TEXT) */
-    .empty-state { text-align: center; color: var(--text-sub); font-size: 13px; font-weight: 700; margin-top: 40px; padding: 30px; background: rgba(0,0,0,0.02); border-radius: 20px; border: 1px dashed var(--glass-border);}
-    html.dark-mode .empty-state { background: rgba(255,255,255,0.02); }
+    /* =========================================
+       4. LIST CARDS & SEARCH
+       ========================================= */
+    .search-bar { display: flex; align-items: center; background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 18px; padding: 14px 16px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); } 
+    .search-bar svg { fill: var(--text-sub); width: 20px; height: 20px; margin-right: 12px; } 
+    .search-bar input { border: none; background: transparent; outline: none; font-size: 15px; font-weight: 700; width: 100%; color: var(--text-main); }
     
-    .view-card { background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; width: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+    .empty-state { text-align: center; color: var(--text-sub); font-size: 13px; font-weight: 800; margin-top: 30px; padding: 30px; background: var(--card-bg); border-radius: 20px; border: 1px dashed var(--glass-border);}
+    
+    .view-card { background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; width: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
     .card-content { flex: 1; }
-    .card-content h3 { font-size: 15px; font-weight: 800; margin-bottom: 4px; text-transform: uppercase; color: var(--text-main);}
-    .card-meta { font-size: 11px; color: var(--text-sub); font-weight: 600; text-transform: uppercase; line-height: 1.5;}
+    .card-content h3 { font-size: 16px; font-weight: 800; margin-bottom: 4px; text-transform: uppercase; color: var(--text-main);}
+    .card-meta { font-size: 12px; color: var(--text-sub); font-weight: 700; text-transform: uppercase; line-height: 1.4;}
+    
     .card-value { text-align: right; min-width: 90px; }
-    .card-value .amt { font-size: 16px; font-weight: 900; font-variant-numeric: tabular-nums; }
-    .card-value .sub { font-size: 10px; font-weight: 800; margin-top: 4px; text-transform: uppercase;}
+    .card-value .amt { font-size: 18px; font-weight: 900; font-variant-numeric: tabular-nums; }
+    .card-value .sub { font-size: 11px; font-weight: 800; margin-top: 4px; text-transform: uppercase;}
     
-    /* Clean Print Button */
-    .print-btn { width: 40px; height: 40px; border-radius: 12px; background: rgba(79, 70, 229, 0.1); color: var(--primary); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s; flex-shrink: 0; margin-left: 12px;}
+    .print-btn { width: 44px; height: 44px; border-radius: 14px; background: rgba(0, 122, 255, 0.1); color: var(--primary); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s; flex-shrink: 0; margin-left: 12px;}
     .print-btn:active { transform: scale3d(0.85, 0.85, 1); }
-    .print-btn svg { width: 18px; height: 18px; fill: currentColor; pointer-events: none; }
+    .print-btn svg { width: 22px; height: 22px; fill: currentColor; pointer-events: none; }
 
-    /* Settings & Input */
-    .search-bar { display: flex; align-items: center; background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 18px; padding: 14px 15px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); } 
-    .search-bar svg { fill: var(--text-sub); width: 18px; height: 18px; margin-right: 10px; } 
-    .search-bar input { border: none; background: transparent; outline: none; font-size: 14px; font-weight: 600; width: 100%; color: var(--text-main); }
+    /* =========================================
+       5. SETTINGS & FULL REPORTS BUTTONS
+       ========================================= */
+    .setting-card { background: var(--card-bg); border-radius: 20px; padding: 18px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border: 1px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.03);}
+    .setting-card span { font-size: 15px; font-weight: 800; text-transform: uppercase; color: var(--text-main); }
     
-    .setting-card { background: var(--card-bg); border-radius: 20px; padding: 18px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border: 1px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.02);}
-    .setting-card span { font-size: 14px; font-weight: 800; text-transform: uppercase; color: var(--text-main); }
-    
-    .big-print-btn { width: 100%; padding: 16px; border-radius: 18px; background: var(--card-bg); border: 1px solid var(--glass-border); color: var(--text-main); font-weight: 800; font-size: 14px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; transition: transform 0.2s; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.02);}
+    .big-print-btn { width: 100%; padding: 18px; border-radius: 20px; background: var(--card-bg); border: 1px solid var(--glass-border); color: var(--text-main); font-weight: 900; font-size: 15px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; transition: transform 0.2s; cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,0.04);}
     .big-print-btn:active { transform: scale3d(0.96, 0.96, 1); }
-    .big-print-btn svg { width: 20px; height: 20px; }
-    .big-print-btn.btn-cust { color: var(--primary); }
-    .big-print-btn.btn-staff { color: var(--warning); }
-    .big-print-btn.btn-exp { color: var(--danger); }
+    .big-print-btn svg { width: 24px; height: 24px; }
+    .big-print-btn.btn-cust { color: var(--primary); background: rgba(0, 122, 255, 0.05); border-color: rgba(0, 122, 255, 0.2);}
+    .big-print-btn.btn-staff { color: var(--warning); background: rgba(255, 149, 0, 0.05); border-color: rgba(255, 149, 0, 0.2);}
+    .big-print-btn.btn-exp { color: var(--danger); background: rgba(255, 59, 48, 0.05); border-color: rgba(255, 59, 48, 0.2);}
     
     .ios-switch { position: relative; display: inline-block; width: 50px; height: 28px; } .ios-switch input { opacity: 0; width: 0; height: 0; } .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(142, 142, 147, 0.3); transition: .4s; border-radius: 34px; } .slider:before { position: absolute; content: ""; height: 24px; width: 24px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2); } input:checked + .slider { background-color: var(--primary); } input:checked + .slider:before { transform: translate3d(22px,0,0); }
 
     /* Toast */
-    #toast { position: absolute; top: -60px; left: 50%; transform: translate3d(-50%, 0, 0); background: var(--text-main); color: var(--bg-main); padding: 12px 24px; border-radius: 30px; font-size: 12px; font-weight: 800; z-index: 9999; transition: transform 0.4s var(--spring); display: flex; align-items: center; gap: 8px; text-transform: uppercase; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-    #toast.show { transform: translate3d(-50%, calc(max(env(safe-area-inset-top), 80px)), 0); }
+    #toast { position: absolute; top: -60px; left: 50%; transform: translate3d(-50%, 0, 0); background: var(--text-main); color: var(--bg-main); padding: 14px 28px; border-radius: 30px; font-size: 13px; font-weight: 800; z-index: 9999; transition: transform 0.4s var(--spring); display: flex; align-items: center; gap: 8px; text-transform: uppercase; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+    #toast.show { transform: translate3d(-50%, calc(max(env(safe-area-inset-top), 50px)), 0); }
 
     /* =========================================
-       6. PRINT SPECIFIC CSS (A4 NARROW MARGIN)
+       6. PERFECT COLOR PRINT CSS (A4 NARROW)
        ========================================= */
     #export-container { display: none; }
     
     @media print {
         body * { visibility: hidden; }
-        #app, .bg-mesh, .floating-nav, .top-pill-header { display: none !important; }
+        #app, .bg-mesh, .floating-nav { display: none !important; }
+        
+        /* Force browsers to print background colors and gradients */
+        * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
         
         #export-container { 
             display: block; position: absolute; left: 0; top: 0; 
@@ -123,40 +135,39 @@
         }
         #export-container * { visibility: visible; }
         
-        @page { size: A4 portrait; margin: 12.7mm; } /* Narrow margin A4 */
+        @page { size: A4 portrait; margin: 12.7mm; } 
         
         .print-receipt { 
             width: 100%; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
             color: #000; box-sizing: border-box; padding: 10px;
         }
-        .p-header { border-bottom: 2px solid #000; padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end;}
-        .p-brand h1 { font-size: 28px; margin: 0; font-weight: 900; letter-spacing: -1px; text-transform: uppercase;}
-        .p-brand p { font-size: 12px; margin: 4px 0 0; font-weight: bold; letter-spacing: 2px; color: #555;}
+        .p-header { border-bottom: 3px solid #007aff; padding-bottom: 15px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: flex-end;}
+        .p-brand h1 { font-size: 32px; margin: 0; font-weight: 900; letter-spacing: -1px; text-transform: uppercase; color: #007aff;}
+        .p-brand p { font-size: 13px; margin: 4px 0 0; font-weight: bold; letter-spacing: 2px; color: #555;}
         .p-meta { text-align: right; }
-        .p-meta h2 { font-size: 18px; margin: 0; text-transform: uppercase;}
-        .p-meta p { font-size: 12px; margin: 4px 0 0; color: #555;}
+        .p-meta h2 { font-size: 20px; margin: 0; font-weight: 900; text-transform: uppercase; color: #1c1c1e;}
+        .p-meta p { font-size: 13px; margin: 4px 0 0; color: #555; font-weight: bold;}
         
-        .p-info-box { background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 25px; display: flex; justify-content: space-between;}
-        .p-info-box div h4 { font-size: 11px; color: #666; margin: 0 0 5px; text-transform: uppercase;}
-        .p-info-box div p { font-size: 16px; margin: 0; font-weight: bold;}
+        .p-info-box { background: #f8f9fa; padding: 18px; border-radius: 12px; border: 1px solid #eaeaea; margin-bottom: 30px; display: flex; justify-content: space-between;}
+        .p-info-box div h4 { font-size: 12px; color: #888; margin: 0 0 6px; text-transform: uppercase;}
+        .p-info-box div p { font-size: 18px; margin: 0; font-weight: 800; color: #1c1c1e;}
         
-        .p-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
-        .p-table th { text-align: left; padding: 10px 5px; font-size: 12px; border-bottom: 2px solid #000; text-transform: uppercase; color: #444;}
-        .p-table td { padding: 15px 5px; font-size: 15px; border-bottom: 1px solid #ddd; font-weight: 600;}
+        .p-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        .p-table th { text-align: left; padding: 12px 8px; font-size: 13px; border-bottom: 2px solid #ddd; text-transform: uppercase; color: #888;}
+        .p-table td { padding: 18px 8px; font-size: 16px; border-bottom: 1px solid #eee; font-weight: 700; color: #1c1c1e;}
         .text-right { text-align: right !important; }
         .text-center { text-align: center !important; }
         
         .p-totals { width: 50%; float: right; }
-        .p-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; font-weight: bold;}
-        .p-row.border-top { border-top: 2px dashed #000; margin-top: 5px; padding-top: 15px; font-size: 18px; }
-        .p-footer { text-align: center; margin-top: 60px; font-size: 12px; color: #666; clear: both;}
+        .p-row { display: flex; justify-content: space-between; padding: 10px 0; font-size: 16px; font-weight: bold; color: #555;}
+        .p-row.border-top { border-top: 2px dashed #ccc; margin-top: 10px; padding-top: 20px; font-size: 22px; color: #ff3b30; }
+        .p-footer { text-align: center; margin-top: 70px; font-size: 13px; color: #888; clear: both; font-weight: bold; letter-spacing: 1px;}
 
-        /* Report Tables */
-        .report-title { font-size: 20px; font-weight: 800; margin-bottom: 20px; text-transform: uppercase; border-bottom: 2px solid #000; padding-bottom: 10px;}
-        .report-table { width: 100%; border-collapse: collapse; font-size: 12px;}
-        .report-table th, .report-table td { border: 1px solid #000; padding: 8px 5px; text-align: left; }
-        .report-table th { background-color: #f0f0f0; font-weight: bold; text-transform: uppercase; }
-        .report-table .bg-gray { background-color: #f9f9f9; font-weight: bold;}
+        .report-title { font-size: 24px; font-weight: 900; margin-bottom: 25px; text-transform: uppercase; border-bottom: 3px solid #007aff; padding-bottom: 12px; color: #1c1c1e;}
+        .report-table { width: 100%; border-collapse: collapse; font-size: 13px;}
+        .report-table th, .report-table td { border: 1px solid #ddd; padding: 10px 8px; text-align: left; color: #000; }
+        .report-table th { background-color: #007aff; color: #fff; font-weight: bold; text-transform: uppercase; border-color: #0056b3;}
+        .report-table .bg-gray { background-color: #f8f9fa; font-weight: 900; font-size: 14px;}
     }
 </style>
 </head>
@@ -169,86 +180,70 @@
         <span id="toast-msg">SUCCESS</span>
     </div>
 
-    <!-- NEW PILL HEADER -->
-    <div class="top-pill-header glass-panel">
-        <div class="brand">
-            <svg viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 3.5l6.5 13h-13L12 5.5z"/></svg>
-            TECH ASAR
-        </div>
-        <div class="live-badge"><div class="live-dot"></div> LIVE</div>
-    </div>
-
-    <!-- TAB 1: SUMMARY DASHBOARD -->
+    <!-- TAB 1: DASHBOARD -->
     <div id="sec1" class="section active">
-        <div class="section-title">Overview Stats</div>
-        
-        <!-- Updated Modern Cards -->
-        <div class="stat-card card-primary">
+        <div class="stat-card cust">
             <div class="stat-info">
                 <h4>Total Clients</h4>
                 <h2 id="dash-cust">0</h2>
             </div>
             <div class="stat-icon">
-                <svg viewBox="0 0 24 24" width="24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
             </div>
         </div>
 
-        <div class="stat-card card-success">
+        <div class="stat-card rev">
             <div class="stat-info">
                 <h4>Total Revenue</h4>
                 <h2 id="dash-rev">₹0</h2>
             </div>
             <div class="stat-icon">
-                <svg viewBox="0 0 24 24" width="24"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2zM12 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
             </div>
         </div>
 
-        <div class="stat-card card-warning">
+        <div class="stat-card pend">
             <div class="stat-info">
                 <h4>Pending Dues</h4>
                 <h2 id="dash-pend">₹0</h2>
             </div>
             <div class="stat-icon">
-                <svg viewBox="0 0 24 24" width="24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
             </div>
         </div>
 
-        <div class="stat-card card-danger">
+        <div class="stat-card exp">
             <div class="stat-info">
                 <h4>Total Expenses</h4>
                 <h2 id="dash-exp">₹0</h2>
             </div>
             <div class="stat-icon">
-                <svg viewBox="0 0 24 24" width="24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 9h-2V7h-2v5H6v2h2v5h2v-5h2v-2z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M3 3v18h18V3H3zm16 16H5V5h14v14zM11 7h2v4h4v2h-6V7z"/></svg>
             </div>
         </div>
     </div>
 
-    <!-- TAB 2: CLIENTS FEED -->
+    <!-- TAB 2: CLIENTS -->
     <div id="sec2" class="section">
         <div class="search-bar">
             <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
             <input type="text" id="search-cust" placeholder="Search Clients..." oninput="renderCustomers()">
         </div>
-        <div class="section-title">Client Ledger</div>
         <div id="customer-list"></div>
     </div>
 
-    <!-- TAB 3: STAFF FEED -->
+    <!-- TAB 3: STAFF -->
     <div id="sec3" class="section">
-        <div class="section-title">Staff Records</div>
         <div id="worker-list"></div>
     </div>
 
-    <!-- TAB 4: EXPENSES FEED -->
+    <!-- TAB 4: EXPENSES -->
     <div id="sec4" class="section">
-        <div class="section-title">Expenses Log</div>
         <div id="expense-list"></div>
     </div>
 
     <!-- TAB 5: PRINT & PREFERENCES -->
     <div id="sec5" class="section">
-        <div class="section-title">Preferences</div>
         <div class="setting-card">
             <span>DARK MODE</span>
             <label class="ios-switch">
@@ -257,9 +252,8 @@
             </label>
         </div>
 
-        <div class="section-title" style="margin-top:15px;">Print A4 Reports</div>
         <button class="big-print-btn btn-cust" onclick="exportDataPrint('customers')">
-            PRINT CLIENT REPORT
+            PRINT CLIENTS REPORT
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
         </button>
         <button class="big-print-btn btn-staff" onclick="exportDataPrint('workers')">
@@ -275,24 +269,19 @@
     <!-- FLOATING BOTTOM NAV -->
     <nav class="floating-nav glass-panel">
         <div class="nav-item active" onclick="switchTab(1, this)">
-            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-            <span>HOME</span>
+            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>HOME</span>
         </div>
         <div class="nav-item" onclick="switchTab(2, this)">
-            <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-            <span>LEDGER</span>
+            <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg><span>CLIENTS</span>
         </div>
         <div class="nav-item" onclick="switchTab(3, this)">
-            <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
-            <span>STAFF</span>
+            <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg><span>STAFF</span>
         </div>
         <div class="nav-item" onclick="switchTab(4, this)">
-            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 9h-2V7h-2v5H6v2h2v5h2v-5h2v-2z"/></svg>
-            <span>EXPENSE</span>
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 9h-2V7h-2v5H6v2h2v5h2v-5h2v-2z"/></svg><span>EXPENSE</span>
         </div>
         <div class="nav-item" onclick="switchTab(5, this)">
-            <svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
-            <span>PRINT</span>
+            <svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg><span>PRINT</span>
         </div>
     </nav>
 </div>
@@ -300,7 +289,7 @@
 <!-- PRINT CONTAINER (Hidden in App) -->
 <div id="export-container"></div>
 
-<!-- CLOUD FIRESTORE INTEGRATION (REAL-TIME VIEWER) -->
+<!-- CLOUD FIRESTORE INTEGRATION (REAL-TIME AUTO FETCH) -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
     import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
@@ -320,7 +309,7 @@
 
     window.appData = { customers: [], workers: [], expenses: [], settings: { darkMode: false } };
 
-    // TRUE REAL-TIME AUTO FETCH (Robust for WebViews)
+    // REAL-TIME AUTO FETCH (Update on fly without lag)
     onSnapshot(docRef, (docSnap) => {
         if (docSnap.exists()) {
             const val = docSnap.data();
@@ -330,8 +319,6 @@
                 expenses: val.expenses || [],
                 settings: val.settings || window.appData.settings
             };
-            
-            // Force safe re-render on data change without layout jumping
             requestAnimationFrame(() => {
                 window.updateDashboard(); 
                 window.renderCustomers(); 
@@ -341,19 +328,28 @@
         }
     });
 
-    // Dark Mode Logic
     window.toggleDarkMode = function() {
         let isDark = document.getElementById('dark-mode-toggle').checked;
         if(isDark) document.documentElement.classList.add('dark-mode');
         else document.documentElement.classList.remove('dark-mode');
     };
 
-    // Viewport Fix for Mobile App WebView
     function lockMobileHeight() { document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`); }
     window.addEventListener('resize', lockMobileHeight); lockMobileHeight();
     
     document.querySelectorAll('.section').forEach(s => { let id = parseInt(s.id.replace('sec', '')); if (id > 1) s.classList.add('slide-right'); });
 
+    window.showToast = function(msg) { 
+        const toast = document.getElementById('toast'); 
+        document.getElementById('toast-msg').innerText = msg.toUpperCase(); 
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                toast.classList.add('show'); 
+                setTimeout(() => toast.classList.remove('show'), 2000);
+            });
+        });
+    };
+    
     window.switchTab = function(tabId, el) { 
         document.querySelectorAll('.section').forEach(s => { 
             let id = parseInt(s.id.replace('sec', '')); 
@@ -394,7 +390,7 @@
         const list = document.getElementById('customer-list'); let htmlBatch = ''; 
         
         let filtered = window.appData.customers.filter(c => c.name.toLowerCase().includes(search) || c.mobile.includes(search));
-        if(filtered.length === 0) { list.innerHTML = '<div class="empty-state">NO CLIENT RECORDS FOUND</div>'; return; }
+        if(filtered.length === 0) { list.innerHTML = '<div class="empty-state">NO CLIENTS FOUND</div>'; return; }
         
         filtered.slice().reverse().forEach(c => { 
             htmlBatch += `
@@ -417,9 +413,8 @@
 
     window.renderWorkers = function() { 
         const list = document.getElementById('worker-list'); let htmlBatch = ''; 
-        if(window.appData.workers.length === 0) { list.innerHTML = '<div class="empty-state">NO STAFF RECORDS FOUND</div>'; return; }
+        if(window.appData.workers.length === 0) { list.innerHTML = '<div class="empty-state">NO STAFF FOUND</div>'; return; }
         
-        const today = new Date().toLocaleDateString(); 
         window.appData.workers.forEach(w => { 
             let sColor = w.status === 'PRESENT' ? 'var(--success)' : w.status === 'HALF DAY' ? 'var(--warning)' : w.status === 'ABSENT' ? 'var(--danger)' : 'var(--text-sub)'; 
             let timeInfo = (w.timeIn || w.timeOut) ? `${w.timeIn || '--'} to ${w.timeOut || '--'}` : 'NO TIME LOGGED';
@@ -428,14 +423,14 @@
                 <div class="view-card">
                     <div class="card-content">
                         <h3>${w.name}</h3>
-                        <div class="card-meta" style="color:${sColor}; font-weight:800;">${w.status} <span style="color:var(--text-sub); font-weight:600;">| ${w.date}</span></div>
+                        <div class="card-meta" style="color:${sColor}; font-weight:800;">${w.status} <span style="color:var(--text-sub); font-weight:700;">| ${w.date}</span></div>
                     </div>
                     <div style="display:flex; align-items:center;">
                         <div class="card-value">
                             <div class="amt" style="font-size:14px; color:var(--text-main);">${timeInfo}</div>
                             <div class="sub" style="color:var(--primary);">ADV: ₹${w.advance}</div>
                         </div>
-                        <button class="print-btn" style="color:var(--warning); background:rgba(245, 158, 11, 0.1);" onclick="exportWorkerPrint(${w.id})"><svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg></button>
+                        <button class="print-btn" style="color:var(--warning); background:rgba(255, 149, 0, 0.1);" onclick="exportWorkerPrint(${w.id})"><svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg></button>
                     </div>
                 </div>`; 
         }); 
@@ -463,7 +458,7 @@
     };
 
     /* ==============================================
-       NATIVE PRINT LOGIC (Replaced Download Image)
+       NATIVE PRINT LOGIC (A4 Size, Exact Colors)
        ============================================== */
     window.triggerPrint = function(contentHTML) {
         const container = document.getElementById('export-container');
@@ -474,19 +469,11 @@
     window.exportReceiptPrint = function(id) { 
         const c = window.appData.customers.find(x => x.id === id); if(!c) return; 
         const invNo = "INV-" + Math.floor(1000 + Math.random() * 9000); 
-        
-        // Brand New Modern Receipt Layout
         const content = `
             <div class="print-receipt">
                 <div class="p-header">
-                    <div class="p-brand">
-                        <h1>TECH ASAR</h1>
-                        <p>PREMIUM POWDER COATING</p>
-                    </div>
-                    <div class="p-meta">
-                        <h2>RECEIPT</h2>
-                        <p>No: #${invNo} | Date: ${c.date}</p>
-                    </div>
+                    <div class="p-brand"><h1>TECH ASAR</h1><p>PREMIUM POWDER COATING</p></div>
+                    <div class="p-meta"><h2>RECEIPT</h2><p>No: #${invNo} | Date: ${c.date}</p></div>
                 </div>
                 <div class="p-info-box">
                     <div><h4>Billed To</h4><p>${c.name}</p></div>
@@ -507,13 +494,9 @@
     };
 
     window.exportWorkerPrint = function(id) { 
-        const w = window.appData.workers.find(x => x.id === id); if(!w) return; 
-        let historyHTML = ''; 
-        if(w.history && w.history.length > 0) { 
-            w.history.forEach(h => { historyHTML += `<tr><td>${h.date}</td><td>${h.status}</td><td>${window.formatTimeAMPM(h.timeIn)} - ${window.formatTimeAMPM(h.timeOut)}</td><td>₹${h.adv}</td></tr>`; }); 
-        } else { 
-            historyHTML = `<tr><td>${w.date}</td><td>${w.status}</td><td>${window.formatTimeAMPM(w.timeIn)} - ${window.formatTimeAMPM(w.timeOut)}</td><td>₹${w.advance}</td></tr>`; 
-        } 
+        const w = window.appData.workers.find(x => x.id === id); if(!w) return; let historyHTML = ''; 
+        if(w.history && w.history.length > 0) { w.history.forEach(h => { historyHTML += `<tr><td>${h.date}</td><td>${h.status}</td><td>${window.formatTimeAMPM(h.timeIn)} - ${window.formatTimeAMPM(h.timeOut)}</td><td>₹${h.adv}</td></tr>`; }); } 
+        else { historyHTML = `<tr><td>${w.date}</td><td>${w.status}</td><td>${window.formatTimeAMPM(w.timeIn)} - ${window.formatTimeAMPM(w.timeOut)}</td><td>₹${w.advance}</td></tr>`; } 
         const content = `
             <div class="print-receipt">
                 <div class="report-title">Staff Report: ${w.name.toUpperCase()}</div>
@@ -531,30 +514,19 @@
     window.exportDataPrint = function(type) { 
         let tableHTML = ''; let title = ''; 
         if(type === 'customers') { 
-            title = 'CLIENTS MASTER LEDGER'; 
-            tableHTML += '<thead><tr><th>Date</th><th>Name</th><th>Mobile</th><th>Item</th><th>Qty</th><th>Rate</th><th>Total</th><th>Recv</th><th>Pend</th></tr></thead><tbody>'; 
+            title = 'CLIENTS MASTER LEDGER'; tableHTML += '<thead><tr><th>Date</th><th>Name</th><th>Mobile</th><th>Item</th><th>Qty</th><th>Rate</th><th>Total</th><th>Recv</th><th>Pend</th></tr></thead><tbody>'; 
             let tQty=0, tTotal=0, tRecv=0, tPend=0; 
-            window.appData.customers.forEach(c => { 
-                tableHTML += `<tr><td>${c.date}</td><td>${c.name}</td><td>${c.mobile}</td><td>${c.item}</td><td>${c.qty}</td><td>${c.rate}</td><td>${c.total}</td><td>${c.advance}</td><td>${c.pending}</td></tr>`; 
-                tQty+=c.qty; tTotal+=c.total; tRecv+=c.advance; tPend+=c.pending; 
-            }); 
+            window.appData.customers.forEach(c => { tableHTML += `<tr><td>${c.date}</td><td>${c.name}</td><td>${c.mobile}</td><td>${c.item}</td><td>${c.qty}</td><td>${c.rate}</td><td>${c.total}</td><td>${c.advance}</td><td>${c.pending}</td></tr>`; tQty+=c.qty; tTotal+=c.total; tRecv+=c.advance; tPend+=c.pending; }); 
             tableHTML += `<tr class="bg-gray"><td colspan="4" class="text-right">GRAND TOTAL:</td><td>${tQty}</td><td></td><td>₹${tTotal}</td><td>₹${tRecv}</td><td>₹${tPend}</td></tr></tbody>`; 
-        } 
-        else if(type === 'expenses') { 
-            title = 'EXPENSES REPORT'; 
-            tableHTML += '<thead><tr><th>Date</th><th>Expense Type</th><th>Amount (₹)</th></tr></thead><tbody>'; 
-            let tAmt=0; 
+        } else if(type === 'expenses') { 
+            title = 'EXPENSES REPORT'; tableHTML += '<thead><tr><th>Date</th><th>Expense Type</th><th>Amount (₹)</th></tr></thead><tbody>'; let tAmt=0; 
             window.appData.expenses.forEach(e => { tableHTML += `<tr><td>${e.date}</td><td>${e.type}</td><td>${e.amount}</td></tr>`; tAmt+=e.amount; }); 
             tableHTML += `<tr class="bg-gray"><td colspan="2" class="text-right">TOTAL EXPENSES:</td><td>₹${tAmt}</td></tr></tbody>`; 
+        } else if(type === 'workers') { 
+            title = 'STAFF ATTENDANCE & ADVANCE'; tableHTML += '<thead><tr><th>Date</th><th>Name</th><th>Status</th><th>Time In</th><th>Time Out</th><th>Advance</th></tr></thead><tbody>'; 
+            window.appData.workers.forEach(w => { tableHTML += `<tr><td>${w.date}</td><td>${w.name}</td><td>${w.status}</td><td>${window.formatTimeAMPM(w.timeIn)}</td><td>${window.formatTimeAMPM(w.timeOut)}</td><td>₹${w.advance}</td></tr>`; }); tableHTML += '</tbody>';
         } 
-        else if(type === 'workers') { 
-            title = 'STAFF ATTENDANCE & ADVANCE'; 
-            tableHTML += '<thead><tr><th>Date</th><th>Name</th><th>Status</th><th>Time In</th><th>Time Out</th><th>Advance</th></tr></thead><tbody>'; 
-            window.appData.workers.forEach(w => { tableHTML += `<tr><td>${w.date}</td><td>${w.name}</td><td>${w.status}</td><td>${window.formatTimeAMPM(w.timeIn)}</td><td>${window.formatTimeAMPM(w.timeOut)}</td><td>₹${w.advance}</td></tr>`; }); 
-            tableHTML += '</tbody>';
-        } 
-        const content = `<div class="print-receipt"><div class="report-title">${title}</div><table class="report-table">${tableHTML}</table></div>`; 
-        triggerPrint(content); 
+        triggerPrint(`<div class="print-receipt"><div class="report-title">${title}</div><table class="report-table">${tableHTML}</table></div>`); 
     };
 </script>
 </body>
