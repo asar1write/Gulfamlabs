@@ -3,109 +3,114 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Tech Asar - VIEWER APP</title>
+<title>Tech Asar - ONE UI VIEWER</title>
 <meta name="color-scheme" content="light dark">
 
 <style>
     /* =========================================
-       1. CORE STYLES & COLORS
+       1. ONE UI CORE VARIABLES
        ========================================= */
     :root { 
         --vh: 1vh; 
-        --primary: #007aff; --primary-grad: linear-gradient(135deg, #007aff, #0056b3);
-        --success: #34c759; --success-grad: linear-gradient(135deg, #34c759, #248a3d);
-        --warning: #ff9500; --warning-grad: linear-gradient(135deg, #ff9500, #b36800);
-        --danger: #ff3b30;  --danger-grad: linear-gradient(135deg, #ff3b30, #b3241e);
+        --primary: #007aff; --primary-soft: rgba(0, 122, 255, 0.15);
+        --success: #34c759; --success-soft: rgba(52, 199, 89, 0.15);
+        --warning: #ff9500; --warning-soft: rgba(255, 149, 0, 0.15);
+        --danger: #ff3b30;  --danger-soft: rgba(255, 59, 48, 0.15);
         
         --bg-main: #f2f2f7; --card-bg: #ffffff; 
-        --text-main: #1c1c1e; --text-sub: #8e8e93; 
-        --glass-bg: rgba(255, 255, 255, 0.85); --glass-border: rgba(255, 255, 255, 0.5);
+        --text-main: #000000; --text-sub: #8e8e93; 
+        --nav-bg: rgba(255, 255, 255, 0.85); --glass-border: rgba(0, 0, 0, 0.05);
         
-        --spring: cubic-bezier(0.34, 1.56, 0.64, 1); 
-        --app-launch: cubic-bezier(0.25, 1, 0.5, 1); 
+        --spring: cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        --app-launch: cubic-bezier(0.2, 0.8, 0.2, 1); 
     }
     
     html.dark-mode { 
         --bg-main: #000000; --card-bg: #1c1c1e; 
-        --text-main: #ffffff; --text-sub: #ebebf5; 
-        --glass-bg: rgba(30, 30, 30, 0.75); --glass-border: rgba(255, 255, 255, 0.1);
+        --text-main: #ffffff; --text-sub: #98989d; 
+        --nav-bg: rgba(30, 30, 30, 0.85); --glass-border: rgba(255, 255, 255, 0.05);
         color-scheme: dark; 
     }
     
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-font-smoothing: antialiased; }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-font-smoothing: antialiased; }
     body { height: 100vh; height: calc(var(--vh, 1vh) * 100); width: 100%; overflow: hidden; background-color: var(--bg-main); color: var(--text-main); transition: background-color 0.4s ease; }
     
-    /* Subtle Background Mesh */
-    .bg-mesh { position: fixed; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 20% 30%, rgba(0, 122, 255, 0.1), transparent 40%), radial-gradient(circle at 80% 80%, rgba(52, 199, 89, 0.1), transparent 40%); z-index: -1; pointer-events: none; animation: pulse 15s ease-in-out infinite alternate; transform: translateZ(0); }
-    html.dark-mode .bg-mesh { background: radial-gradient(circle at 20% 30%, rgba(0, 122, 255, 0.2), transparent 40%), radial-gradient(circle at 80% 80%, rgba(52, 199, 89, 0.2), transparent 40%); }
-    @keyframes pulse { 0% { transform: scale(1) translate3d(0,0,0); } 100% { transform: scale(1.05) translate3d(-2%, 2%, 0); } }
+    /* Background Design */
+    .bg-mesh { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% -20%, var(--primary-soft), transparent 60%); z-index: -1; pointer-events: none; }
     
     #app { width: 100%; max-width: 500px; height: 100%; position: absolute; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; overflow: hidden; }
-    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--glass-border); transform: translateZ(0); }
     
     /* =========================================
-       2. LAYOUT & NAVIGATION
+       2. ONE UI LAYOUT & NAVIGATION
        ========================================= */
-    .section { position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: max(env(safe-area-inset-top), 20px) 20px calc(env(safe-area-inset-bottom) + 100px); opacity: 0; visibility: hidden; transition: opacity 0.4s var(--app-launch), transform 0.4s var(--app-launch), visibility 0.4s; display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; will-change: opacity, transform, visibility; }
+    /* One UI Large Header Area */
+    .one-ui-header { padding: max(env(safe-area-inset-top), 40px) 24px 20px; flex-shrink: 0; display: flex; justify-content: space-between; align-items: flex-end;}
+    .one-ui-header h1 { font-size: 34px; font-weight: 800; letter-spacing: -1px; color: var(--text-main); line-height: 1.1; transition: color 0.4s ease;}
+    .live-badge { display: flex; align-items: center; gap: 6px; background: var(--success-soft); color: var(--success); padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; letter-spacing: 1px;}
+    .live-dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; animation: blink 1.5s infinite; }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+    /* Sections */
+    .section-container { flex: 1; position: relative; width: 100%; overflow: hidden; }
+    .section { position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: 0 20px calc(env(safe-area-inset-bottom) + 110px); opacity: 0; visibility: hidden; transition: opacity 0.4s var(--app-launch), transform 0.4s var(--app-launch), visibility 0.4s; display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; will-change: opacity, transform, visibility; }
     .section.active { opacity: 1; visibility: visible; transform: translate3d(0,0,0); z-index: 10; }
-    .section.slide-left { transform: translate3d(-50px, 0, 0); } .section.slide-right { transform: translate3d(50px, 0, 0); } .section::-webkit-scrollbar { display: none; }
+    .section.slide-left { transform: translate3d(-40px, 0, 0); } .section.slide-right { transform: translate3d(40px, 0, 0); } .section::-webkit-scrollbar { display: none; }
     
-    .floating-nav { position: absolute; bottom: max(env(safe-area-inset-bottom), 20px); left: 50%; transform: translateX(-50%); border-radius: 24px; display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; width: 92%; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-sub); cursor: pointer; transition: color 0.3s; padding: 6px; flex: 1;}
+    /* Centered Wrapper for Dashboard */
+    .center-wrapper { display: flex; flex-direction: column; justify-content: center; flex: 1; min-height: 65vh; padding-bottom: 40px;}
+
+    /* Floating Pill Nav */
+    .floating-nav { position: absolute; bottom: max(env(safe-area-inset-bottom), 24px); left: 50%; transform: translateX(-50%); background: var(--nav-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: 32px; display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; width: 90%; z-index: 1000; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-sub); cursor: pointer; transition: color 0.3s; padding: 8px; flex: 1;}
     .nav-item.active { color: var(--primary); }
     .nav-item span { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;}
     .nav-item svg { width: 24px; height: 24px; fill: currentColor; transition: transform 0.4s var(--spring); }
-    .nav-item.active svg { transform: scale3d(1.15, 1.15, 1) translate3d(0,-2px,0); }
+    .nav-item.active svg { transform: scale3d(1.15, 1.15, 1) translate3d(0,-3px,0); }
 
     /* =========================================
-       3. COLORFUL DASHBOARD CARDS
+       3. ONE UI DASHBOARD CARDS
        ========================================= */
-    .stat-card { border-radius: 20px; padding: 22px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; color: white; box-shadow: 0 8px 20px rgba(0,0,0,0.15); transform: translateZ(0); }
-    .stat-card.cust { background: var(--primary-grad); box-shadow: 0 8px 25px rgba(0, 122, 255, 0.3); }
-    .stat-card.rev { background: var(--success-grad); box-shadow: 0 8px 25px rgba(52, 199, 89, 0.3); }
-    .stat-card.pend { background: var(--warning-grad); box-shadow: 0 8px 25px rgba(255, 149, 0, 0.3); }
-    .stat-card.exp { background: var(--danger-grad); box-shadow: 0 8px 25px rgba(255, 59, 48, 0.3); }
+    .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%;}
+    .stat-card { border-radius: 28px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; background: var(--card-bg); box-shadow: 0 8px 20px rgba(0,0,0,0.04); border: 1px solid var(--glass-border); aspect-ratio: 1 / 1; }
+    .stat-icon { width: 44px; height: 44px; border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: auto;}
+    .stat-icon svg { width: 22px; height: 22px; }
     
-    .stat-info { display: flex; flex-direction: column; }
-    .stat-info h4 { font-size: 13px; font-weight: 800; text-transform: uppercase; margin-bottom: 4px; opacity: 0.9;}
-    .stat-info h2 { font-size: 28px; font-weight: 900; letter-spacing: -0.5px; font-variant-numeric: tabular-nums; }
-    .stat-icon { width: 50px; height: 50px; border-radius: 14px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; }
-    .stat-icon svg { width: 28px; height: 28px; fill: #ffffff; }
+    .c-cust .stat-icon { background: var(--primary-soft); color: var(--primary); }
+    .c-rev .stat-icon { background: var(--success-soft); color: var(--success); }
+    .c-pend .stat-icon { background: var(--warning-soft); color: var(--warning); }
+    .c-exp .stat-icon { background: var(--danger-soft); color: var(--danger); }
+
+    .stat-info h4 { font-size: 12px; color: var(--text-sub); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;}
+    .stat-info h2 { font-size: 26px; font-weight: 900; color: var(--text-main); font-variant-numeric: tabular-nums; letter-spacing: -0.5px;}
 
     /* =========================================
-       4. LIST CARDS & SEARCH
+       4. LIST VIEWS & SEARCH
        ========================================= */
-    .search-bar { display: flex; align-items: center; background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 18px; padding: 14px 16px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); } 
+    .search-bar { display: flex; align-items: center; background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 24px; padding: 16px 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); } 
     .search-bar svg { fill: var(--text-sub); width: 20px; height: 20px; margin-right: 12px; } 
-    .search-bar input { border: none; background: transparent; outline: none; font-size: 15px; font-weight: 700; width: 100%; color: var(--text-main); }
+    .search-bar input { border: none; background: transparent; outline: none; font-size: 16px; font-weight: 600; width: 100%; color: var(--text-main); }
     
-    .empty-state { text-align: center; color: var(--text-sub); font-size: 13px; font-weight: 800; margin-top: 30px; padding: 30px; background: var(--card-bg); border-radius: 20px; border: 1px dashed var(--glass-border);}
+    .empty-state { text-align: center; color: var(--text-sub); font-size: 14px; font-weight: 700; margin-top: 40px; padding: 40px; background: rgba(142, 142, 147, 0.05); border-radius: 28px; }
     
-    .view-card { background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; width: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+    .view-card { background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 24px; padding: 20px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; width: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
     .card-content { flex: 1; }
-    .card-content h3 { font-size: 16px; font-weight: 800; margin-bottom: 4px; text-transform: uppercase; color: var(--text-main);}
-    .card-meta { font-size: 12px; color: var(--text-sub); font-weight: 700; text-transform: uppercase; line-height: 1.4;}
+    .card-content h3 { font-size: 17px; font-weight: 800; margin-bottom: 6px; text-transform: uppercase; color: var(--text-main); letter-spacing: -0.2px;}
+    .card-meta { font-size: 12px; color: var(--text-sub); font-weight: 600; text-transform: uppercase; line-height: 1.5; letter-spacing: 0.2px;}
     
     .card-value { text-align: right; min-width: 90px; }
     .card-value .amt { font-size: 18px; font-weight: 900; font-variant-numeric: tabular-nums; }
     .card-value .sub { font-size: 11px; font-weight: 800; margin-top: 4px; text-transform: uppercase;}
     
-    .print-btn { width: 44px; height: 44px; border-radius: 14px; background: rgba(0, 122, 255, 0.1); color: var(--primary); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s; flex-shrink: 0; margin-left: 12px;}
-    .print-btn:active { transform: scale3d(0.85, 0.85, 1); }
-    .print-btn svg { width: 22px; height: 22px; fill: currentColor; pointer-events: none; }
-
-    /* =========================================
-       5. SETTINGS & FULL REPORTS BUTTONS
-       ========================================= */
-    .setting-card { background: var(--card-bg); border-radius: 20px; padding: 18px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border: 1px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.03);}
+    /* Settings / Print Buttons */
+    .setting-card { background: var(--card-bg); border-radius: 24px; padding: 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border: 1px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.02);}
     .setting-card span { font-size: 15px; font-weight: 800; text-transform: uppercase; color: var(--text-main); }
     
-    .big-print-btn { width: 100%; padding: 18px; border-radius: 20px; background: var(--card-bg); border: 1px solid var(--glass-border); color: var(--text-main); font-weight: 900; font-size: 15px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; transition: transform 0.2s; cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,0.04);}
+    .big-print-btn { width: 100%; padding: 20px; border-radius: 24px; background: var(--card-bg); border: 1px solid var(--glass-border); color: var(--text-main); font-weight: 900; font-size: 15px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; transition: transform 0.2s; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.02);}
     .big-print-btn:active { transform: scale3d(0.96, 0.96, 1); }
     .big-print-btn svg { width: 24px; height: 24px; }
-    .big-print-btn.btn-cust { color: var(--primary); background: rgba(0, 122, 255, 0.05); border-color: rgba(0, 122, 255, 0.2);}
-    .big-print-btn.btn-staff { color: var(--warning); background: rgba(255, 149, 0, 0.05); border-color: rgba(255, 149, 0, 0.2);}
-    .big-print-btn.btn-exp { color: var(--danger); background: rgba(255, 59, 48, 0.05); border-color: rgba(255, 59, 48, 0.2);}
+    .big-print-btn.btn-cust { color: var(--primary); background: var(--primary-soft); border: none;}
+    .big-print-btn.btn-staff { color: var(--warning); background: var(--warning-soft); border: none;}
+    .big-print-btn.btn-exp { color: var(--danger); background: var(--danger-soft); border: none;}
     
     .ios-switch { position: relative; display: inline-block; width: 50px; height: 28px; } .ios-switch input { opacity: 0; width: 0; height: 0; } .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(142, 142, 147, 0.3); transition: .4s; border-radius: 34px; } .slider:before { position: absolute; content: ""; height: 24px; width: 24px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2); } input:checked + .slider { background-color: var(--primary); } input:checked + .slider:before { transform: translate3d(22px,0,0); }
 
@@ -114,60 +119,59 @@
     #toast.show { transform: translate3d(-50%, calc(max(env(safe-area-inset-top), 50px)), 0); }
 
     /* =========================================
-       6. PERFECT COLOR PRINT CSS (A4 NARROW)
+       5. FIX: EXACT MATCH PRINT CSS (NO DARK MODE BUGS)
        ========================================= */
     #export-container { display: none; }
     
     @media print {
-        body * { visibility: hidden; }
-        #app, .bg-mesh, .floating-nav { display: none !important; }
+        /* FIX: Overriding dark mode entirely for print */
+        :root, html, body { background-color: #ffffff !important; color: #000000 !important; }
+        html.dark-mode { background-color: #ffffff !important; color: #000000 !important; }
         
-        /* Force browsers to print background colors and gradients */
+        body * { visibility: hidden; }
+        #app, .bg-mesh, .floating-nav, .one-ui-header { display: none !important; }
+        
+        /* Force explicit colored backgrounds for printing */
         * {
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
+            color-adjust: exact !important;
         }
         
         #export-container { 
-            display: block; position: absolute; left: 0; top: 0; 
-            width: 100%; max-width: 100%; margin: 0; padding: 0; 
-            visibility: visible; background: #fff; z-index: 99999;
+            display: block !important; position: absolute; left: 0; top: 0; 
+            width: 100% !important; margin: 0; padding: 0; 
+            visibility: visible; background: #ffffff !important; z-index: 99999;
         }
         #export-container * { visibility: visible; }
         
-        @page { size: A4 portrait; margin: 12.7mm; } 
+        /* Set to landscape to fit all columns exactly like the image */
+        @page { size: A4 landscape; margin: 10mm; } 
         
-        .print-receipt { 
-            width: 100%; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
-            color: #000; box-sizing: border-box; padding: 10px;
+        .print-view { 
+            width: 100%; font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif; 
+            color: #000 !important; box-sizing: border-box; text-align: center;
         }
-        .p-header { border-bottom: 3px solid #007aff; padding-bottom: 15px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: flex-end;}
-        .p-brand h1 { font-size: 32px; margin: 0; font-weight: 900; letter-spacing: -1px; text-transform: uppercase; color: #007aff;}
-        .p-brand p { font-size: 13px; margin: 4px 0 0; font-weight: bold; letter-spacing: 2px; color: #555;}
-        .p-meta { text-align: right; }
-        .p-meta h2 { font-size: 20px; margin: 0; font-weight: 900; text-transform: uppercase; color: #1c1c1e;}
-        .p-meta p { font-size: 13px; margin: 4px 0 0; color: #555; font-weight: bold;}
         
-        .p-info-box { background: #f8f9fa; padding: 18px; border-radius: 12px; border: 1px solid #eaeaea; margin-bottom: 30px; display: flex; justify-content: space-between;}
-        .p-info-box div h4 { font-size: 12px; color: #888; margin: 0 0 6px; text-transform: uppercase;}
-        .p-info-box div p { font-size: 18px; margin: 0; font-weight: 800; color: #1c1c1e;}
+        .report-title { font-size: 26px !important; font-weight: 900 !important; margin-bottom: 25px !important; text-transform: uppercase; color: #000 !important;}
         
-        .p-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
-        .p-table th { text-align: left; padding: 12px 8px; font-size: 13px; border-bottom: 2px solid #ddd; text-transform: uppercase; color: #888;}
-        .p-table td { padding: 18px 8px; font-size: 16px; border-bottom: 1px solid #eee; font-weight: 700; color: #1c1c1e;}
-        .text-right { text-align: right !important; }
-        .text-center { text-align: center !important; }
+        .print-table { width: 100%; border-collapse: collapse; font-size: 13px !important; table-layout: fixed;}
+        .print-table th, .print-table td { border: 2px solid #e5e7eb !important; padding: 12px 6px !important; text-align: center; word-wrap: break-word;}
         
-        .p-totals { width: 50%; float: right; }
-        .p-row { display: flex; justify-content: space-between; padding: 10px 0; font-size: 16px; font-weight: bold; color: #555;}
-        .p-row.border-top { border-top: 2px dashed #ccc; margin-top: 10px; padding-top: 20px; font-size: 22px; color: #ff3b30; }
-        .p-footer { text-align: center; margin-top: 70px; font-size: 13px; color: #888; clear: both; font-weight: bold; letter-spacing: 1px;}
-
-        .report-title { font-size: 24px; font-weight: 900; margin-bottom: 25px; text-transform: uppercase; border-bottom: 3px solid #007aff; padding-bottom: 12px; color: #1c1c1e;}
-        .report-table { width: 100%; border-collapse: collapse; font-size: 13px;}
-        .report-table th, .report-table td { border: 1px solid #ddd; padding: 10px 8px; text-align: left; color: #000; }
-        .report-table th { background-color: #007aff; color: #fff; font-weight: bold; text-transform: uppercase; border-color: #0056b3;}
-        .report-table .bg-gray { background-color: #f8f9fa; font-weight: 900; font-size: 14px;}
+        .print-table th { color: #ffffff !important; font-weight: 800 !important; text-transform: uppercase; }
+        
+        /* Exact Colors from User's Screenshots */
+        .th-blue th { background-color: #0d6efd !important; border-color: #0d6efd !important; }
+        .th-gold th { background-color: #d97706 !important; border-color: #d97706 !important; }
+        .th-red th { background-color: #dc2626 !important; border-color: #dc2626 !important; }
+        
+        /* Text Colors inside table */
+        .txt-blue { color: #0d6efd !important; font-weight: 800 !important;}
+        .txt-green { color: #16a34a !important; font-weight: 800 !important;}
+        .txt-red { color: #dc2626 !important; font-weight: 800 !important;}
+        .txt-bold { font-weight: 800 !important; color: #000 !important;}
+        
+        .grand-total td { background-color: #f8f9fa !important; font-weight: 900 !important; color: #000 !important;}
     }
 </style>
 </head>
@@ -176,120 +180,132 @@
 
 <div id="app">
     <div id="toast">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="var(--bg-main)"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
         <span id="toast-msg">SUCCESS</span>
     </div>
 
-    <!-- TAB 1: DASHBOARD -->
-    <div id="sec1" class="section active">
-        <div class="stat-card cust">
-            <div class="stat-info">
-                <h4>Total Clients</h4>
-                <h2 id="dash-cust">0</h2>
-            </div>
-            <div class="stat-icon">
-                <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+    <!-- ONE UI DYNAMIC HEADER -->
+    <div class="one-ui-header">
+        <h1 id="page-title">Dashboard</h1>
+        <div class="live-badge"><div class="live-dot"></div> LIVE</div>
+    </div>
+
+    <div class="section-container">
+        <!-- TAB 1: DASHBOARD -->
+        <div id="sec1" class="section active">
+            <div class="center-wrapper">
+                <div class="dash-grid">
+                    <div class="stat-card c-cust">
+                        <div class="stat-icon">
+                            <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                        </div>
+                        <div class="stat-info">
+                            <h4>Clients</h4>
+                            <h2 id="dash-cust">0</h2>
+                        </div>
+                    </div>
+
+                    <div class="stat-card c-rev">
+                        <div class="stat-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                        </div>
+                        <div class="stat-info">
+                            <h4>Revenue</h4>
+                            <h2 id="dash-rev">₹0</h2>
+                        </div>
+                    </div>
+
+                    <div class="stat-card c-pend">
+                        <div class="stat-icon">
+                            <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
+                        </div>
+                        <div class="stat-info">
+                            <h4>Pending</h4>
+                            <h2 id="dash-pend">₹0</h2>
+                        </div>
+                    </div>
+
+                    <div class="stat-card c-exp">
+                        <div class="stat-icon">
+                            <svg viewBox="0 0 24 24"><path d="M3 3v18h18V3H3zm16 16H5V5h14v14zM11 7h2v4h4v2h-6V7z"/></svg>
+                        </div>
+                        <div class="stat-info">
+                            <h4>Expenses</h4>
+                            <h2 id="dash-exp">₹0</h2>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="stat-card rev">
-            <div class="stat-info">
-                <h4>Total Revenue</h4>
-                <h2 id="dash-rev">₹0</h2>
+        <!-- TAB 2: CLIENTS -->
+        <div id="sec2" class="section">
+            <div class="search-bar">
+                <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                <input type="text" id="search-cust" placeholder="Search Ledgers..." oninput="renderCustomers()">
             </div>
-            <div class="stat-icon">
-                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-            </div>
+            <div id="customer-list"></div>
         </div>
 
-        <div class="stat-card pend">
-            <div class="stat-info">
-                <h4>Pending Dues</h4>
-                <h2 id="dash-pend">₹0</h2>
-            </div>
-            <div class="stat-icon">
-                <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
-            </div>
+        <!-- TAB 3: STAFF -->
+        <div id="sec3" class="section">
+            <div id="worker-list"></div>
         </div>
 
-        <div class="stat-card exp">
-            <div class="stat-info">
-                <h4>Total Expenses</h4>
-                <h2 id="dash-exp">₹0</h2>
+        <!-- TAB 4: EXPENSES -->
+        <div id="sec4" class="section">
+            <div id="expense-list"></div>
+        </div>
+
+        <!-- TAB 5: PRINT & SETTINGS -->
+        <div id="sec5" class="section">
+            <div class="setting-card">
+                <span>DARK MODE</span>
+                <label class="ios-switch">
+                    <input type="checkbox" id="dark-mode-toggle" onchange="toggleDarkMode()">
+                    <span class="slider"></span>
+                </label>
             </div>
-            <div class="stat-icon">
-                <svg viewBox="0 0 24 24"><path d="M3 3v18h18V3H3zm16 16H5V5h14v14zM11 7h2v4h4v2h-6V7z"/></svg>
-            </div>
+
+            <button class="big-print-btn btn-cust" onclick="exportDataPrint('customers')">
+                PRINT CLIENT RECORD
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+            </button>
+            <button class="big-print-btn btn-staff" onclick="exportDataPrint('workers')">
+                PRINT STAFF RECORD
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+            </button>
+            <button class="big-print-btn btn-exp" onclick="exportDataPrint('expenses')">
+                PRINT EXPENSES RECORD
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+            </button>
         </div>
     </div>
 
-    <!-- TAB 2: CLIENTS -->
-    <div id="sec2" class="section">
-        <div class="search-bar">
-            <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-            <input type="text" id="search-cust" placeholder="Search Clients..." oninput="renderCustomers()">
-        </div>
-        <div id="customer-list"></div>
-    </div>
-
-    <!-- TAB 3: STAFF -->
-    <div id="sec3" class="section">
-        <div id="worker-list"></div>
-    </div>
-
-    <!-- TAB 4: EXPENSES -->
-    <div id="sec4" class="section">
-        <div id="expense-list"></div>
-    </div>
-
-    <!-- TAB 5: PRINT & PREFERENCES -->
-    <div id="sec5" class="section">
-        <div class="setting-card">
-            <span>DARK MODE</span>
-            <label class="ios-switch">
-                <input type="checkbox" id="dark-mode-toggle" onchange="toggleDarkMode()">
-                <span class="slider"></span>
-            </label>
-        </div>
-
-        <button class="big-print-btn btn-cust" onclick="exportDataPrint('customers')">
-            PRINT CLIENTS REPORT
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
-        </button>
-        <button class="big-print-btn btn-staff" onclick="exportDataPrint('workers')">
-            PRINT STAFF REPORT
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
-        </button>
-        <button class="big-print-btn btn-exp" onclick="exportDataPrint('expenses')">
-            PRINT EXPENSES REPORT
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
-        </button>
-    </div>
-
-    <!-- FLOATING BOTTOM NAV -->
-    <nav class="floating-nav glass-panel">
-        <div class="nav-item active" onclick="switchTab(1, this)">
+    <!-- FLOATING PILL NAV -->
+    <nav class="floating-nav">
+        <div class="nav-item active" onclick="switchTab(1, 'Dashboard', this)">
             <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>HOME</span>
         </div>
-        <div class="nav-item" onclick="switchTab(2, this)">
+        <div class="nav-item" onclick="switchTab(2, 'Ledgers', this)">
             <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg><span>CLIENTS</span>
         </div>
-        <div class="nav-item" onclick="switchTab(3, this)">
+        <div class="nav-item" onclick="switchTab(3, 'Staff Logs', this)">
             <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg><span>STAFF</span>
         </div>
-        <div class="nav-item" onclick="switchTab(4, this)">
+        <div class="nav-item" onclick="switchTab(4, 'Expenses', this)">
             <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 9h-2V7h-2v5H6v2h2v5h2v-5h2v-2z"/></svg><span>EXPENSE</span>
         </div>
-        <div class="nav-item" onclick="switchTab(5, this)">
+        <div class="nav-item" onclick="switchTab(5, 'Print & Prefs', this)">
             <svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg><span>PRINT</span>
         </div>
     </nav>
 </div>
 
-<!-- PRINT CONTAINER (Hidden in App) -->
+<!-- PRINT CONTAINER -->
 <div id="export-container"></div>
 
-<!-- CLOUD FIRESTORE INTEGRATION (REAL-TIME AUTO FETCH) -->
+<!-- CLOUD FIRESTORE INTEGRATION -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
     import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
@@ -309,7 +325,7 @@
 
     window.appData = { customers: [], workers: [], expenses: [], settings: { darkMode: false } };
 
-    // REAL-TIME AUTO FETCH (Update on fly without lag)
+    // PERFECT REAL-TIME FETCH
     onSnapshot(docRef, (docSnap) => {
         if (docSnap.exists()) {
             const val = docSnap.data();
@@ -350,7 +366,13 @@
         });
     };
     
-    window.switchTab = function(tabId, el) { 
+    // One UI Tab Switching logic with Title Update
+    window.switchTab = function(tabId, title, el) { 
+        // Update Title
+        const titleEl = document.getElementById('page-title');
+        titleEl.style.opacity = '0';
+        setTimeout(() => { titleEl.innerText = title; titleEl.style.opacity = '1'; }, 200);
+
         document.querySelectorAll('.section').forEach(s => { 
             let id = parseInt(s.id.replace('sec', '')); 
             s.classList.remove('active', 'slide-left', 'slide-right'); 
@@ -390,7 +412,7 @@
         const list = document.getElementById('customer-list'); let htmlBatch = ''; 
         
         let filtered = window.appData.customers.filter(c => c.name.toLowerCase().includes(search) || c.mobile.includes(search));
-        if(filtered.length === 0) { list.innerHTML = '<div class="empty-state">NO CLIENTS FOUND</div>'; return; }
+        if(filtered.length === 0) { list.innerHTML = '<div class="empty-state">No ledgers found</div>'; return; }
         
         filtered.slice().reverse().forEach(c => { 
             htmlBatch += `
@@ -399,12 +421,9 @@
                         <h3>${c.name}</h3>
                         <div class="card-meta">QTY: ${c.qty} | ITEM: ${c.item}<br>DATE: ${c.date}</div>
                     </div>
-                    <div style="display:flex; align-items:center;">
-                        <div class="card-value">
-                            <div class="amt" style="color:var(--primary);">₹${c.total}</div>
-                            <div class="sub" style="color:var(--danger);">PENDING: ₹${c.pending}</div>
-                        </div>
-                        <button class="print-btn" onclick="exportReceiptPrint(${c.id})"><svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg></button>
+                    <div class="card-value">
+                        <div class="amt" style="color:var(--primary);">₹${c.total.toLocaleString('en-IN')}</div>
+                        <div class="sub" style="color:var(--danger);">PENDING: ₹${c.pending.toLocaleString('en-IN')}</div>
                     </div>
                 </div>`; 
         }); 
@@ -413,7 +432,7 @@
 
     window.renderWorkers = function() { 
         const list = document.getElementById('worker-list'); let htmlBatch = ''; 
-        if(window.appData.workers.length === 0) { list.innerHTML = '<div class="empty-state">NO STAFF FOUND</div>'; return; }
+        if(window.appData.workers.length === 0) { list.innerHTML = '<div class="empty-state">No staff found</div>'; return; }
         
         window.appData.workers.forEach(w => { 
             let sColor = w.status === 'PRESENT' ? 'var(--success)' : w.status === 'HALF DAY' ? 'var(--warning)' : w.status === 'ABSENT' ? 'var(--danger)' : 'var(--text-sub)'; 
@@ -425,12 +444,9 @@
                         <h3>${w.name}</h3>
                         <div class="card-meta" style="color:${sColor}; font-weight:800;">${w.status} <span style="color:var(--text-sub); font-weight:700;">| ${w.date}</span></div>
                     </div>
-                    <div style="display:flex; align-items:center;">
-                        <div class="card-value">
-                            <div class="amt" style="font-size:14px; color:var(--text-main);">${timeInfo}</div>
-                            <div class="sub" style="color:var(--primary);">ADV: ₹${w.advance}</div>
-                        </div>
-                        <button class="print-btn" style="color:var(--warning); background:rgba(255, 149, 0, 0.1);" onclick="exportWorkerPrint(${w.id})"><svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg></button>
+                    <div class="card-value">
+                        <div class="amt" style="font-size:14px; color:var(--text-main);">${timeInfo}</div>
+                        <div class="sub" style="color:var(--primary);">ADV: ₹${w.advance.toLocaleString('en-IN')}</div>
                     </div>
                 </div>`; 
         }); 
@@ -440,7 +456,7 @@
     window.renderExpenses = function() { 
         const list = document.getElementById('expense-list'); let htmlBatch = ''; 
         let exps = [...window.appData.expenses].sort((a,b) => b.id - a.id); 
-        if(exps.length === 0) { list.innerHTML = '<div class="empty-state">NO EXPENSES FOUND</div>'; return; }
+        if(exps.length === 0) { list.innerHTML = '<div class="empty-state">No expenses found</div>'; return; }
         
         exps.forEach(e => { 
             htmlBatch += `
@@ -450,7 +466,7 @@
                         <div class="card-meta">${e.date}</div>
                     </div>
                     <div class="card-value">
-                        <div class="amt" style="color:var(--danger);">-₹${e.amount}</div>
+                        <div class="amt" style="color:var(--danger);">-₹${e.amount.toLocaleString('en-IN')}</div>
                     </div>
                 </div>`; 
         }); 
@@ -458,7 +474,7 @@
     };
 
     /* ==============================================
-       NATIVE PRINT LOGIC (A4 Size, Exact Colors)
+       EXACT MATCH PRINT LOGIC (Matches Image Arrays)
        ============================================== */
     window.triggerPrint = function(contentHTML) {
         const container = document.getElementById('export-container');
@@ -466,67 +482,42 @@
         setTimeout(() => { window.print(); }, 300);
     };
 
-    window.exportReceiptPrint = function(id) { 
-        const c = window.appData.customers.find(x => x.id === id); if(!c) return; 
-        const invNo = "INV-" + Math.floor(1000 + Math.random() * 9000); 
-        const content = `
-            <div class="print-receipt">
-                <div class="p-header">
-                    <div class="p-brand"><h1>TECH ASAR</h1><p>PREMIUM POWDER COATING</p></div>
-                    <div class="p-meta"><h2>RECEIPT</h2><p>No: #${invNo} | Date: ${c.date}</p></div>
-                </div>
-                <div class="p-info-box">
-                    <div><h4>Billed To</h4><p>${c.name}</p></div>
-                    <div style="text-align:right;"><h4>Mobile</h4><p>+91 ${c.mobile}</p></div>
-                </div>
-                <table class="p-table">
-                    <thead><tr><th>Item Details</th><th class="text-center">Qty</th><th class="text-right">Rate</th></tr></thead>
-                    <tbody><tr><td>${c.item}</td><td class="text-center">${c.qty}</td><td class="text-right">₹${c.rate}</td></tr></tbody>
-                </table>
-                <div class="p-totals">
-                    <div class="p-row"><span>Total Amount</span><span>₹${c.total}</span></div>
-                    <div class="p-row" style="color:#22c55e;"><span>Advance Paid</span><span>- ₹${c.advance}</span></div>
-                    <div class="p-row border-top"><span>Pending Due</span><span>₹${c.pending}</span></div>
-                </div>
-                <div class="p-footer">This is a system generated receipt and does not require a physical signature.</div>
-            </div>`; 
-        triggerPrint(content); 
-    };
-
-    window.exportWorkerPrint = function(id) { 
-        const w = window.appData.workers.find(x => x.id === id); if(!w) return; let historyHTML = ''; 
-        if(w.history && w.history.length > 0) { w.history.forEach(h => { historyHTML += `<tr><td>${h.date}</td><td>${h.status}</td><td>${window.formatTimeAMPM(h.timeIn)} - ${window.formatTimeAMPM(h.timeOut)}</td><td>₹${h.adv}</td></tr>`; }); } 
-        else { historyHTML = `<tr><td>${w.date}</td><td>${w.status}</td><td>${window.formatTimeAMPM(w.timeIn)} - ${window.formatTimeAMPM(w.timeOut)}</td><td>₹${w.advance}</td></tr>`; } 
-        const content = `
-            <div class="print-receipt">
-                <div class="report-title">Staff Report: ${w.name.toUpperCase()}</div>
-                <div style="margin-bottom:15px; font-weight:bold;">Total Advance Issued: ₹${w.advance}</div>
-                <table class="report-table">
-                    <thead><tr><th>Date</th><th>Status</th><th>Timing</th><th>Adv Issued</th></tr></thead>
-                    <tbody>${historyHTML}</tbody>
-                </table>
-            </div>`; 
-        triggerPrint(content); 
-    };
-
     window.formatTimeAMPM = function(timeStr) { if(!timeStr) return '--'; let [h, m] = timeStr.split(':'); let hours = parseInt(h); let ampm = hours >= 12 ? 'PM' : 'AM'; hours = hours % 12; hours = hours ? hours : 12; return `${hours}:${m} ${ampm}`; };
 
     window.exportDataPrint = function(type) { 
-        let tableHTML = ''; let title = ''; 
+        let tableHTML = ''; let title = ''; let theadClass = '';
+        
         if(type === 'customers') { 
-            title = 'CLIENTS MASTER LEDGER'; tableHTML += '<thead><tr><th>Date</th><th>Name</th><th>Mobile</th><th>Item</th><th>Qty</th><th>Rate</th><th>Total</th><th>Recv</th><th>Pend</th></tr></thead><tbody>'; 
+            title = 'CUSTOMER RECORDS EXPORT'; 
+            theadClass = 'th-blue';
+            tableHTML += `<thead class="${theadClass}"><tr><th>DATE</th><th>NAME</th><th>MOBILE</th><th>ITEM</th><th>QTY</th><th>RATE</th><th>TOTAL AMT</th><th>RECEIVED</th><th>PENDING</th></tr></thead><tbody>`; 
             let tQty=0, tTotal=0, tRecv=0, tPend=0; 
-            window.appData.customers.forEach(c => { tableHTML += `<tr><td>${c.date}</td><td>${c.name}</td><td>${c.mobile}</td><td>${c.item}</td><td>${c.qty}</td><td>${c.rate}</td><td>${c.total}</td><td>${c.advance}</td><td>${c.pending}</td></tr>`; tQty+=c.qty; tTotal+=c.total; tRecv+=c.advance; tPend+=c.pending; }); 
-            tableHTML += `<tr class="bg-gray"><td colspan="4" class="text-right">GRAND TOTAL:</td><td>${tQty}</td><td></td><td>₹${tTotal}</td><td>₹${tRecv}</td><td>₹${tPend}</td></tr></tbody>`; 
-        } else if(type === 'expenses') { 
-            title = 'EXPENSES REPORT'; tableHTML += '<thead><tr><th>Date</th><th>Expense Type</th><th>Amount (₹)</th></tr></thead><tbody>'; let tAmt=0; 
-            window.appData.expenses.forEach(e => { tableHTML += `<tr><td>${e.date}</td><td>${e.type}</td><td>${e.amount}</td></tr>`; tAmt+=e.amount; }); 
-            tableHTML += `<tr class="bg-gray"><td colspan="2" class="text-right">TOTAL EXPENSES:</td><td>₹${tAmt}</td></tr></tbody>`; 
-        } else if(type === 'workers') { 
-            title = 'STAFF ATTENDANCE & ADVANCE'; tableHTML += '<thead><tr><th>Date</th><th>Name</th><th>Status</th><th>Time In</th><th>Time Out</th><th>Advance</th></tr></thead><tbody>'; 
-            window.appData.workers.forEach(w => { tableHTML += `<tr><td>${w.date}</td><td>${w.name}</td><td>${w.status}</td><td>${window.formatTimeAMPM(w.timeIn)}</td><td>${window.formatTimeAMPM(w.timeOut)}</td><td>₹${w.advance}</td></tr>`; }); tableHTML += '</tbody>';
+            window.appData.customers.forEach(c => { 
+                tableHTML += `<tr><td>${c.date}</td><td class="txt-bold">${c.name}</td><td>${c.mobile}</td><td class="txt-bold">${c.item}</td><td>${c.qty}</td><td>${c.rate}</td><td class="txt-blue">${c.total}</td><td class="txt-green">${c.advance}</td><td class="txt-red">${c.pending}</td></tr>`; 
+                tQty+=c.qty; tTotal+=c.total; tRecv+=c.advance; tPend+=c.pending; 
+            }); 
+            tableHTML += `<tr class="grand-total"><td colspan="4" class="text-right">GRAND TOTAL:</td><td class="txt-blue">${tQty}</td><td></td><td class="txt-blue">${tTotal}</td><td class="txt-green">${tRecv}</td><td class="txt-red">${tPend}</td></tr></tbody>`; 
         } 
-        triggerPrint(`<div class="print-receipt"><div class="report-title">${title}</div><table class="report-table">${tableHTML}</table></div>`); 
+        else if(type === 'workers') { 
+            title = 'WORKERS ATTENDANCE EXPORT'; 
+            theadClass = 'th-gold';
+            tableHTML += `<thead class="${theadClass}"><tr><th>DATE</th><th>NAME</th><th>STATUS</th><th>TIME IN</th><th>TIME OUT</th><th>ADVANCE</th></tr></thead><tbody>`; 
+            window.appData.workers.forEach(w => { 
+                let sColorClass = w.status === 'PRESENT' ? 'txt-green' : w.status === 'HALF DAY' ? 'txt-gold' : w.status === 'ABSENT' ? 'txt-red' : '';
+                tableHTML += `<tr><td>${w.date}</td><td>${w.name}</td><td class="${sColorClass}">${w.status}</td><td>${window.formatTimeAMPM(w.timeIn)}</td><td>${window.formatTimeAMPM(w.timeOut)}</td><td class="txt-blue">${w.advance}</td></tr>`; 
+            }); 
+            tableHTML += '</tbody>';
+        } 
+        else if(type === 'expenses') { 
+            title = 'EXPENSES RECORDS EXPORT'; 
+            theadClass = 'th-red';
+            tableHTML += `<thead class="${theadClass}"><tr><th>DATE</th><th>EXPENSE TYPE</th><th>AMOUNT (₹)</th></tr></thead><tbody>`; 
+            let tAmt=0; 
+            window.appData.expenses.forEach(e => { tableHTML += `<tr><td>${e.date}</td><td class="txt-bold">${e.type}</td><td class="txt-red">${e.amount}</td></tr>`; tAmt+=e.amount; }); 
+            tableHTML += `<tr class="grand-total"><td colspan="2" class="text-right">TOTAL EXPENSES:</td><td class="txt-red">${tAmt}</td></tr></tbody>`; 
+        } 
+        
+        triggerPrint(`<div class="print-view"><div class="report-title">${title}</div><table class="print-table">${tableHTML}</table></div>`); 
     };
 </script>
 </body>
