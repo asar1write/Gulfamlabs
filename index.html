@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Tech Asar - PRO VIEWER</title>
-<meta name="color-scheme" content="light dark">
+<meta name="color-scheme" content="light">
 
 <style>
     /* =========================================
@@ -12,197 +12,142 @@
        ========================================= */
     :root { 
         --vh: 1vh; 
-        
         --primary: #2563EB; 
         --success: #059669; 
         --warning: #D97706; 
         --danger:  #DC2626; 
-        --purple:  #8B5CF6;
-        
-        --bg-main: #F8FAFC; --card-bg: #FFFFFF; 
-        --text-main: #0F172A; --text-sub: #64748B; 
-        --nav-bg: rgba(255, 255, 255, 0.85); --glass-border: rgba(0, 0, 0, 0.06);
-        --box-bg: rgba(100, 116, 139, 0.05);
-        
+        --bg-main: #F8FAFC; 
+        --card-bg: #FFFFFF; 
+        --text-main: #0F172A; 
+        --text-sub: #64748B; 
+        --nav-bg: rgba(255, 255, 255, 0.92); 
+        --glass-border: rgba(0, 0, 0, 0.06);
+        --box-bg: #F1F5F9; 
         --spring: cubic-bezier(0.25, 1, 0.5, 1); 
     }
     
-    html.dark-mode { 
-        --bg-main: #020617; --card-bg: #0F172A; 
-        --text-main: #F8FAFC; --text-sub: #94A3B8; 
-        --nav-bg: rgba(15, 23, 42, 0.85); --glass-border: rgba(255, 255, 255, 0.08);
-        --box-bg: rgba(148, 163, 184, 0.08);
-        color-scheme: dark; 
-    }
-    
-    /* FORCE ALL CAPS APPLIED GLOBALLY */
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-font-smoothing: antialiased; text-transform: uppercase; }
     
-    body { height: 100vh; height: calc(var(--vh, 1vh) * 100); width: 100%; overflow: hidden; background-color: var(--bg-main); color: var(--text-main); transition: background-color 0.4s ease; }
+    body { height: 100vh; height: calc(var(--vh, 1vh) * 100); width: 100%; overflow: hidden; background-color: var(--bg-main); color: var(--text-main); }
     
     .bg-mesh { position: fixed; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.08), transparent 50%), radial-gradient(circle at 80% 100%, rgba(5, 150, 105, 0.08), transparent 50%); z-index: -1; pointer-events: none; transform: translateZ(0); }
-    html.dark-mode .bg-mesh { background: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.15), transparent 50%), radial-gradient(circle at 80% 100%, rgba(5, 150, 105, 0.15), transparent 50%); }
     
     #app { width: 100%; max-width: 500px; height: 100%; position: absolute; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; overflow: hidden; }
     
     /* =========================================
-       2. LAYOUT & SECTIONS
+       2. CLEAN LAYOUT & BOTTOM LOCKED NAV
        ========================================= */
-    .section { position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: max(env(safe-area-inset-top), 20px) 20px calc(env(safe-area-inset-bottom) + 85px); opacity: 0; visibility: hidden; transition: opacity 0.4s var(--spring), transform 0.4s var(--spring), visibility 0.4s; display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; will-change: opacity, transform, visibility; }
+    /* ADJUSTED: Top padding to 15px to smoothly integrate with App Creator 24 native header */
+    .section { position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: max(env(safe-area-inset-top), 15px) 20px calc(env(safe-area-inset-bottom) + 85px); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, transform 0.4s var(--spring), visibility 0.4s; display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; will-change: opacity, transform, visibility; }
     .section.active { opacity: 1; visibility: visible; transform: translate3d(0,0,0); z-index: 10; }
     .section.slide-left { transform: translate3d(-30px, 0, 0); } .section.slide-right { transform: translate3d(30px, 0, 0); } .section::-webkit-scrollbar { display: none; }
     
-    .content-wrapper { display: flex; flex-direction: column; justify-content: flex-start; flex: 1; padding-top: 5px; padding-bottom: 20px;}
+    .content-wrapper { display: flex; flex-direction: column; justify-content: flex-start; flex: 1; padding-bottom: 20px;}
 
-    /* =========================================
-       3. BOLD & THICK HEADERS WITH LIVE BADGE
-       ========================================= */
-    .pill-header { background: var(--card-bg); border-radius: 20px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border: 1px solid var(--glass-border); box-shadow: 0 6px 20px rgba(0,0,0,0.04); flex-shrink: 0;}
-    .pill-header .brand-text { font-size: 22px; font-weight: 900; color: var(--primary); letter-spacing: 0.5px;}
-    
-    .live-badge { display: flex; align-items: center; gap: 6px; background: rgba(16, 185, 129, 0.15); color: #10B981; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 900; letter-spacing: 1px;}
-    html.dark-mode .live-badge { color: #34D399; }
-    .live-dot { width: 8px; height: 8px; background: currentColor; border-radius: 50%; animation: pulse-dot 1.5s infinite; }
-    @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-
-    /* =========================================
-       4. COLORFUL BOTTOM NAV BAR
-       ========================================= */
-    .app-nav { position: absolute; bottom: 0; left: 0; width: 100%; background: var(--nav-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-top: 1px solid var(--glass-border); display: flex; justify-content: space-around; align-items: center; padding: 10px 0 calc(10px + env(safe-area-inset-bottom)); z-index: 1000; box-shadow: 0 -5px 25px rgba(0,0,0,0.04); }
-    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-sub); cursor: pointer; transition: color 0.3s; flex: 1;}
+    .app-nav { position: absolute; bottom: 0; left: 0; width: 100%; background: var(--nav-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-top: 1px solid var(--glass-border); display: flex; justify-content: space-around; align-items: center; padding: 10px 0 calc(10px + env(safe-area-inset-bottom)); z-index: 1000; box-shadow: 0 -5px 25px rgba(0,0,0,0.03); }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-sub); cursor: pointer; transition: color 0.2s; flex: 1;}
+    .nav-item.active { color: var(--primary); }
     .nav-item span { font-size: 10px; font-weight: 800; letter-spacing: 0.5px;}
-    .nav-item svg { width: 22px; height: 22px; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.4s var(--spring), stroke 0.3s; }
+    .nav-item svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.3s var(--spring); }
     .nav-item.active svg { transform: scale3d(1.15, 1.15, 1) translateY(-2px); }
 
-    /* Nav Item Specific Colors */
-    .nav-home svg { stroke: rgba(37, 99, 235, 0.5); } .nav-home.active { color: var(--primary); } .nav-home.active svg { stroke: var(--primary); }
-    .nav-client svg { stroke: rgba(5, 150, 105, 0.5); } .nav-client.active { color: var(--success); } .nav-client.active svg { stroke: var(--success); }
-    .nav-staff svg { stroke: rgba(217, 119, 6, 0.5); } .nav-staff.active { color: var(--warning); } .nav-staff.active svg { stroke: var(--warning); }
-    .nav-exp svg { stroke: rgba(220, 38, 38, 0.5); } .nav-exp.active { color: var(--danger); } .nav-exp.active svg { stroke: var(--danger); }
-    .nav-print svg { stroke: rgba(139, 92, 246, 0.5); } .nav-print.active { color: var(--purple); } .nav-print.active svg { stroke: var(--purple); }
-
     /* =========================================
-       5. HORIZONTAL DASHBOARD CARDS
+       3. DASHBOARD CARDS & EXPORT BUTTONS
        ========================================= */
+    @keyframes fadeInUp { 0% { opacity: 0; transform: translateY(20px) scale(0.98); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+
     .dash-list { display: flex; flex-direction: column; gap: 14px; width: 100%; }
-    .stat-card { border-radius: 24px; padding: 24px; display: flex; flex-direction: row; justify-content: space-between; align-items: center; box-shadow: 0 8px 25px rgba(0,0,0,0.05); border: none; }
+    .stat-card { border-radius: 20px; padding: 22px; display: flex; flex-direction: row; justify-content: space-between; align-items: center; box-shadow: 0 8px 25px rgba(0,0,0,0.04); border: none; opacity: 0; animation: fadeInUp 0.6s var(--spring) forwards; }
     
-    .c-rev { background: linear-gradient(135deg, #34D399 0%, #059669 100%); color: white; }
-    .c-pend { background: linear-gradient(135deg, #FBBF24 0%, #D97706 100%); color: white; }
-    .c-exp { background: linear-gradient(135deg, #F87171 0%, #DC2626 100%); color: white; }
-    .c-cust { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--glass-border); }
+    .c-rev { background: linear-gradient(135deg, #34D399 0%, #059669 100%); color: white; animation-delay: 0.05s; }
+    .c-pend { background: linear-gradient(135deg, #FBBF24 0%, #D97706 100%); color: white; animation-delay: 0.1s; }
+    .c-exp { background: linear-gradient(135deg, #F87171 0%, #DC2626 100%); color: white; animation-delay: 0.15s; }
+    .c-cust { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--glass-border); animation-delay: 0.2s; }
 
     .stat-info { display: flex; flex-direction: column; align-items: flex-start; }
-    .stat-info h4 { font-size: 13px; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 6px; opacity: 0.9;}
+    .stat-info h4 { font-size: 12px; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 4px; opacity: 0.9;}
     .c-cust .stat-info h4 { color: var(--text-sub); }
-    .stat-info h2 { font-size: 32px; font-weight: 900; font-variant-numeric: tabular-nums; letter-spacing: -0.5px; line-height: 1;}
-
-    .stat-icon { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;}
+    .stat-info h2 { font-size: 28px; font-weight: 900; font-variant-numeric: tabular-nums; letter-spacing: -0.5px; line-height: 1;}
+    .stat-icon { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center;}
     .c-rev .stat-icon, .c-pend .stat-icon, .c-exp .stat-icon { background: rgba(255,255,255,0.25); }
     .c-cust .stat-icon { background: rgba(37, 99, 235, 0.12); color: var(--primary); }
-    
-    .stat-icon svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;}
+    .stat-icon svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;}
     .c-rev .stat-icon svg, .c-pend .stat-icon svg, .c-exp .stat-icon svg { stroke: #ffffff; }
 
+    /* NEW: 3-COLUMN QUICK EXPORT CARD */
+    .quick-export-card { background: var(--card-bg); border-radius: 16px; border: 1.5px solid var(--glass-border); display: flex; align-items: stretch; justify-content: space-between; margin-top: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); overflow: hidden; flex-shrink: 0; opacity: 0; animation: fadeInUp 0.6s var(--spring) 0.25s forwards;}
+    .export-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px 5px; gap: 8px; cursor: pointer; transition: background 0.2s; }
+    .export-item:active { background: rgba(0,0,0,0.03); }
+    .export-item:not(:last-child) { border-right: 1.5px solid var(--glass-border); }
+    .export-item span { font-size: 11px; font-weight: 800; letter-spacing: 0.5px; }
+    .export-item svg { width: 24px; height: 24px; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    
+    .export-item.cust span { color: #2563EB; }
+    .export-item.cust svg { stroke: #2563EB; }
+    .export-item.staff span { color: #D97706; }
+    .export-item.staff svg { stroke: #D97706; }
+    .export-item.exp span { color: #DC2626; }
+    .export-item.exp svg { stroke: #DC2626; }
+
     /* =========================================
-       6. COLORFUL BOXED LIST CARDS
+       4. SLIM BOXED LIST CARDS & DELETE ANIMATION
        ========================================= */
-    .empty-state { text-align: center; color: var(--text-sub); font-size: 14px; font-weight: 700; margin: auto 0; padding: 40px; border-radius: 20px; border: 2px dashed var(--glass-border); opacity: 0.8;}
+    .empty-state { text-align: center; color: var(--text-sub); font-size: 14px; font-weight: 700; margin: auto 0; padding: 40px; border-radius: 20px; border: 2px dashed var(--glass-border); opacity: 0; animation: fadeInUp 0.5s var(--spring) forwards;}
     
-    .view-card { background: var(--card-bg); border-radius: 22px; padding: 14px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 6px 20px rgba(0,0,0,0.04); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; position: relative; overflow: hidden;}
-    .view-card:active { transform: scale(0.97); box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
-    
-    /* Left Border Accent */
-    .view-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; }
-    
-    /* Specific Card Colors */
-    .card-cust { border: 1px solid rgba(37, 99, 235, 0.2); background: linear-gradient(to right, rgba(37,99,235,0.05), var(--card-bg) 60%); }
+    .view-card { background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 16px; padding: 10px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); cursor: pointer; position: relative; overflow: hidden; max-height: 250px; transition: all 0.35s var(--spring); transform-origin: left center; opacity: 0; animation: fadeInUp 0.5s var(--spring) forwards; }
+    .view-card:active { transform: scale(0.98); box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+    .view-card.deleting { opacity: 0 !important; transform: scale(0.85) translateX(-40px) !important; max-height: 0 !important; margin-bottom: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; border-width: 0 !important; }
+
+    .view-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; }
     .card-cust::before { background: var(--primary); }
-    
-    .card-work { border: 1px solid rgba(217, 119, 6, 0.2); background: linear-gradient(to right, rgba(217,119,6,0.05), var(--card-bg) 60%); }
     .card-work::before { background: var(--warning); }
-    
-    .card-exp { border: 1px solid rgba(220, 38, 38, 0.2); background: linear-gradient(to right, rgba(220,38,38,0.05), var(--card-bg) 60%); }
     .card-exp::before { background: var(--danger); }
     
-    .data-row { display: flex; gap: 8px; width: 100%; }
-    .data-box { flex: 1; background: var(--box-bg); padding: 12px 14px; border-radius: 14px; display: flex; flex-direction: column; justify-content: center; }
+    .data-row { display: flex; gap: 6px; width: 100%; }
+    .data-box { flex: 1; min-width: 0; background: var(--box-bg); padding: 8px 10px; border-radius: 10px; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; overflow: hidden;}
+    .data-box span { font-size: 9px; color: var(--text-sub); font-weight: 800; margin-bottom: 2px; letter-spacing: 0.5px; white-space: nowrap; }
+    .data-box strong { display: block; font-size: 13.5px; color: var(--text-main); font-weight: 800; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: -0.2px; line-height: 1.2;}
     
-    .data-box span { font-size: 10px; color: var(--text-sub); font-weight: 800; margin-bottom: 4px; letter-spacing: 0.5px; }
-    .data-box strong { font-size: 15px; color: var(--text-main); font-weight: 800; word-wrap: break-word; white-space: normal; letter-spacing: -0.2px; line-height: 1.2;}
+    .data-box.large { padding: 10px; }
+    .data-box.large strong { font-size: 15px; font-variant-numeric: tabular-nums; }
     
-    .data-box.large { padding: 14px; }
-    .data-box.large strong { font-size: 18px; font-variant-numeric: tabular-nums; }
-    
-    .txt-blue { color: #2563EB !important; }
-    .txt-green { color: #059669 !important; }
-    .txt-orange { color: #D97706 !important; }
-    .txt-red { color: #DC2626 !important; }
+    .txt-blue { color: #2563EB !important; } .txt-green { color: #059669 !important; } .txt-orange { color: #D97706 !important; } .txt-red { color: #DC2626 !important; }
 
-    /* =========================================
-       7. SETTINGS & FULL REPORTS BUTTONS
-       ========================================= */
-    .setting-card { background: var(--card-bg); border-radius: 20px; padding: 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border: 1px solid var(--glass-border); box-shadow: 0 6px 20px rgba(0,0,0,0.04);}
-    .setting-card span { font-size: 14px; font-weight: 800; color: var(--text-main); letter-spacing: 0.5px;}
-    
-    .big-print-btn { width: 100%; padding: 20px; border-radius: 20px; background: var(--card-bg); border: 1px solid var(--glass-border); font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; transition: transform 0.2s; cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,0.03); letter-spacing: 0.5px;}
-    .big-print-btn:active { transform: scale3d(0.96, 0.96, 1); }
-    .big-print-btn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;}
-    
-    .big-print-btn.btn-cust { color: var(--primary); background: rgba(37, 99, 235, 0.05); border-color: rgba(37, 99, 235, 0.1);}
-    .big-print-btn.btn-staff { color: var(--warning); background: rgba(217, 119, 6, 0.05); border-color: rgba(217, 119, 6, 0.1);}
-    .big-print-btn.btn-exp { color: var(--danger); background: rgba(220, 38, 38, 0.05); border-color: rgba(220, 38, 38, 0.1);}
-    
-    .ios-switch { position: relative; display: inline-block; width: 50px; height: 30px; } .ios-switch input { opacity: 0; width: 0; height: 0; } .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--glass-border); transition: .4s; border-radius: 34px; } .slider:before { position: absolute; content: ""; height: 26px; width: 26px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 10px rgba(0,0,0,0.1); } input:checked + .slider { background-color: var(--success); } input:checked + .slider:before { transform: translate3d(20px,0,0); } html.dark-mode .slider { background-color: #334155; }
-
-    #toast { position: absolute; top: -80px; left: 50%; transform: translate3d(-50%, 0, 0); background: var(--text-main); color: var(--bg-main); padding: 14px 28px; border-radius: 30px; font-size: 13px; font-weight: 900; z-index: 9999; transition: transform 0.4s var(--spring); display: flex; align-items: center; gap: 10px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); letter-spacing: 0.5px;}
+    #toast { position: absolute; top: -80px; left: 50%; transform: translate3d(-50%, 0, 0); background: var(--text-main); color: var(--bg-main); padding: 12px 24px; border-radius: 30px; font-size: 12px; font-weight: 800; z-index: 9999; transition: transform 0.3s var(--spring); display: flex; align-items: center; gap: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); letter-spacing: 0.5px;}
     #toast.show { transform: translate3d(-50%, calc(max(env(safe-area-inset-top), 40px)), 0); }
 
     /* =========================================
-       8. EXACT MATCH A4 PRINT CSS 
+       5. EXACT MATCH A4 PRINT CSS 
        ========================================= */
     #export-container { display: none; }
-    
     @media print {
         :root, html, body { background-color: #ffffff !important; color: #000000 !important; }
-        html.dark-mode { background-color: #ffffff !important; color: #000000 !important; }
         body * { visibility: hidden; }
         #app, .bg-mesh { display: none !important; }
-        
         * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
-        
         #export-container { display: block !important; position: absolute; left: 0; top: 0; width: 100% !important; margin: 0; padding: 0; visibility: visible; background: #ffffff !important; z-index: 99999; }
         #export-container * { visibility: visible; text-transform: uppercase;}
-        
         @page { size: A4 landscape; margin: 10mm; } 
-        
         .print-view { width: 100%; font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif; color: #000 !important; box-sizing: border-box; text-align: center; }
-        .report-title { font-size: 26px !important; font-weight: 900 !important; margin-bottom: 25px !important; color: #000 !important;}
-        
-        /* CORRECT MONTHLY SUMMARY BOX FOR WORKER */
-        .summary-box { display: flex; justify-content: space-around; background-color: #f8f9fa !important; border: 2px solid #e5e7eb !important; border-radius: 12px; padding: 15px; margin-top: 20px; page-break-inside: avoid;}
-        .summary-box div { text-align: center; border-right: 2px solid #e5e7eb; flex: 1;}
-        .summary-box div:last-child { border-right: none; }
-        .summary-box .s-title { font-size: 12px; color: #666 !important; font-weight: bold; letter-spacing: 1px;}
-        .summary-box .s-val { font-size: 24px; font-weight: 900; margin-top: 5px;}
-        
-        .print-table { width: 100%; border-collapse: collapse; font-size: 13px !important; table-layout: fixed;}
-        .print-table th, .print-table td { border: 2px solid #e5e7eb !important; padding: 12px 6px !important; text-align: center; word-wrap: break-word;}
-        .print-table th { color: #ffffff !important; font-weight: 900 !important; }
-        
+        .report-title { font-size: 24px !important; font-weight: 900 !important; margin-bottom: 20px !important; color: #000 !important;}
+        .summary-wrapper { display: flex; justify-content: center; width: 100%; margin: 25px 0; page-break-inside: avoid; }
+        .summary-box { display: table !important; width: 100% !important; border-collapse: collapse; background-color: #f8f9fa !important; border: 2px solid #e5e7eb !important; border-radius: 12px; }
+        .summary-box > div { display: table-cell !important; text-align: center; border-right: 2px solid #e5e7eb; padding: 15px; vertical-align: middle;}
+        .summary-box > div:last-child { border-right: none; }
+        .summary-box .s-title { font-size: 11px; color: #666 !important; font-weight: bold; letter-spacing: 1px; margin-bottom: 5px;}
+        .summary-box .s-val { font-size: 24px; font-weight: 900; margin: 0;}
+        .print-table { width: 100%; border-collapse: collapse; font-size: 12px !important; table-layout: fixed;}
+        .print-table th, .print-table td { border: 2px solid #e5e7eb !important; padding: 10px 6px !important; text-align: center; word-wrap: break-word;}
+        .print-table th { color: #ffffff !important; font-weight: 800 !important; }
         .th-blue th { background-color: #0d6efd !important; border-color: #0d6efd !important; }
         .th-gold th { background-color: #d97706 !important; border-color: #d97706 !important; }
         .th-red th { background-color: #dc2626 !important; border-color: #dc2626 !important; }
-        
-        .txt-blue { color: #0d6efd !important; font-weight: 900 !important;}
-        .txt-green { color: #16a34a !important; font-weight: 900 !important;}
-        .txt-gold { color: #d97706 !important; font-weight: 900 !important;}
-        .txt-red { color: #dc2626 !important; font-weight: 900 !important;}
-        .txt-bold { font-weight: 900 !important; color: #000 !important;}
-        
+        .txt-blue { color: #0d6efd !important; font-weight: 800 !important;}
+        .txt-green { color: #16a34a !important; font-weight: 800 !important;}
+        .txt-gold { color: #d97706 !important; font-weight: 800 !important;}
+        .txt-red { color: #dc2626 !important; font-weight: 800 !important;}
+        .txt-bold { font-weight: 800 !important; color: #000 !important;}
         .grand-total td { background-color: #f8f9fa !important; font-weight: 900 !important; color: #000 !important;}
-        
-        /* Single Receipt Print */
         .print-receipt { width: 100%; font-family: sans-serif; color: #000; box-sizing: border-box; padding: 10px; text-align:left;}
         .p-header { border-bottom: 3px solid #2563EB; padding-bottom: 15px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: flex-end;}
         .p-brand h1 { font-size: 32px; margin: 0; font-weight: 900; letter-spacing: -1px; color: #2563EB;}
@@ -230,29 +175,20 @@
 <div id="app">
 
     <div id="toast">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
         <span id="toast-msg">SUCCESS</span>
     </div>
 
-    <!-- TAB 1: DASHBOARD -->
+    <!-- TAB 1: DASHBOARD & EXPORTS -->
     <div id="sec1" class="section active">
-        <!-- Dashboard Specific Gulfam Labs Header -->
-        <div class="pill-header">
-            <span class="brand-text">GULFAM LABS</span>
-            <div class="live-badge"><div class="live-dot"></div>LIVE</div>
-        </div>
-
         <div class="content-wrapper">
             <div class="dash-list">
-                
                 <div class="stat-card c-rev">
                     <div class="stat-info">
                         <h4>Total Revenue</h4>
                         <h2 id="dash-rev">₹0</h2>
                     </div>
-                    <div class="stat-icon">
-                        <svg viewBox="0 0 24 24"><path d="M7 4h10"></path><path d="M7 9h10"></path><path d="M9 4h3c3.5 0 4 5 0 5"></path><path d="M9 14l5.5 7"></path></svg>
-                    </div>
+                    <div class="stat-icon"><svg viewBox="0 0 24 24"><path d="M7 4h10"></path><path d="M7 9h10"></path><path d="M9 4h3c3.5 0 4 5 0 5"></path><path d="M9 14l5.5 7"></path></svg></div>
                 </div>
 
                 <div class="stat-card c-pend">
@@ -260,9 +196,7 @@
                         <h4>Pending Dues</h4>
                         <h2 id="dash-pend">₹0</h2>
                     </div>
-                    <div class="stat-icon">
-                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                    </div>
+                    <div class="stat-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
                 </div>
 
                 <div class="stat-card c-exp">
@@ -270,9 +204,7 @@
                         <h4>Total Expenses</h4>
                         <h2 id="dash-exp">₹0</h2>
                     </div>
-                    <div class="stat-icon">
-                        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                    </div>
+                    <div class="stat-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
                 </div>
 
                 <div class="stat-card c-cust">
@@ -280,21 +212,30 @@
                         <h4>Total Clients</h4>
                         <h2 id="dash-cust">0</h2>
                     </div>
-                    <div class="stat-icon">
-                        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                    </div>
+                    <div class="stat-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
                 </div>
+            </div>
 
+            <!-- NEW QUICK EXPORT CARD -->
+            <div class="quick-export-card">
+                <div class="export-item cust" onclick="exportDataPrint('customers')">
+                    <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    <span>CLIENTS</span>
+                </div>
+                <div class="export-item staff" onclick="exportDataPrint('workers')">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    <span>STAFF</span>
+                </div>
+                <div class="export-item exp" onclick="exportDataPrint('expenses')">
+                    <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                    <span>EXPENSES</span>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- TAB 2: CLIENTS -->
     <div id="sec2" class="section">
-        <div class="pill-header sec-title">
-            <span class="brand-text">CLIENTS</span>
-            <div class="live-badge"><div class="live-dot"></div>LIVE</div>
-        </div>
         <div class="content-wrapper">
             <div id="customer-list"></div>
         </div>
@@ -302,10 +243,6 @@
 
     <!-- TAB 3: STAFF -->
     <div id="sec3" class="section">
-        <div class="pill-header sec-title">
-            <span class="brand-text">STAFF</span>
-            <div class="live-badge"><div class="live-dot"></div>LIVE</div>
-        </div>
         <div class="content-wrapper">
             <div id="worker-list"></div>
         </div>
@@ -313,77 +250,26 @@
 
     <!-- TAB 4: EXPENSES -->
     <div id="sec4" class="section">
-        <div class="pill-header sec-title">
-            <span class="brand-text">EXPENSES</span>
-            <div class="live-badge"><div class="live-dot"></div>LIVE</div>
-        </div>
         <div class="content-wrapper">
             <div id="expense-list"></div>
         </div>
     </div>
 
-    <!-- TAB 5: PRINT & SETTINGS -->
-    <div id="sec5" class="section">
-        <div class="pill-header sec-title">
-            <span class="brand-text">PREFERENCES</span>
-            <div class="live-badge"><div class="live-dot"></div>LIVE</div>
-        </div>
-        <div class="content-wrapper">
-            <div class="setting-card">
-                <span>Dark Mode</span>
-                <label class="ios-switch">
-                    <input type="checkbox" id="dark-mode-toggle" onchange="toggleDarkMode()">
-                    <span class="slider"></span>
-                </label>
-            </div>
-
-            <button class="big-print-btn btn-cust" onclick="exportDataPrint('customers')">
-                Print Clients Ledger
-                <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-            </button>
-            <button class="big-print-btn btn-staff" onclick="exportDataPrint('workers')">
-                Print Staff Attendance
-                <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-            </button>
-            <button class="big-print-btn btn-exp" onclick="exportDataPrint('expenses')">
-                Print Expenses Report
-                <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-            </button>
-        </div>
-    </div>
-
-    <!-- LOCKED BOTTOM NAV -->
+    <!-- LOCKED BOTTOM NAV (UPDATED: 4 TABS) -->
     <nav class="app-nav">
-        <div class="nav-item nav-home active" onclick="switchTab(1, this)">
-            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-            <span>Home</span>
-        </div>
-        <div class="nav-item nav-client" onclick="switchTab(2, this)">
-            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-            <span>Clients</span>
-        </div>
-        <div class="nav-item nav-staff" onclick="switchTab(3, this)">
-            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-            <span>Staff</span>
-        </div>
-        <div class="nav-item nav-exp" onclick="switchTab(4, this)">
-            <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-            <span>Expense</span>
-        </div>
-        <div class="nav-item nav-print" onclick="switchTab(5, this)">
-            <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-            <span>Print</span>
-        </div>
+        <div class="nav-item active" onclick="switchTab(1, this)"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span>Home</span></div>
+        <div class="nav-item" onclick="switchTab(2, this)"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg><span>Clients</span></div>
+        <div class="nav-item" onclick="switchTab(3, this)"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg><span>Staff</span></div>
+        <div class="nav-item" onclick="switchTab(4, this)"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg><span>Expense</span></div>
     </nav>
 </div>
 
-<!-- PRINT CONTAINER -->
 <div id="export-container"></div>
 
 <!-- CLOUD FIRESTORE INTEGRATION -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    import { getFirestore, doc, onSnapshot, enableNetwork, disableNetwork } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyATj9_cJpq0aWsUqqLzPSC-SWPtBuEagwc",
@@ -398,32 +284,64 @@
     const db = getFirestore(app);
     const docRef = doc(db, 'appData', 'techAsar'); 
 
-    window.appData = { customers: [], workers: [], expenses: [], settings: { darkMode: false } };
+    window.appData = { customers: [], workers: [], expenses: [] };
+    
+    let isInitialLoad = true;
 
-    // FAST REAL-TIME FETCH 
+    // --- SMART NETWORK RESUME ---
+    document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") { disableNetwork(db).then(() => enableNetwork(db)); }
+    });
+    window.addEventListener("online", () => { disableNetwork(db).then(() => enableNetwork(db)); });
+
+    // REAL-TIME FETCH WITH SMART DELETE ANIMATION & INITIAL LOAD SMOOTHNESS
     onSnapshot(docRef, (docSnap) => {
         if (docSnap.exists()) {
             const val = docSnap.data();
-            window.appData = {
-                customers: val.customers || [],
-                workers: val.workers || [],
-                expenses: val.expenses || [],
-                settings: val.settings || window.appData.settings
-            };
-            requestAnimationFrame(() => {
-                window.updateDashboard(); 
-                window.renderCustomers(); 
-                window.renderWorkers(); 
-                window.renderExpenses();
-            });
+            
+            if (isInitialLoad) {
+                applyDataAndRender(val, true); 
+                isInitialLoad = false;
+                return;
+            }
+
+            let oldCust = window.appData.customers || [];
+            let oldWork = window.appData.workers || [];
+            let oldExp = window.appData.expenses || [];
+
+            let newCust = val.customers || [];
+            let newWork = val.workers || [];
+            let newExp = val.expenses || [];
+
+            let deletedCust = oldCust.filter(o => !newCust.find(n => n.id === o.id));
+            let deletedWork = oldWork.filter(o => !newWork.find(n => n.id === o.id));
+            let deletedExp = oldExp.filter(o => !newExp.find(n => n.id === o.id));
+
+            let hasDeletions = deletedCust.length > 0 || deletedWork.length > 0 || deletedExp.length > 0;
+
+            if (hasDeletions) {
+                deletedCust.forEach(d => { let el = document.getElementById(`item-cust-${d.id}`); if(el) el.classList.add('deleting'); });
+                deletedWork.forEach(d => { let el = document.getElementById(`item-work-${d.id}`); if(el) el.classList.add('deleting'); });
+                deletedExp.forEach(d => { let el = document.getElementById(`item-exp-${d.id}`); if(el) el.classList.add('deleting'); });
+
+                setTimeout(() => { applyDataAndRender(val, false); }, 350); 
+            } else {
+                applyDataAndRender(val, false);
+            }
         }
     });
 
-    window.toggleDarkMode = function() {
-        let isDark = document.getElementById('dark-mode-toggle').checked;
-        if(isDark) document.documentElement.classList.add('dark-mode');
-        else document.documentElement.classList.remove('dark-mode');
-    };
+    function applyDataAndRender(val, isInit) {
+        window.appData = {
+            customers: val.customers || [],
+            workers: val.workers || [],
+            expenses: val.expenses || []
+        };
+        window.updateDashboard(); 
+        window.renderCustomers(isInit); 
+        window.renderWorkers(isInit); 
+        window.renderExpenses(isInit);
+    }
 
     function lockMobileHeight() { document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`); }
     window.addEventListener('resize', lockMobileHeight); lockMobileHeight();
@@ -433,12 +351,8 @@
     window.showToast = function(msg) { 
         const toast = document.getElementById('toast'); 
         document.getElementById('toast-msg').innerText = msg; 
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                toast.classList.add('show'); 
-                setTimeout(() => toast.classList.remove('show'), 2000);
-            });
-        });
+        toast.classList.add('show'); 
+        setTimeout(() => toast.classList.remove('show'), 2000);
     };
     
     window.switchTab = function(tabId, el) { 
@@ -476,9 +390,6 @@
         countUpAnimation(document.getElementById('dash-exp'), 0, totalExp, 1000, "₹"); 
     };
 
-    /* ==============================================
-       BUG-FREE DATE FORMATTER (19 AUG 2026)
-       ============================================== */
     window.formatDateStr = function(dateStr) {
         if(!dateStr) return '--';
         if(/[a-zA-Z]/.test(dateStr)) return dateStr;
@@ -498,25 +409,23 @@
         return dateStr;
     };
 
-    /* ==============================================
-       BOXED COLORFUL LIST RENDERING (CLICK ON CARD TO PRINT)
-       ============================================== */
-    window.renderCustomers = function() { 
+    window.renderCustomers = function(isInit = false) { 
         const list = document.getElementById('customer-list'); let htmlBatch = ''; 
         if(window.appData.customers.length === 0) { list.innerHTML = '<div class="empty-state">NO CLIENTS FOUND</div>'; return; }
         
-        window.appData.customers.slice().reverse().forEach(c => { 
+        window.appData.customers.slice().reverse().forEach((c, i) => { 
             let fDate = window.formatDateStr(c.date);
+            let animStyle = isInit ? `animation-delay: ${Math.min(i * 0.04, 0.4)}s;` : `animation: none; opacity: 1;`;
             htmlBatch += `
-                <div class="view-card card-cust" onclick="exportReceiptPrint(${c.id})">
+                <div id="item-cust-${c.id}" class="view-card card-cust" style="${animStyle}" onclick="exportReceiptPrint(${c.id})">
                     <div class="data-row">
-                        <div class="data-box" style="flex:2;"><span>Name</span><strong>${c.name}</strong></div>
-                        <div class="data-box"><span>Date</span><strong>${fDate}</strong></div>
+                        <div class="data-box" style="flex:1;"><span>Name</span><strong>${c.name}</strong></div>
+                        <div class="data-box" style="flex: 0 0 115px;"><span>Date</span><strong>${fDate}</strong></div>
                     </div>
                     <div class="data-row">
-                        <div class="data-box"><span>Mobile</span><strong>${c.mobile}</strong></div>
-                        <div class="data-box"><span>Item</span><strong>${c.item}</strong></div>
-                        <div class="data-box"><span>Qty</span><strong>${c.qty}</strong></div>
+                        <div class="data-box" style="flex: 1.2;"><span>Mobile</span><strong>${c.mobile}</strong></div>
+                        <div class="data-box" style="flex: 1;"><span>Item</span><strong>${c.item}</strong></div>
+                        <div class="data-box" style="flex: 0 0 70px;"><span>Qty</span><strong>${c.qty}</strong></div>
                     </div>
                     <div class="data-row">
                         <div class="data-box large"><span>Total</span><strong class="txt-blue">₹${c.total.toLocaleString('en-IN')}</strong></div>
@@ -528,26 +437,26 @@
         list.innerHTML = htmlBatch; 
     };
 
-    window.renderWorkers = function() { 
+    window.renderWorkers = function(isInit = false) { 
         const list = document.getElementById('worker-list'); let htmlBatch = ''; 
         if(window.appData.workers.length === 0) { list.innerHTML = '<div class="empty-state">NO STAFF FOUND</div>'; return; }
         
-        window.appData.workers.forEach(w => { 
+        window.appData.workers.forEach((w, i) => { 
             let fDate = window.formatDateStr(w.date);
             let sColorClass = w.status === 'PRESENT' ? 'txt-green' : w.status === 'HALF DAY' ? 'txt-orange' : w.status === 'ABSENT' ? 'txt-red' : '';
-            let timeInfo = (w.timeIn || w.timeOut) ? `${window.formatTimeAMPM(w.timeIn)} - ${window.formatTimeAMPM(w.timeOut)}` : 'No Log';
-            
+            let timeInfo = (w.timeIn || w.timeOut) ? `${window.formatTimeAMPM(w.timeIn)} - ${window.formatTimeAMPM(w.timeOut)}` : '--';
             let advHTML = w.advance > 0 ? `<div class="data-row"><div class="data-box large"><span>Total Advance Issued</span><strong class="txt-blue">₹${w.advance.toLocaleString('en-IN')}</strong></div></div>` : '';
+            let animStyle = isInit ? `animation-delay: ${Math.min(i * 0.04, 0.4)}s;` : `animation: none; opacity: 1;`;
 
             htmlBatch += `
-                <div class="view-card card-work" onclick="exportWorkerPrint(${w.id})">
+                <div id="item-work-${w.id}" class="view-card card-work" style="${animStyle}" onclick="exportWorkerPrint(${w.id})">
                     <div class="data-row">
-                        <div class="data-box" style="flex:2;"><span>Name</span><strong>${w.name}</strong></div>
-                        <div class="data-box"><span>Date</span><strong>${fDate}</strong></div>
+                        <div class="data-box" style="flex:1;"><span>Name</span><strong>${w.name}</strong></div>
+                        <div class="data-box" style="flex: 0 0 115px;"><span>Date</span><strong>${fDate}</strong></div>
                     </div>
                     <div class="data-row">
-                        <div class="data-box"><span>Status</span><strong class="${sColorClass}">${w.status}</strong></div>
-                        <div class="data-box" style="flex:2;"><span>Timing</span><strong>${timeInfo}</strong></div>
+                        <div class="data-box" style="flex: 0 0 105px;"><span>Status</span><strong class="${sColorClass}">${w.status}</strong></div>
+                        <div class="data-box" style="flex:1;"><span>Timing</span><strong>${timeInfo}</strong></div>
                     </div>
                     ${advHTML}
                 </div>`; 
@@ -555,18 +464,20 @@
         list.innerHTML = htmlBatch; 
     };
 
-    window.renderExpenses = function() { 
+    window.renderExpenses = function(isInit = false) { 
         const list = document.getElementById('expense-list'); let htmlBatch = ''; 
         let exps = [...window.appData.expenses].sort((a,b) => b.id - a.id); 
         if(exps.length === 0) { list.innerHTML = '<div class="empty-state">NO EXPENSES FOUND</div>'; return; }
         
-        exps.forEach(e => { 
+        exps.forEach((e, i) => { 
             let fDate = window.formatDateStr(e.date);
+            let animStyle = isInit ? `animation-delay: ${Math.min(i * 0.04, 0.4)}s;` : `animation: none; opacity: 1;`;
+
             htmlBatch += `
-                <div class="view-card card-exp" onclick="exportDataPrint('expenses')">
+                <div id="item-exp-${e.id}" class="view-card card-exp" style="${animStyle}" onclick="exportDataPrint('expenses')">
                     <div class="data-row">
-                        <div class="data-box" style="flex:2;"><span>Expense Type</span><strong>${e.type}</strong></div>
-                        <div class="data-box"><span>Date</span><strong>${fDate}</strong></div>
+                        <div class="data-box" style="flex:1;"><span>Expense Type</span><strong>${e.type}</strong></div>
+                        <div class="data-box" style="flex: 0 0 115px;"><span>Date</span><strong>${fDate}</strong></div>
                     </div>
                     <div class="data-row">
                         <div class="data-box large"><span>Amount</span><strong class="txt-red">-₹${e.amount.toLocaleString('en-IN')}</strong></div>
@@ -576,9 +487,6 @@
         list.innerHTML = htmlBatch; 
     };
 
-    /* ==============================================
-       EXACT MATCH PRINT LOGIC
-       ============================================== */
     window.triggerPrint = function(contentHTML) {
         const container = document.getElementById('export-container');
         container.innerHTML = contentHTML;
@@ -649,20 +557,22 @@
             historyHTML += `<tr><td>${fDate}</td><td class="${sColorClass}">${h.status}</td><td>${window.formatTimeAMPM(h.timeIn)} - ${window.formatTimeAMPM(h.timeOut)}</td><td class="txt-blue">₹${h.adv}</td></tr>`; 
         }); 
 
-        let advPrintHTML = w.advance > 0 ? `<div><div class="s-title">TOTAL ADVANCE ISSUED</div><div class="s-val txt-blue">₹${w.advance}</div></div>` : '';
-
         const content = `
             <div class="print-view">
                 <div class="report-title">STAFF REPORT: ${w.name.toUpperCase()}</div>
-                <table class="print-table">
+                
+                <table class="print-table" style="margin-bottom: 25px;">
                     <thead class="th-gold"><tr><th>DATE</th><th>STATUS</th><th>TIMING</th><th>ADVANCE</th></tr></thead>
                     <tbody>${historyHTML}</tbody>
                 </table>
-                <div class="bottom-summary-box">
-                    <div><div class="s-title">THIS MONTH PRESENT</div><div class="s-val txt-green">${presentCount}</div></div>
-                    <div><div class="s-title">THIS MONTH HALF DAY</div><div class="s-val txt-gold">${halfCount}</div></div>
-                    <div><div class="s-title">THIS MONTH ABSENT</div><div class="s-val txt-red">${absentCount}</div></div>
-                    ${advPrintHTML}
+                
+                <div class="summary-wrapper">
+                    <div class="summary-box">
+                        <div><div class="s-title">THIS MONTH PRESENT</div><div class="s-val txt-green">${presentCount}</div></div>
+                        <div><div class="s-title">THIS MONTH HALF DAY</div><div class="s-val txt-gold">${halfCount}</div></div>
+                        <div><div class="s-title">THIS MONTH ABSENT</div><div class="s-val txt-red">${absentCount}</div></div>
+                        <div><div class="s-title">TOTAL ADVANCE</div><div class="s-val txt-blue">₹${w.advance}</div></div>
+                    </div>
                 </div>
             </div>`; 
         triggerPrint(content); 
