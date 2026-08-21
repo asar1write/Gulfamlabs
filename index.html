@@ -26,8 +26,8 @@
         --glass-border: rgba(0, 0, 0, 0.08);
         --box-bg: #F8FAFC; 
         
-        /* ULTRA SMOOTH ANIMATION CURVE */
-        --spring: cubic-bezier(0.22, 1, 0.36, 1); 
+        /* WHATSAPP STYLE SMOOTH SLIDE CURVE */
+        --spring: cubic-bezier(0.25, 1, 0.5, 1); 
     }
     
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-font-smoothing: antialiased; text-transform: uppercase; }
@@ -37,33 +37,32 @@
     #app { width: 100%; max-width: 500px; height: 100%; position: absolute; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; overflow: hidden; background-color: var(--bg-main); }
     
     /* =========================================
-       2. BUG-FREE TAB SWITCHING & LAYOUT (GHOSTING FIXED)
+       2. WHATSAPP-STYLE HORIZONTAL SWIPE TAB
        ========================================= */
     .section { 
         position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
         padding: max(env(safe-area-inset-top), 15px) 20px calc(env(safe-area-inset-bottom) + 85px); 
         background-color: var(--bg-main);
         
-        /* PERFECT FIX: Outgoing tab hides quickly before new tab appears */
-        opacity: 0; visibility: hidden; pointer-events: none;
-        transition: opacity 0.15s ease-out, transform 0.4s var(--spring), visibility 0s linear 0.15s; 
+        /* EXACT WHATSAPP SLIDE: No fade, full 100% left/right translation */
+        visibility: hidden; pointer-events: none;
+        transition: transform 0.35s var(--spring), visibility 0s linear 0.35s; 
         
         display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; 
-        will-change: opacity, transform; 
-        transform: translate3d(0, 15px, 0) scale(0.98); 
+        will-change: transform; 
         z-index: 1;
     }
     
     .section.active { 
-        /* PERFECT FIX: Incoming tab delays opacity slightly to clear previous design */
-        opacity: 1; visibility: visible; pointer-events: auto;
-        transform: translate3d(0, 0, 0) scale(1); 
+        visibility: visible; pointer-events: auto;
+        transform: translate3d(0, 0, 0); 
         z-index: 10; 
-        transition: opacity 0.25s ease-in 0.1s, transform 0.45s var(--spring), visibility 0s linear 0s; 
+        transition: transform 0.35s var(--spring), visibility 0s linear 0s; 
     }
     
-    .section.slide-left { transform: translate3d(-40px, 0, 0) scale(0.98); } 
-    .section.slide-right { transform: translate3d(40px, 0, 0) scale(0.98); } 
+    /* Outgoing tab goes 100% left, Incoming tab comes from 100% right */
+    .section.slide-left { transform: translate3d(-100%, 0, 0); } 
+    .section.slide-right { transform: translate3d(100%, 0, 0); } 
     .section::-webkit-scrollbar { display: none; }
     
     .content-wrapper { display: flex; flex-direction: column; justify-content: flex-start; flex: 1; padding-bottom: 20px;}
@@ -72,13 +71,15 @@
     .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-sub); cursor: pointer; transition: color 0.2s; flex: 1;}
     .nav-item.active { color: var(--primary); }
     .nav-item span { font-size: 10px; font-weight: 800; letter-spacing: 0.5px;}
-    .nav-item svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.4s var(--spring); }
+    .nav-item svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.3s var(--spring); }
     .nav-item.active svg { transform: scale3d(1.15, 1.15, 1) translateY(-2px); }
 
     /* =========================================
        3. DASHBOARD CARDS & EXPORT BUTTONS
        ========================================= */
     @keyframes fadeInUp { 0% { opacity: 0; transform: translateY(25px) scale(0.96); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+
+    .dash-title { font-size: 22px; font-weight: 900; color: var(--text-main); margin-bottom: 20px; letter-spacing: 0.5px; opacity: 0; animation: fadeInUp 0.4s var(--spring) forwards;}
 
     .dash-list { display: flex; flex-direction: column; gap: 14px; width: 100%; }
     .stat-card { border-radius: 20px; padding: 22px; display: flex; flex-direction: row; justify-content: space-between; align-items: center; box-shadow: 0 8px 25px rgba(0,0,0,0.03); border: 1px solid var(--glass-border); opacity: 0; animation: fadeInUp 0.7s var(--spring) forwards; }
@@ -205,6 +206,7 @@
     <!-- TAB 1: DASHBOARD & EXPORTS -->
     <div id="sec1" class="section active">
         <div class="content-wrapper">
+            <h2 class="dash-title">DASHBOARD</h2>
             <div class="dash-list">
                 <div class="stat-card c-rev">
                     <div class="stat-info">
@@ -260,6 +262,7 @@
     <!-- TAB 2: CLIENTS -->
     <div id="sec2" class="section">
         <div class="content-wrapper">
+            <h2 class="dash-title">CLIENTS</h2>
             <div id="customer-list"></div>
         </div>
     </div>
@@ -267,6 +270,7 @@
     <!-- TAB 3: STAFF -->
     <div id="sec3" class="section">
         <div class="content-wrapper">
+            <h2 class="dash-title">STAFF</h2>
             <div id="worker-list"></div>
         </div>
     </div>
@@ -274,6 +278,7 @@
     <!-- TAB 4: EXPENSES -->
     <div id="sec4" class="section">
         <div class="content-wrapper">
+            <h2 class="dash-title">EXPENSES</h2>
             <div id="expense-list"></div>
         </div>
     </div>
