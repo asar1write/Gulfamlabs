@@ -16,53 +16,77 @@
         --success: #059669; 
         --warning: #D97706; 
         --danger:  #DC2626; 
-        --bg-main: #F8FAFC; 
+        
+        /* PURE WHITE THEME */
+        --bg-main: #FFFFFF; 
         --card-bg: #FFFFFF; 
         --text-main: #0F172A; 
         --text-sub: #64748B; 
-        --nav-bg: rgba(255, 255, 255, 0.92); 
-        --glass-border: rgba(0, 0, 0, 0.06);
-        --box-bg: #F1F5F9; 
-        --spring: cubic-bezier(0.25, 1, 0.5, 1); 
+        --nav-bg: rgba(255, 255, 255, 0.98); 
+        --glass-border: rgba(0, 0, 0, 0.08);
+        --box-bg: #F8FAFC; 
+        
+        /* ULTRA SMOOTH ANIMATION CURVE */
+        --spring: cubic-bezier(0.22, 1, 0.36, 1); 
     }
     
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-font-smoothing: antialiased; text-transform: uppercase; }
     
     body { height: 100vh; height: calc(var(--vh, 1vh) * 100); width: 100%; overflow: hidden; background-color: var(--bg-main); color: var(--text-main); }
     
-    .bg-mesh { position: fixed; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.08), transparent 50%), radial-gradient(circle at 80% 100%, rgba(5, 150, 105, 0.08), transparent 50%); z-index: -1; pointer-events: none; transform: translateZ(0); }
-    
-    #app { width: 100%; max-width: 500px; height: 100%; position: absolute; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; overflow: hidden; }
+    #app { width: 100%; max-width: 500px; height: 100%; position: absolute; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; overflow: hidden; background-color: var(--bg-main); }
     
     /* =========================================
-       2. CLEAN LAYOUT & BOTTOM LOCKED NAV
+       2. BUG-FREE TAB SWITCHING & LAYOUT (GHOSTING FIXED)
        ========================================= */
-    /* ADJUSTED: Top padding to 15px to smoothly integrate with App Creator 24 native header */
-    .section { position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: max(env(safe-area-inset-top), 15px) 20px calc(env(safe-area-inset-bottom) + 85px); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, transform 0.4s var(--spring), visibility 0.4s; display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; will-change: opacity, transform, visibility; }
-    .section.active { opacity: 1; visibility: visible; transform: translate3d(0,0,0); z-index: 10; }
-    .section.slide-left { transform: translate3d(-30px, 0, 0); } .section.slide-right { transform: translate3d(30px, 0, 0); } .section::-webkit-scrollbar { display: none; }
+    .section { 
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+        padding: max(env(safe-area-inset-top), 15px) 20px calc(env(safe-area-inset-bottom) + 85px); 
+        background-color: var(--bg-main);
+        
+        /* PERFECT FIX: Outgoing tab hides quickly before new tab appears */
+        opacity: 0; visibility: hidden; pointer-events: none;
+        transition: opacity 0.15s ease-out, transform 0.4s var(--spring), visibility 0s linear 0.15s; 
+        
+        display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; 
+        will-change: opacity, transform; 
+        transform: translate3d(0, 15px, 0) scale(0.98); 
+        z-index: 1;
+    }
+    
+    .section.active { 
+        /* PERFECT FIX: Incoming tab delays opacity slightly to clear previous design */
+        opacity: 1; visibility: visible; pointer-events: auto;
+        transform: translate3d(0, 0, 0) scale(1); 
+        z-index: 10; 
+        transition: opacity 0.25s ease-in 0.1s, transform 0.45s var(--spring), visibility 0s linear 0s; 
+    }
+    
+    .section.slide-left { transform: translate3d(-40px, 0, 0) scale(0.98); } 
+    .section.slide-right { transform: translate3d(40px, 0, 0) scale(0.98); } 
+    .section::-webkit-scrollbar { display: none; }
     
     .content-wrapper { display: flex; flex-direction: column; justify-content: flex-start; flex: 1; padding-bottom: 20px;}
 
-    .app-nav { position: absolute; bottom: 0; left: 0; width: 100%; background: var(--nav-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-top: 1px solid var(--glass-border); display: flex; justify-content: space-around; align-items: center; padding: 10px 0 calc(10px + env(safe-area-inset-bottom)); z-index: 1000; box-shadow: 0 -5px 25px rgba(0,0,0,0.03); }
+    .app-nav { position: absolute; bottom: 0; left: 0; width: 100%; background: var(--nav-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-top: 1px solid var(--glass-border); display: flex; justify-content: space-around; align-items: center; padding: 10px 0 calc(10px + env(safe-area-inset-bottom)); z-index: 1000; box-shadow: 0 -5px 25px rgba(0,0,0,0.02); }
     .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-sub); cursor: pointer; transition: color 0.2s; flex: 1;}
     .nav-item.active { color: var(--primary); }
     .nav-item span { font-size: 10px; font-weight: 800; letter-spacing: 0.5px;}
-    .nav-item svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.3s var(--spring); }
+    .nav-item svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.4s var(--spring); }
     .nav-item.active svg { transform: scale3d(1.15, 1.15, 1) translateY(-2px); }
 
     /* =========================================
        3. DASHBOARD CARDS & EXPORT BUTTONS
        ========================================= */
-    @keyframes fadeInUp { 0% { opacity: 0; transform: translateY(20px) scale(0.98); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+    @keyframes fadeInUp { 0% { opacity: 0; transform: translateY(25px) scale(0.96); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
 
     .dash-list { display: flex; flex-direction: column; gap: 14px; width: 100%; }
-    .stat-card { border-radius: 20px; padding: 22px; display: flex; flex-direction: row; justify-content: space-between; align-items: center; box-shadow: 0 8px 25px rgba(0,0,0,0.04); border: none; opacity: 0; animation: fadeInUp 0.6s var(--spring) forwards; }
+    .stat-card { border-radius: 20px; padding: 22px; display: flex; flex-direction: row; justify-content: space-between; align-items: center; box-shadow: 0 8px 25px rgba(0,0,0,0.03); border: 1px solid var(--glass-border); opacity: 0; animation: fadeInUp 0.7s var(--spring) forwards; }
     
-    .c-rev { background: linear-gradient(135deg, #34D399 0%, #059669 100%); color: white; animation-delay: 0.05s; }
-    .c-pend { background: linear-gradient(135deg, #FBBF24 0%, #D97706 100%); color: white; animation-delay: 0.1s; }
-    .c-exp { background: linear-gradient(135deg, #F87171 0%, #DC2626 100%); color: white; animation-delay: 0.15s; }
-    .c-cust { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--glass-border); animation-delay: 0.2s; }
+    .c-rev { background: linear-gradient(135deg, #34D399 0%, #059669 100%); color: white; border: none; animation-delay: 0.05s; }
+    .c-pend { background: linear-gradient(135deg, #FBBF24 0%, #D97706 100%); color: white; border: none; animation-delay: 0.1s; }
+    .c-exp { background: linear-gradient(135deg, #F87171 0%, #DC2626 100%); color: white; border: none; animation-delay: 0.15s; }
+    .c-cust { background: var(--card-bg); color: var(--text-main); animation-delay: 0.2s; }
 
     .stat-info { display: flex; flex-direction: column; align-items: flex-start; }
     .stat-info h4 { font-size: 12px; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 4px; opacity: 0.9;}
@@ -74,13 +98,14 @@
     .stat-icon svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;}
     .c-rev .stat-icon svg, .c-pend .stat-icon svg, .c-exp .stat-icon svg { stroke: #ffffff; }
 
-    /* NEW: 3-COLUMN QUICK EXPORT CARD */
-    .quick-export-card { background: var(--card-bg); border-radius: 16px; border: 1.5px solid var(--glass-border); display: flex; align-items: stretch; justify-content: space-between; margin-top: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); overflow: hidden; flex-shrink: 0; opacity: 0; animation: fadeInUp 0.6s var(--spring) 0.25s forwards;}
-    .export-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px 5px; gap: 8px; cursor: pointer; transition: background 0.2s; }
-    .export-item:active { background: rgba(0,0,0,0.03); }
+    /* 3-COLUMN QUICK EXPORT CARD */
+    .quick-export-card { background: var(--card-bg); border-radius: 16px; border: 1.5px solid var(--glass-border); display: flex; align-items: stretch; justify-content: space-between; margin-top: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); overflow: hidden; flex-shrink: 0; opacity: 0; animation: fadeInUp 0.7s var(--spring) 0.25s forwards;}
+    .export-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px 5px; gap: 8px; cursor: pointer; transition: background 0.3s; }
+    .export-item:active { background: rgba(0,0,0,0.04); }
     .export-item:not(:last-child) { border-right: 1.5px solid var(--glass-border); }
     .export-item span { font-size: 11px; font-weight: 800; letter-spacing: 0.5px; }
-    .export-item svg { width: 24px; height: 24px; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    .export-item svg { width: 24px; height: 24px; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.3s var(--spring);}
+    .export-item:active svg { transform: scale(0.9); }
     
     .export-item.cust span { color: #2563EB; }
     .export-item.cust svg { stroke: #2563EB; }
@@ -92,10 +117,10 @@
     /* =========================================
        4. SLIM BOXED LIST CARDS & DELETE ANIMATION
        ========================================= */
-    .empty-state { text-align: center; color: var(--text-sub); font-size: 14px; font-weight: 700; margin: auto 0; padding: 40px; border-radius: 20px; border: 2px dashed var(--glass-border); opacity: 0; animation: fadeInUp 0.5s var(--spring) forwards;}
+    .empty-state { text-align: center; color: var(--text-sub); font-size: 14px; font-weight: 700; margin: auto 0; padding: 40px; border-radius: 20px; border: 2px dashed var(--glass-border); opacity: 0; animation: fadeInUp 0.6s var(--spring) forwards;}
     
-    .view-card { background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 16px; padding: 10px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); cursor: pointer; position: relative; overflow: hidden; max-height: 250px; transition: all 0.35s var(--spring); transform-origin: left center; opacity: 0; animation: fadeInUp 0.5s var(--spring) forwards; }
-    .view-card:active { transform: scale(0.98); box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+    .view-card { background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 16px; padding: 10px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); cursor: pointer; position: relative; overflow: hidden; max-height: 250px; transition: all 0.4s var(--spring); transform-origin: left center; opacity: 0; animation: fadeInUp 0.6s var(--spring) forwards; }
+    .view-card:active { transform: scale(0.97); box-shadow: 0 2px 8px rgba(0,0,0,0.01); }
     .view-card.deleting { opacity: 0 !important; transform: scale(0.85) translateX(-40px) !important; max-height: 0 !important; margin-bottom: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; border-width: 0 !important; }
 
     .view-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; }
@@ -104,7 +129,7 @@
     .card-exp::before { background: var(--danger); }
     
     .data-row { display: flex; gap: 6px; width: 100%; }
-    .data-box { flex: 1; min-width: 0; background: var(--box-bg); padding: 8px 10px; border-radius: 10px; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; overflow: hidden;}
+    .data-box { flex: 1; min-width: 0; background: var(--box-bg); padding: 8px 10px; border-radius: 10px; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; overflow: hidden; border: 1px solid rgba(0,0,0,0.02);}
     .data-box span { font-size: 9px; color: var(--text-sub); font-weight: 800; margin-bottom: 2px; letter-spacing: 0.5px; white-space: nowrap; }
     .data-box strong { display: block; font-size: 13.5px; color: var(--text-main); font-weight: 800; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: -0.2px; line-height: 1.2;}
     
@@ -113,7 +138,7 @@
     
     .txt-blue { color: #2563EB !important; } .txt-green { color: #059669 !important; } .txt-orange { color: #D97706 !important; } .txt-red { color: #DC2626 !important; }
 
-    #toast { position: absolute; top: -80px; left: 50%; transform: translate3d(-50%, 0, 0); background: var(--text-main); color: var(--bg-main); padding: 12px 24px; border-radius: 30px; font-size: 12px; font-weight: 800; z-index: 9999; transition: transform 0.3s var(--spring); display: flex; align-items: center; gap: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); letter-spacing: 0.5px;}
+    #toast { position: absolute; top: -80px; left: 50%; transform: translate3d(-50%, 0, 0); background: var(--text-main); color: var(--bg-main); padding: 12px 24px; border-radius: 30px; font-size: 12px; font-weight: 800; z-index: 9999; transition: transform 0.4s var(--spring); display: flex; align-items: center; gap: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); letter-spacing: 0.5px;}
     #toast.show { transform: translate3d(-50%, calc(max(env(safe-area-inset-top), 40px)), 0); }
 
     /* =========================================
@@ -123,7 +148,7 @@
     @media print {
         :root, html, body { background-color: #ffffff !important; color: #000000 !important; }
         body * { visibility: hidden; }
-        #app, .bg-mesh { display: none !important; }
+        #app { display: none !important; }
         * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
         #export-container { display: block !important; position: absolute; left: 0; top: 0; width: 100% !important; margin: 0; padding: 0; visibility: visible; background: #ffffff !important; z-index: 99999; }
         #export-container * { visibility: visible; text-transform: uppercase;}
@@ -170,8 +195,6 @@
 </head>
 <body>
 
-<div class="bg-mesh"></div>
-
 <div id="app">
 
     <div id="toast">
@@ -216,7 +239,7 @@
                 </div>
             </div>
 
-            <!-- NEW QUICK EXPORT CARD -->
+            <!-- QUICK EXPORT CARD -->
             <div class="quick-export-card">
                 <div class="export-item cust" onclick="exportDataPrint('customers')">
                     <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
@@ -255,7 +278,7 @@
         </div>
     </div>
 
-    <!-- LOCKED BOTTOM NAV (UPDATED: 4 TABS) -->
+    <!-- LOCKED BOTTOM NAV -->
     <nav class="app-nav">
         <div class="nav-item active" onclick="switchTab(1, this)"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span>Home</span></div>
         <div class="nav-item" onclick="switchTab(2, this)"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg><span>Clients</span></div>
@@ -324,7 +347,7 @@
                 deletedWork.forEach(d => { let el = document.getElementById(`item-work-${d.id}`); if(el) el.classList.add('deleting'); });
                 deletedExp.forEach(d => { let el = document.getElementById(`item-exp-${d.id}`); if(el) el.classList.add('deleting'); });
 
-                setTimeout(() => { applyDataAndRender(val, false); }, 350); 
+                setTimeout(() => { applyDataAndRender(val, false); }, 400); 
             } else {
                 applyDataAndRender(val, false);
             }
@@ -346,6 +369,7 @@
     function lockMobileHeight() { document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`); }
     window.addEventListener('resize', lockMobileHeight); lockMobileHeight();
     
+    // Set initial off-screen classes on load
     document.querySelectorAll('.section').forEach(s => { let id = parseInt(s.id.replace('sec', '')); if (id > 1) s.classList.add('slide-right'); });
 
     window.showToast = function(msg) { 
@@ -359,10 +383,18 @@
         document.querySelectorAll('.section').forEach(s => { 
             let id = parseInt(s.id.replace('sec', '')); 
             s.classList.remove('active', 'slide-left', 'slide-right'); 
-            if (id < tabId) s.classList.add('slide-left'); else if (id > tabId) s.classList.add('slide-right'); 
+            
+            if (id < tabId) {
+                s.classList.add('slide-left'); 
+            } else if (id > tabId) {
+                s.classList.add('slide-right'); 
+            }
         }); 
-        document.getElementById('sec' + tabId).classList.remove('slide-left', 'slide-right'); 
-        document.getElementById('sec' + tabId).classList.add('active'); 
+        
+        const targetTab = document.getElementById('sec' + tabId);
+        targetTab.classList.remove('slide-left', 'slide-right'); 
+        targetTab.classList.add('active'); 
+        
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); 
         el.classList.add('active'); 
     };
