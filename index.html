@@ -3,144 +3,163 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Tech Asar - PREMIUM VIEWER</title>
+<title>Tech Asar - PRO VIEWER</title>
 <meta name="color-scheme" content="light dark">
 
 <style>
     /* =========================================
-       1. VIBRANT COLORS & VARIABLES
+       1. PROFESSIONAL PREMIUM VARIABLES
        ========================================= */
     :root { 
         --vh: 1vh; 
         
-        /* Vibrant Gradients for Dashboard */
-        --grad-blue: linear-gradient(135deg, #0072ff 0%, #00c6ff 100%);
-        --grad-green: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-        --grad-orange: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%);
-        --grad-red: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+        --primary: #2563EB; 
+        --success: #059669; 
+        --warning: #D97706; 
+        --danger:  #DC2626; 
+        --purple:  #8B5CF6;
         
-        /* UI Colors */
-        --primary: #0072ff; 
-        --success: #11998e; 
-        --warning: #f2994a; 
-        --danger:  #eb3349; 
-        
-        --bg-main: #f4f6f9; --card-bg: #ffffff; 
-        --text-main: #1e293b; --text-sub: #64748b; 
-        --glass-bg: rgba(255, 255, 255, 0.85); --glass-border: rgba(0, 0, 0, 0.06);
+        --bg-main: #F8FAFC; --card-bg: #FFFFFF; 
+        --text-main: #0F172A; --text-sub: #64748B; 
+        --nav-bg: rgba(255, 255, 255, 0.85); --glass-border: rgba(0, 0, 0, 0.06);
+        --box-bg: rgba(100, 116, 139, 0.05);
         
         --spring: cubic-bezier(0.25, 1, 0.5, 1); 
     }
     
     html.dark-mode { 
-        --bg-main: #0f172a; --card-bg: #1e293b; 
-        --text-main: #f8fafc; --text-sub: #94a3b8; 
-        --glass-bg: rgba(15, 23, 42, 0.85); --glass-border: rgba(255, 255, 255, 0.08);
+        --bg-main: #020617; --card-bg: #0F172A; 
+        --text-main: #F8FAFC; --text-sub: #94A3B8; 
+        --nav-bg: rgba(15, 23, 42, 0.85); --glass-border: rgba(255, 255, 255, 0.08);
+        --box-bg: rgba(148, 163, 184, 0.08);
         color-scheme: dark; 
     }
     
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-font-smoothing: antialiased; }
+    /* FORCE ALL CAPS APPLIED GLOBALLY */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-font-smoothing: antialiased; text-transform: uppercase; }
+    
     body { height: 100vh; height: calc(var(--vh, 1vh) * 100); width: 100%; overflow: hidden; background-color: var(--bg-main); color: var(--text-main); transition: background-color 0.4s ease; }
     
-    /* Animated Ambient Mesh */
-    .bg-mesh { position: fixed; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 20% 30%, rgba(0, 114, 255, 0.08), transparent 40%), radial-gradient(circle at 80% 80%, rgba(17, 153, 142, 0.08), transparent 40%); z-index: -1; pointer-events: none; animation: pulse 15s ease-in-out infinite alternate; transform: translateZ(0); }
-    html.dark-mode .bg-mesh { background: radial-gradient(circle at 20% 30%, rgba(0, 114, 255, 0.15), transparent 40%), radial-gradient(circle at 80% 80%, rgba(17, 153, 142, 0.15), transparent 40%); }
-    @keyframes pulse { 0% { transform: scale(1); } 100% { transform: scale(1.05); } }
+    .bg-mesh { position: fixed; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.08), transparent 50%), radial-gradient(circle at 80% 100%, rgba(5, 150, 105, 0.08), transparent 50%); z-index: -1; pointer-events: none; transform: translateZ(0); }
+    html.dark-mode .bg-mesh { background: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.15), transparent 50%), radial-gradient(circle at 80% 100%, rgba(5, 150, 105, 0.15), transparent 50%); }
     
-    #app { width: 100%; max-width: 500px; height: 100%; position: absolute; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; overflow: hidden; background: var(--bg-main); box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+    #app { width: 100%; max-width: 500px; height: 100%; position: absolute; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; overflow: hidden; }
     
     /* =========================================
-       2. TOP HEADER & BOTTOM NAV
+       2. LAYOUT & SECTIONS
        ========================================= */
-    .app-header { position: absolute; top: 0; left: 0; width: 100%; padding: max(env(safe-area-inset-top), 15px) 20px 15px; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border); }
-    .brand-logo { font-size: 20px; font-weight: 900; letter-spacing: -0.5px; color: var(--primary); display: flex; align-items: center; gap: 8px; text-transform: uppercase;}
-    
-    .status-badge { display: flex; align-items: center; gap: 6px; background: rgba(17, 153, 142, 0.15); color: #11998e; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; letter-spacing: 1px; box-shadow: 0 2px 10px rgba(17, 153, 142, 0.2);}
-    html.dark-mode .status-badge { color: #38ef7d; }
-    .status-dot { width: 8px; height: 8px; background: currentColor; border-radius: 50%; animation: pulse-dot 1.5s infinite; }
-    @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-
-    .app-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: calc(65px + env(safe-area-inset-bottom)); background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid var(--glass-border); display: flex; justify-content: space-around; align-items: flex-start; padding-top: 10px; z-index: 1000; padding-bottom: env(safe-area-inset-bottom); }
-    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-sub); cursor: pointer; transition: color 0.3s; flex: 1;}
-    .nav-item.active { color: var(--primary); }
-    .nav-item span { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;}
-    .nav-item svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.4s var(--spring); }
-    .nav-item.active svg { transform: scale3d(1.15, 1.15, 1) translateY(-2px); }
-
-    /* =========================================
-       3. SECTIONS & TAB SWITCHING
-       ========================================= */
-    .section { position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: calc(max(env(safe-area-inset-top), 15px) + 65px) 20px calc(env(safe-area-inset-bottom) + 90px); opacity: 0; visibility: hidden; transition: opacity 0.4s var(--spring), transform 0.4s var(--spring), visibility 0.4s; display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; will-change: opacity, transform, visibility; }
+    .section { position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: max(env(safe-area-inset-top), 20px) 20px calc(env(safe-area-inset-bottom) + 85px); opacity: 0; visibility: hidden; transition: opacity 0.4s var(--spring), transform 0.4s var(--spring), visibility 0.4s; display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; will-change: opacity, transform, visibility; }
     .section.active { opacity: 1; visibility: visible; transform: translate3d(0,0,0); z-index: 10; }
     .section.slide-left { transform: translate3d(-30px, 0, 0); } .section.slide-right { transform: translate3d(30px, 0, 0); } .section::-webkit-scrollbar { display: none; }
-
-    .sec-title { font-size: 14px; font-weight: 800; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; margin-top: 5px;}
+    
+    .content-wrapper { display: flex; flex-direction: column; justify-content: flex-start; flex: 1; padding-top: 5px; padding-bottom: 20px;}
 
     /* =========================================
-       4. VIBRANT DASHBOARD CARDS
+       3. BOLD & THICK HEADERS WITH LIVE BADGE
        ========================================= */
-    .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%;}
-    .stat-card { border-radius: 20px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; color: white; box-shadow: 0 10px 20px rgba(0,0,0,0.08); aspect-ratio: 1 / 1; border: 1px solid rgba(255,255,255,0.2); position: relative; overflow: hidden;}
+    .pill-header { background: var(--card-bg); border-radius: 20px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border: 1px solid var(--glass-border); box-shadow: 0 6px 20px rgba(0,0,0,0.04); flex-shrink: 0;}
+    .pill-header .brand-text { font-size: 22px; font-weight: 900; color: var(--primary); letter-spacing: 0.5px;}
     
-    .c-cust { background: var(--grad-blue); }
-    .c-rev { background: var(--grad-green); }
-    .c-pend { background: var(--grad-orange); }
-    .c-exp { background: var(--grad-red); }
-
-    /* Glass decoration inside card */
-    .stat-card::after { content: ''; position: absolute; top: -50%; right: -50%; width: 100%; height: 100%; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%); pointer-events: none; }
-
-    .stat-icon { width: 42px; height: 42px; border-radius: 12px; background: rgba(255,255,255,0.25); display: flex; align-items: center; justify-content: center; margin-bottom: auto; backdrop-filter: blur(5px);}
-    .stat-icon svg { width: 22px; height: 22px; fill: none; stroke: #fff; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;}
-
-    .stat-info { z-index: 2; }
-    .stat-info h4 { font-size: 12px; color: rgba(255,255,255,0.9); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;}
-    .stat-info h2 { font-size: 26px; font-weight: 900; color: #ffffff; font-variant-numeric: tabular-nums; letter-spacing: -0.5px;}
+    .live-badge { display: flex; align-items: center; gap: 6px; background: rgba(16, 185, 129, 0.15); color: #10B981; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 900; letter-spacing: 1px;}
+    html.dark-mode .live-badge { color: #34D399; }
+    .live-dot { width: 8px; height: 8px; background: currentColor; border-radius: 50%; animation: pulse-dot 1.5s infinite; }
+    @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
     /* =========================================
-       5. CLEAN LIST VIEWS
+       4. COLORFUL BOTTOM NAV BAR
        ========================================= */
-    .search-bar { display: flex; align-items: center; background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 16px; padding: 14px 18px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); } 
-    .search-bar svg { stroke: var(--text-sub); width: 20px; height: 20px; margin-right: 12px; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;} 
-    .search-bar input { border: none; background: transparent; outline: none; font-size: 15px; font-weight: 600; width: 100%; color: var(--text-main); }
-    
-    .empty-state { text-align: center; color: var(--text-sub); font-size: 14px; font-weight: 700; margin-top: 40px; padding: 40px; border-radius: 20px; border: 2px dashed var(--glass-border); opacity: 0.8;}
-    
-    .view-card { background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 18px; padding: 16px 18px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; width: 100%; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
-    .card-content { flex: 1; }
-    .card-content h3 { font-size: 16px; font-weight: 800; margin-bottom: 4px; text-transform: uppercase; color: var(--text-main);}
-    .card-meta { font-size: 12px; color: var(--text-sub); font-weight: 600; text-transform: uppercase; line-height: 1.4; letter-spacing: 0.2px;}
-    
-    .card-value { text-align: right; min-width: 90px; display: flex; flex-direction: column; align-items: flex-end;}
-    .card-value .amt { font-size: 17px; font-weight: 900; font-variant-numeric: tabular-nums; }
-    .card-value .sub { font-size: 11px; font-weight: 800; margin-top: 4px; text-transform: uppercase;}
-    
-    .print-btn { width: 40px; height: 40px; border-radius: 12px; background: rgba(0, 114, 255, 0.1); color: var(--primary); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s; flex-shrink: 0; margin-left: 16px;}
-    .print-btn:active { transform: scale3d(0.85, 0.85, 1); }
-    .print-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
+    .app-nav { position: absolute; bottom: 0; left: 0; width: 100%; background: var(--nav-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-top: 1px solid var(--glass-border); display: flex; justify-content: space-around; align-items: center; padding: 10px 0 calc(10px + env(safe-area-inset-bottom)); z-index: 1000; box-shadow: 0 -5px 25px rgba(0,0,0,0.04); }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-sub); cursor: pointer; transition: color 0.3s; flex: 1;}
+    .nav-item span { font-size: 10px; font-weight: 800; letter-spacing: 0.5px;}
+    .nav-item svg { width: 22px; height: 22px; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.4s var(--spring), stroke 0.3s; }
+    .nav-item.active svg { transform: scale3d(1.15, 1.15, 1) translateY(-2px); }
+
+    /* Nav Item Specific Colors */
+    .nav-home svg { stroke: rgba(37, 99, 235, 0.5); } .nav-home.active { color: var(--primary); } .nav-home.active svg { stroke: var(--primary); }
+    .nav-client svg { stroke: rgba(5, 150, 105, 0.5); } .nav-client.active { color: var(--success); } .nav-client.active svg { stroke: var(--success); }
+    .nav-staff svg { stroke: rgba(217, 119, 6, 0.5); } .nav-staff.active { color: var(--warning); } .nav-staff.active svg { stroke: var(--warning); }
+    .nav-exp svg { stroke: rgba(220, 38, 38, 0.5); } .nav-exp.active { color: var(--danger); } .nav-exp.active svg { stroke: var(--danger); }
+    .nav-print svg { stroke: rgba(139, 92, 246, 0.5); } .nav-print.active { color: var(--purple); } .nav-print.active svg { stroke: var(--purple); }
 
     /* =========================================
-       6. SETTINGS & FULL REPORTS BUTTONS
+       5. HORIZONTAL DASHBOARD CARDS
        ========================================= */
-    .setting-card { background: var(--card-bg); border-radius: 18px; padding: 18px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border: 1px solid var(--glass-border); box-shadow: 0 4px 12px rgba(0,0,0,0.02);}
-    .setting-card span { font-size: 15px; font-weight: 800; text-transform: uppercase; color: var(--text-main); }
+    .dash-list { display: flex; flex-direction: column; gap: 14px; width: 100%; }
+    .stat-card { border-radius: 24px; padding: 24px; display: flex; flex-direction: row; justify-content: space-between; align-items: center; box-shadow: 0 8px 25px rgba(0,0,0,0.05); border: none; }
     
-    .big-print-btn { width: 100%; padding: 18px 20px; border-radius: 18px; background: var(--card-bg); border: 1px solid var(--glass-border); font-weight: 800; font-size: 14px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; transition: transform 0.2s; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.03); letter-spacing: 0.5px; text-transform: uppercase;}
+    .c-rev { background: linear-gradient(135deg, #34D399 0%, #059669 100%); color: white; }
+    .c-pend { background: linear-gradient(135deg, #FBBF24 0%, #D97706 100%); color: white; }
+    .c-exp { background: linear-gradient(135deg, #F87171 0%, #DC2626 100%); color: white; }
+    .c-cust { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--glass-border); }
+
+    .stat-info { display: flex; flex-direction: column; align-items: flex-start; }
+    .stat-info h4 { font-size: 13px; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 6px; opacity: 0.9;}
+    .c-cust .stat-info h4 { color: var(--text-sub); }
+    .stat-info h2 { font-size: 32px; font-weight: 900; font-variant-numeric: tabular-nums; letter-spacing: -0.5px; line-height: 1;}
+
+    .stat-icon { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;}
+    .c-rev .stat-icon, .c-pend .stat-icon, .c-exp .stat-icon { background: rgba(255,255,255,0.25); }
+    .c-cust .stat-icon { background: rgba(37, 99, 235, 0.12); color: var(--primary); }
+    
+    .stat-icon svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;}
+    .c-rev .stat-icon svg, .c-pend .stat-icon svg, .c-exp .stat-icon svg { stroke: #ffffff; }
+
+    /* =========================================
+       6. COLORFUL BOXED LIST CARDS
+       ========================================= */
+    .empty-state { text-align: center; color: var(--text-sub); font-size: 14px; font-weight: 700; margin: auto 0; padding: 40px; border-radius: 20px; border: 2px dashed var(--glass-border); opacity: 0.8;}
+    
+    .view-card { background: var(--card-bg); border-radius: 22px; padding: 14px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 6px 20px rgba(0,0,0,0.04); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; position: relative; overflow: hidden;}
+    .view-card:active { transform: scale(0.97); box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+    
+    /* Left Border Accent */
+    .view-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; }
+    
+    /* Specific Card Colors */
+    .card-cust { border: 1px solid rgba(37, 99, 235, 0.2); background: linear-gradient(to right, rgba(37,99,235,0.05), var(--card-bg) 60%); }
+    .card-cust::before { background: var(--primary); }
+    
+    .card-work { border: 1px solid rgba(217, 119, 6, 0.2); background: linear-gradient(to right, rgba(217,119,6,0.05), var(--card-bg) 60%); }
+    .card-work::before { background: var(--warning); }
+    
+    .card-exp { border: 1px solid rgba(220, 38, 38, 0.2); background: linear-gradient(to right, rgba(220,38,38,0.05), var(--card-bg) 60%); }
+    .card-exp::before { background: var(--danger); }
+    
+    .data-row { display: flex; gap: 8px; width: 100%; }
+    .data-box { flex: 1; background: var(--box-bg); padding: 12px 14px; border-radius: 14px; display: flex; flex-direction: column; justify-content: center; }
+    
+    .data-box span { font-size: 10px; color: var(--text-sub); font-weight: 800; margin-bottom: 4px; letter-spacing: 0.5px; }
+    .data-box strong { font-size: 15px; color: var(--text-main); font-weight: 800; word-wrap: break-word; white-space: normal; letter-spacing: -0.2px; line-height: 1.2;}
+    
+    .data-box.large { padding: 14px; }
+    .data-box.large strong { font-size: 18px; font-variant-numeric: tabular-nums; }
+    
+    .txt-blue { color: #2563EB !important; }
+    .txt-green { color: #059669 !important; }
+    .txt-orange { color: #D97706 !important; }
+    .txt-red { color: #DC2626 !important; }
+
+    /* =========================================
+       7. SETTINGS & FULL REPORTS BUTTONS
+       ========================================= */
+    .setting-card { background: var(--card-bg); border-radius: 20px; padding: 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border: 1px solid var(--glass-border); box-shadow: 0 6px 20px rgba(0,0,0,0.04);}
+    .setting-card span { font-size: 14px; font-weight: 800; color: var(--text-main); letter-spacing: 0.5px;}
+    
+    .big-print-btn { width: 100%; padding: 20px; border-radius: 20px; background: var(--card-bg); border: 1px solid var(--glass-border); font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; transition: transform 0.2s; cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,0.03); letter-spacing: 0.5px;}
     .big-print-btn:active { transform: scale3d(0.96, 0.96, 1); }
-    .big-print-btn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;}
+    .big-print-btn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;}
     
-    .big-print-btn.btn-cust { color: var(--primary); background: rgba(0, 114, 255, 0.05); border-color: rgba(0, 114, 255, 0.2);}
-    .big-print-btn.btn-staff { color: var(--warning); background: rgba(242, 153, 74, 0.05); border-color: rgba(242, 153, 74, 0.2);}
-    .big-print-btn.btn-exp { color: var(--danger); background: rgba(235, 51, 73, 0.05); border-color: rgba(235, 51, 73, 0.2);}
+    .big-print-btn.btn-cust { color: var(--primary); background: rgba(37, 99, 235, 0.05); border-color: rgba(37, 99, 235, 0.1);}
+    .big-print-btn.btn-staff { color: var(--warning); background: rgba(217, 119, 6, 0.05); border-color: rgba(217, 119, 6, 0.1);}
+    .big-print-btn.btn-exp { color: var(--danger); background: rgba(220, 38, 38, 0.05); border-color: rgba(220, 38, 38, 0.1);}
     
     .ios-switch { position: relative; display: inline-block; width: 50px; height: 30px; } .ios-switch input { opacity: 0; width: 0; height: 0; } .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--glass-border); transition: .4s; border-radius: 34px; } .slider:before { position: absolute; content: ""; height: 26px; width: 26px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 10px rgba(0,0,0,0.1); } input:checked + .slider { background-color: var(--success); } input:checked + .slider:before { transform: translate3d(20px,0,0); } html.dark-mode .slider { background-color: #334155; }
 
-    /* Toast */
-    #toast { position: absolute; top: -80px; left: 50%; transform: translate3d(-50%, 0, 0); background: var(--text-main); color: var(--bg-main); padding: 14px 28px; border-radius: 30px; font-size: 13px; font-weight: 800; z-index: 9999; transition: transform 0.4s var(--spring); display: flex; align-items: center; gap: 10px; text-transform: uppercase; box-shadow: 0 15px 35px rgba(0,0,0,0.2); letter-spacing: 0.5px;}
-    #toast.show { transform: translate3d(-50%, calc(max(env(safe-area-inset-top), 65px)), 0); }
+    #toast { position: absolute; top: -80px; left: 50%; transform: translate3d(-50%, 0, 0); background: var(--text-main); color: var(--bg-main); padding: 14px 28px; border-radius: 30px; font-size: 13px; font-weight: 900; z-index: 9999; transition: transform 0.4s var(--spring); display: flex; align-items: center; gap: 10px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); letter-spacing: 0.5px;}
+    #toast.show { transform: translate3d(-50%, calc(max(env(safe-area-inset-top), 40px)), 0); }
 
     /* =========================================
-       7. EXACT MATCH A4 PRINT CSS (NO DARK BUGS)
+       8. EXACT MATCH A4 PRINT CSS 
        ========================================= */
     #export-container { display: none; }
     
@@ -153,54 +172,54 @@
         * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
         
         #export-container { display: block !important; position: absolute; left: 0; top: 0; width: 100% !important; margin: 0; padding: 0; visibility: visible; background: #ffffff !important; z-index: 99999; }
-        #export-container * { visibility: visible; }
+        #export-container * { visibility: visible; text-transform: uppercase;}
         
         @page { size: A4 landscape; margin: 10mm; } 
         
         .print-view { width: 100%; font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif; color: #000 !important; box-sizing: border-box; text-align: center; }
-        .report-title { font-size: 26px !important; font-weight: 900 !important; margin-bottom: 25px !important; text-transform: uppercase; color: #000 !important;}
+        .report-title { font-size: 26px !important; font-weight: 900 !important; margin-bottom: 25px !important; color: #000 !important;}
         
-        /* MONTHLY SUMMARY BOX FOR WORKER */
-        .summary-box { display: flex; justify-content: space-around; background-color: #f8f9fa !important; border: 2px solid #e5e7eb !important; border-radius: 16px; padding: 15px; margin-bottom: 25px; }
-        .summary-box div { text-align: center; }
-        .summary-box .s-title { font-size: 11px; color: #666 !important; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;}
-        .summary-box .s-val { font-size: 24px; font-weight: 900; margin-top: 4px;}
+        /* CORRECT MONTHLY SUMMARY BOX FOR WORKER */
+        .summary-box { display: flex; justify-content: space-around; background-color: #f8f9fa !important; border: 2px solid #e5e7eb !important; border-radius: 12px; padding: 15px; margin-top: 20px; page-break-inside: avoid;}
+        .summary-box div { text-align: center; border-right: 2px solid #e5e7eb; flex: 1;}
+        .summary-box div:last-child { border-right: none; }
+        .summary-box .s-title { font-size: 12px; color: #666 !important; font-weight: bold; letter-spacing: 1px;}
+        .summary-box .s-val { font-size: 24px; font-weight: 900; margin-top: 5px;}
         
         .print-table { width: 100%; border-collapse: collapse; font-size: 13px !important; table-layout: fixed;}
         .print-table th, .print-table td { border: 2px solid #e5e7eb !important; padding: 12px 6px !important; text-align: center; word-wrap: break-word;}
-        .print-table th { color: #ffffff !important; font-weight: 800 !important; text-transform: uppercase; }
+        .print-table th { color: #ffffff !important; font-weight: 900 !important; }
         
         .th-blue th { background-color: #0d6efd !important; border-color: #0d6efd !important; }
         .th-gold th { background-color: #d97706 !important; border-color: #d97706 !important; }
         .th-red th { background-color: #dc2626 !important; border-color: #dc2626 !important; }
         
-        .txt-blue { color: #0d6efd !important; font-weight: 800 !important;}
-        .txt-green { color: #16a34a !important; font-weight: 800 !important;}
-        .txt-gold { color: #d97706 !important; font-weight: 800 !important;}
-        .txt-red { color: #dc2626 !important; font-weight: 800 !important;}
-        .txt-bold { font-weight: 800 !important; color: #000 !important;}
+        .txt-blue { color: #0d6efd !important; font-weight: 900 !important;}
+        .txt-green { color: #16a34a !important; font-weight: 900 !important;}
+        .txt-gold { color: #d97706 !important; font-weight: 900 !important;}
+        .txt-red { color: #dc2626 !important; font-weight: 900 !important;}
+        .txt-bold { font-weight: 900 !important; color: #000 !important;}
         
         .grand-total td { background-color: #f8f9fa !important; font-weight: 900 !important; color: #000 !important;}
         
         /* Single Receipt Print */
         .print-receipt { width: 100%; font-family: sans-serif; color: #000; box-sizing: border-box; padding: 10px; text-align:left;}
-        .p-header { border-bottom: 3px solid #007aff; padding-bottom: 15px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: flex-end;}
-        .p-brand h1 { font-size: 32px; margin: 0; font-weight: 900; letter-spacing: -1px; text-transform: uppercase; color: #007aff;}
+        .p-header { border-bottom: 3px solid #2563EB; padding-bottom: 15px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: flex-end;}
+        .p-brand h1 { font-size: 32px; margin: 0; font-weight: 900; letter-spacing: -1px; color: #2563EB;}
         .p-brand p { font-size: 13px; margin: 4px 0 0; font-weight: bold; letter-spacing: 2px; color: #555;}
         .p-meta { text-align: right; }
-        .p-meta h2 { font-size: 20px; margin: 0; font-weight: 900; text-transform: uppercase; color: #1c1c1e;}
+        .p-meta h2 { font-size: 20px; margin: 0; font-weight: 900; color: #1c1c1e;}
         .p-meta p { font-size: 13px; margin: 4px 0 0; color: #555; font-weight: bold;}
         .p-info-box { background: #f8f9fa; padding: 18px; border-radius: 12px; border: 1px solid #eaeaea; margin-bottom: 30px; display: flex; justify-content: space-between;}
-        .p-info-box div h4 { font-size: 12px; color: #888; margin: 0 0 6px; text-transform: uppercase;}
+        .p-info-box div h4 { font-size: 12px; color: #888; margin: 0 0 6px;}
         .p-info-box div p { font-size: 18px; margin: 0; font-weight: 800; color: #1c1c1e;}
         .p-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
-        .p-table th { text-align: left; padding: 12px 8px; font-size: 13px; border-bottom: 2px solid #ddd; text-transform: uppercase; color: #888;}
+        .p-table th { text-align: left; padding: 12px 8px; font-size: 13px; border-bottom: 2px solid #ddd; color: #888;}
         .p-table td { padding: 18px 8px; font-size: 16px; border-bottom: 1px solid #eee; font-weight: 700; color: #1c1c1e;}
         .text-right { text-align: right !important; } .text-center { text-align: center !important; }
         .p-totals { width: 50%; float: right; }
         .p-row { display: flex; justify-content: space-between; padding: 10px 0; font-size: 16px; font-weight: bold; color: #555;}
-        .p-row.border-top { border-top: 2px dashed #ccc; margin-top: 10px; padding-top: 20px; font-size: 22px; color: #ff3b30; }
-        .p-footer { text-align: center; margin-top: 70px; font-size: 13px; color: #888; clear: both; font-weight: bold; letter-spacing: 1px;}
+        .p-row.border-top { border-top: 2px dashed #ccc; margin-top: 10px; padding-top: 20px; font-size: 22px; color: #DC2626; }
     }
 </style>
 </head>
@@ -209,123 +228,149 @@
 <div class="bg-mesh"></div>
 
 <div id="app">
-    
-    <!-- TOP HEADER -->
-    <header class="app-header">
-        <div class="brand-logo">TECH ASAR</div>
-        <div class="status-badge"><div class="status-dot"></div> LIVE SYNC</div>
-    </header>
 
     <div id="toast">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
         <span id="toast-msg">SUCCESS</span>
     </div>
 
     <!-- TAB 1: DASHBOARD -->
     <div id="sec1" class="section active">
-        <div class="sec-title">Overview</div>
-        <div class="dash-grid">
-            <div class="stat-card c-cust">
-                <div class="stat-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
-                <div class="stat-info">
-                    <h4>Clients</h4>
-                    <h2 id="dash-cust">0</h2>
-                </div>
-            </div>
+        <!-- Dashboard Specific Gulfam Labs Header -->
+        <div class="pill-header">
+            <span class="brand-text">GULFAM LABS</span>
+            <div class="live-badge"><div class="live-dot"></div>LIVE</div>
+        </div>
 
-            <div class="stat-card c-rev">
-                <div class="stat-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
-                <div class="stat-info">
-                    <h4>Revenue</h4>
-                    <h2 id="dash-rev">0</h2>
+        <div class="content-wrapper">
+            <div class="dash-list">
+                
+                <div class="stat-card c-rev">
+                    <div class="stat-info">
+                        <h4>Total Revenue</h4>
+                        <h2 id="dash-rev">₹0</h2>
+                    </div>
+                    <div class="stat-icon">
+                        <svg viewBox="0 0 24 24"><path d="M7 4h10"></path><path d="M7 9h10"></path><path d="M9 4h3c3.5 0 4 5 0 5"></path><path d="M9 14l5.5 7"></path></svg>
+                    </div>
                 </div>
-            </div>
 
-            <div class="stat-card c-pend">
-                <div class="stat-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
-                <div class="stat-info">
-                    <h4>Pending</h4>
-                    <h2 id="dash-pend">0</h2>
+                <div class="stat-card c-pend">
+                    <div class="stat-info">
+                        <h4>Pending Dues</h4>
+                        <h2 id="dash-pend">₹0</h2>
+                    </div>
+                    <div class="stat-icon">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    </div>
                 </div>
-            </div>
 
-            <div class="stat-card c-exp">
-                <div class="stat-icon"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></div>
-                <div class="stat-info">
-                    <h4>Expenses</h4>
-                    <h2 id="dash-exp">0</h2>
+                <div class="stat-card c-exp">
+                    <div class="stat-info">
+                        <h4>Total Expenses</h4>
+                        <h2 id="dash-exp">₹0</h2>
+                    </div>
+                    <div class="stat-icon">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    </div>
                 </div>
+
+                <div class="stat-card c-cust">
+                    <div class="stat-info">
+                        <h4>Total Clients</h4>
+                        <h2 id="dash-cust">0</h2>
+                    </div>
+                    <div class="stat-icon">
+                        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 
     <!-- TAB 2: CLIENTS -->
     <div id="sec2" class="section">
-        <div class="sec-title">Client Ledger</div>
-        <div class="search-bar">
-            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            <input type="text" id="search-cust" placeholder="Search Ledgers..." oninput="renderCustomers()">
+        <div class="pill-header sec-title">
+            <span class="brand-text">CLIENTS</span>
+            <div class="live-badge"><div class="live-dot"></div>LIVE</div>
         </div>
-        <div id="customer-list"></div>
+        <div class="content-wrapper">
+            <div id="customer-list"></div>
+        </div>
     </div>
 
     <!-- TAB 3: STAFF -->
     <div id="sec3" class="section">
-        <div class="sec-title">Staff Records</div>
-        <div id="worker-list"></div>
+        <div class="pill-header sec-title">
+            <span class="brand-text">STAFF</span>
+            <div class="live-badge"><div class="live-dot"></div>LIVE</div>
+        </div>
+        <div class="content-wrapper">
+            <div id="worker-list"></div>
+        </div>
     </div>
 
     <!-- TAB 4: EXPENSES -->
     <div id="sec4" class="section">
-        <div class="sec-title">Expenses Log</div>
-        <div id="expense-list"></div>
+        <div class="pill-header sec-title">
+            <span class="brand-text">EXPENSES</span>
+            <div class="live-badge"><div class="live-dot"></div>LIVE</div>
+        </div>
+        <div class="content-wrapper">
+            <div id="expense-list"></div>
+        </div>
     </div>
 
     <!-- TAB 5: PRINT & SETTINGS -->
     <div id="sec5" class="section">
-        <div class="sec-title">Preferences</div>
-        <div class="setting-card">
-            <span>Dark Mode</span>
-            <label class="ios-switch">
-                <input type="checkbox" id="dark-mode-toggle" onchange="toggleDarkMode()">
-                <span class="slider"></span>
-            </label>
+        <div class="pill-header sec-title">
+            <span class="brand-text">PREFERENCES</span>
+            <div class="live-badge"><div class="live-dot"></div>LIVE</div>
         </div>
+        <div class="content-wrapper">
+            <div class="setting-card">
+                <span>Dark Mode</span>
+                <label class="ios-switch">
+                    <input type="checkbox" id="dark-mode-toggle" onchange="toggleDarkMode()">
+                    <span class="slider"></span>
+                </label>
+            </div>
 
-        <div class="sec-title" style="margin-top:10px;">Master Reports</div>
-        <button class="big-print-btn btn-cust" onclick="exportDataPrint('customers')">
-            Print Clients Ledger
-            <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-        </button>
-        <button class="big-print-btn btn-staff" onclick="exportDataPrint('workers')">
-            Print Staff Attendance
-            <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-        </button>
-        <button class="big-print-btn btn-exp" onclick="exportDataPrint('expenses')">
-            Print Expenses Report
-            <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-        </button>
+            <button class="big-print-btn btn-cust" onclick="exportDataPrint('customers')">
+                Print Clients Ledger
+                <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            </button>
+            <button class="big-print-btn btn-staff" onclick="exportDataPrint('workers')">
+                Print Staff Attendance
+                <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            </button>
+            <button class="big-print-btn btn-exp" onclick="exportDataPrint('expenses')">
+                Print Expenses Report
+                <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            </button>
+        </div>
     </div>
 
-    <!-- BOTTOM NAV -->
+    <!-- LOCKED BOTTOM NAV -->
     <nav class="app-nav">
-        <div class="nav-item active" onclick="switchTab(1, this)">
-            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+        <div class="nav-item nav-home active" onclick="switchTab(1, this)">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
             <span>Home</span>
         </div>
-        <div class="nav-item" onclick="switchTab(2, this)">
+        <div class="nav-item nav-client" onclick="switchTab(2, this)">
             <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
             <span>Clients</span>
         </div>
-        <div class="nav-item" onclick="switchTab(3, this)">
-            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        <div class="nav-item nav-staff" onclick="switchTab(3, this)">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
             <span>Staff</span>
         </div>
-        <div class="nav-item" onclick="switchTab(4, this)">
+        <div class="nav-item nav-exp" onclick="switchTab(4, this)">
             <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
             <span>Expense</span>
         </div>
-        <div class="nav-item" onclick="switchTab(5, this)">
+        <div class="nav-item nav-print" onclick="switchTab(5, this)">
             <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
             <span>Print</span>
         </div>
@@ -355,7 +400,7 @@
 
     window.appData = { customers: [], workers: [], expenses: [], settings: { darkMode: false } };
 
-    // FAST REAL-TIME FETCH (NO JITTER, NO REFLOW LAG)
+    // FAST REAL-TIME FETCH 
     onSnapshot(docRef, (docSnap) => {
         if (docSnap.exists()) {
             const val = docSnap.data();
@@ -383,7 +428,6 @@
     function lockMobileHeight() { document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`); }
     window.addEventListener('resize', lockMobileHeight); lockMobileHeight();
     
-    // Initial Slide States
     document.querySelectorAll('.section').forEach(s => { let id = parseInt(s.id.replace('sec', '')); if (id > 1) s.classList.add('slide-right'); });
 
     window.showToast = function(msg) { 
@@ -432,26 +476,52 @@
         countUpAnimation(document.getElementById('dash-exp'), 0, totalExp, 1000, "₹"); 
     };
 
+    /* ==============================================
+       BUG-FREE DATE FORMATTER (19 AUG 2026)
+       ============================================== */
+    window.formatDateStr = function(dateStr) {
+        if(!dateStr) return '--';
+        if(/[a-zA-Z]/.test(dateStr)) return dateStr;
+        let parts = dateStr.split(/[-/]/);
+        if(parts.length === 3) {
+            let d, m, y;
+            if (parts[0].length === 4) { 
+                y = parseInt(parts[0]); m = parseInt(parts[1]); d = parseInt(parts[2]);
+            } else {
+                d = parseInt(parts[0]); m = parseInt(parts[1]); y = parseInt(parts[2]);
+                if (m > 12) { let temp = d; d = m; m = temp; }
+            }
+            if (y < 100) y += 2000;
+            const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+            return `${d.toString().padStart(2, '0')} ${months[m-1]} ${y}`;
+        }
+        return dateStr;
+    };
+
+    /* ==============================================
+       BOXED COLORFUL LIST RENDERING (CLICK ON CARD TO PRINT)
+       ============================================== */
     window.renderCustomers = function() { 
-        const search = document.getElementById('search-cust') ? document.getElementById('search-cust').value.toLowerCase() : ''; 
         const list = document.getElementById('customer-list'); let htmlBatch = ''; 
+        if(window.appData.customers.length === 0) { list.innerHTML = '<div class="empty-state">NO CLIENTS FOUND</div>'; return; }
         
-        let filtered = window.appData.customers.filter(c => c.name.toLowerCase().includes(search) || c.mobile.includes(search));
-        if(filtered.length === 0) { list.innerHTML = '<div class="empty-state">No records found</div>'; return; }
-        
-        filtered.slice().reverse().forEach(c => { 
+        window.appData.customers.slice().reverse().forEach(c => { 
+            let fDate = window.formatDateStr(c.date);
             htmlBatch += `
-                <div class="view-card">
-                    <div class="card-content">
-                        <h3>${c.name}</h3>
-                        <div class="card-meta">QTY: ${c.qty} &bull; ITEM: ${c.item}<br>${c.date}</div>
+                <div class="view-card card-cust" onclick="exportReceiptPrint(${c.id})">
+                    <div class="data-row">
+                        <div class="data-box" style="flex:2;"><span>Name</span><strong>${c.name}</strong></div>
+                        <div class="data-box"><span>Date</span><strong>${fDate}</strong></div>
                     </div>
-                    <div style="display:flex; align-items:center;">
-                        <div class="card-value">
-                            <div class="amt" style="color:var(--primary);">₹${c.total.toLocaleString('en-IN')}</div>
-                            <div class="sub" style="color:var(--danger);">PEND: ₹${c.pending.toLocaleString('en-IN')}</div>
-                        </div>
-                        <button class="print-btn" onclick="exportReceiptPrint(${c.id})"><svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path></svg></button>
+                    <div class="data-row">
+                        <div class="data-box"><span>Mobile</span><strong>${c.mobile}</strong></div>
+                        <div class="data-box"><span>Item</span><strong>${c.item}</strong></div>
+                        <div class="data-box"><span>Qty</span><strong>${c.qty}</strong></div>
+                    </div>
+                    <div class="data-row">
+                        <div class="data-box large"><span>Total</span><strong class="txt-blue">₹${c.total.toLocaleString('en-IN')}</strong></div>
+                        <div class="data-box large"><span>Received</span><strong class="txt-green">₹${c.advance.toLocaleString('en-IN')}</strong></div>
+                        <div class="data-box large"><span>Pending</span><strong class="txt-red">₹${c.pending.toLocaleString('en-IN')}</strong></div>
                     </div>
                 </div>`; 
         }); 
@@ -460,25 +530,26 @@
 
     window.renderWorkers = function() { 
         const list = document.getElementById('worker-list'); let htmlBatch = ''; 
-        if(window.appData.workers.length === 0) { list.innerHTML = '<div class="empty-state">No staff found</div>'; return; }
+        if(window.appData.workers.length === 0) { list.innerHTML = '<div class="empty-state">NO STAFF FOUND</div>'; return; }
         
         window.appData.workers.forEach(w => { 
-            let sColor = w.status === 'PRESENT' ? 'var(--success)' : w.status === 'HALF DAY' ? 'var(--warning)' : w.status === 'ABSENT' ? 'var(--danger)' : 'var(--text-sub)'; 
-            let timeInfo = (w.timeIn || w.timeOut) ? `${w.timeIn || '--'} to ${w.timeOut || '--'}` : 'No Time Logged';
+            let fDate = window.formatDateStr(w.date);
+            let sColorClass = w.status === 'PRESENT' ? 'txt-green' : w.status === 'HALF DAY' ? 'txt-orange' : w.status === 'ABSENT' ? 'txt-red' : '';
+            let timeInfo = (w.timeIn || w.timeOut) ? `${window.formatTimeAMPM(w.timeIn)} - ${window.formatTimeAMPM(w.timeOut)}` : 'No Log';
             
+            let advHTML = w.advance > 0 ? `<div class="data-row"><div class="data-box large"><span>Total Advance Issued</span><strong class="txt-blue">₹${w.advance.toLocaleString('en-IN')}</strong></div></div>` : '';
+
             htmlBatch += `
-                <div class="view-card">
-                    <div class="card-content">
-                        <h3>${w.name}</h3>
-                        <div class="card-meta" style="color:${sColor}; font-weight:700;">${w.status} <span style="color:var(--text-sub); font-weight:500;">&bull; ${w.date}</span></div>
+                <div class="view-card card-work" onclick="exportWorkerPrint(${w.id})">
+                    <div class="data-row">
+                        <div class="data-box" style="flex:2;"><span>Name</span><strong>${w.name}</strong></div>
+                        <div class="data-box"><span>Date</span><strong>${fDate}</strong></div>
                     </div>
-                    <div style="display:flex; align-items:center;">
-                        <div class="card-value">
-                            <div class="amt" style="font-size:14px; color:var(--text-main); font-weight:600;">${timeInfo}</div>
-                            <div class="sub" style="color:var(--text-sub);">ADV: ₹${w.advance.toLocaleString('en-IN')}</div>
-                        </div>
-                        <button class="print-btn" style="color:var(--warning); background:var(--warning-light);" onclick="exportWorkerPrint(${w.id})"><svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path></svg></button>
+                    <div class="data-row">
+                        <div class="data-box"><span>Status</span><strong class="${sColorClass}">${w.status}</strong></div>
+                        <div class="data-box" style="flex:2;"><span>Timing</span><strong>${timeInfo}</strong></div>
                     </div>
+                    ${advHTML}
                 </div>`; 
         }); 
         list.innerHTML = htmlBatch; 
@@ -487,17 +558,18 @@
     window.renderExpenses = function() { 
         const list = document.getElementById('expense-list'); let htmlBatch = ''; 
         let exps = [...window.appData.expenses].sort((a,b) => b.id - a.id); 
-        if(exps.length === 0) { list.innerHTML = '<div class="empty-state">No expenses found</div>'; return; }
+        if(exps.length === 0) { list.innerHTML = '<div class="empty-state">NO EXPENSES FOUND</div>'; return; }
         
         exps.forEach(e => { 
+            let fDate = window.formatDateStr(e.date);
             htmlBatch += `
-                <div class="view-card">
-                    <div class="card-content">
-                        <h3>${e.type}</h3>
-                        <div class="card-meta">${e.date}</div>
+                <div class="view-card card-exp" onclick="exportDataPrint('expenses')">
+                    <div class="data-row">
+                        <div class="data-box" style="flex:2;"><span>Expense Type</span><strong>${e.type}</strong></div>
+                        <div class="data-box"><span>Date</span><strong>${fDate}</strong></div>
                     </div>
-                    <div class="card-value">
-                        <div class="amt" style="color:var(--danger);">-₹${e.amount.toLocaleString('en-IN')}</div>
+                    <div class="data-row">
+                        <div class="data-box large"><span>Amount</span><strong class="txt-red">-₹${e.amount.toLocaleString('en-IN')}</strong></div>
                     </div>
                 </div>`; 
         }); 
@@ -505,7 +577,7 @@
     };
 
     /* ==============================================
-       EXACT MATCH PRINT LOGIC (Matches Image Arrays)
+       EXACT MATCH PRINT LOGIC
        ============================================== */
     window.triggerPrint = function(contentHTML) {
         const container = document.getElementById('export-container');
@@ -515,35 +587,34 @@
 
     window.formatTimeAMPM = function(timeStr) { if(!timeStr) return '--'; let [h, m] = timeStr.split(':'); let hours = parseInt(h); let ampm = hours >= 12 ? 'PM' : 'AM'; hours = hours % 12; hours = hours ? hours : 12; return `${hours}:${m} ${ampm}`; };
 
-    // Print Client Single Receipt
     window.exportReceiptPrint = function(id) { 
         const c = window.appData.customers.find(x => x.id === id); if(!c) return; 
         const invNo = "INV-" + Math.floor(1000 + Math.random() * 9000); 
+        let fDate = window.formatDateStr(c.date);
+
         const content = `
             <div class="print-receipt">
                 <div class="p-header">
                     <div class="p-brand"><h1>TECH ASAR</h1><p>PREMIUM POWDER COATING</p></div>
-                    <div class="p-meta"><h2>RECEIPT</h2><p>No: #${invNo} | Date: ${c.date}</p></div>
+                    <div class="p-meta"><h2>RECEIPT</h2><p>NO: #${invNo} | DATE: ${fDate}</p></div>
                 </div>
                 <div class="p-info-box">
-                    <div><h4>Billed To</h4><p>${c.name}</p></div>
-                    <div style="text-align:right;"><h4>Mobile</h4><p>+91 ${c.mobile}</p></div>
+                    <div><h4>BILLED TO</h4><p>${c.name}</p></div>
+                    <div style="text-align:right;"><h4>MOBILE</h4><p>+91 ${c.mobile}</p></div>
                 </div>
                 <table class="p-table">
-                    <thead><tr><th>Item Details</th><th class="text-center">Qty</th><th class="text-right">Rate</th></tr></thead>
+                    <thead><tr><th>ITEM DETAILS</th><th class="text-center">QTY</th><th class="text-right">RATE</th></tr></thead>
                     <tbody><tr><td>${c.item}</td><td class="text-center">${c.qty}</td><td class="text-right">₹${c.rate}</td></tr></tbody>
                 </table>
                 <div class="p-totals">
-                    <div class="p-row"><span>Total Amount</span><span>₹${c.total}</span></div>
-                    <div class="p-row" style="color:#10B981;"><span>Advance Paid</span><span>- ₹${c.advance}</span></div>
-                    <div class="p-row border-top"><span>Pending Due</span><span>₹${c.pending}</span></div>
+                    <div class="p-row"><span>TOTAL AMOUNT</span><span>₹${c.total}</span></div>
+                    <div class="p-row" style="color:#059669;"><span>ADVANCE PAID</span><span>- ₹${c.advance}</span></div>
+                    <div class="p-row border-top"><span>PENDING DUE</span><span>₹${c.pending}</span></div>
                 </div>
-                <div class="p-footer">This is a system generated receipt and does not require a physical signature.</div>
             </div>`; 
         triggerPrint(content); 
     };
 
-    // Print Individual Worker Monthly Summary Report
     window.exportWorkerPrint = function(id) { 
         const w = window.appData.workers.find(x => x.id === id); if(!w) return; 
         
@@ -555,45 +626,48 @@
         let allRecords = w.history && w.history.length > 0 ? w.history : [{date: w.date, status: w.status, timeIn: w.timeIn, timeOut: w.timeOut, adv: w.advance}];
 
         allRecords.forEach(h => { 
-            const parts = h.date.split('/');
-            if(parts.length === 3) {
-                const recMonth = parseInt(parts[1]) - 1;
-                const recYear = parseInt(parts[2]);
-                if(recMonth === currentMonth && recYear === currentYear) {
-                    if (h.status === 'PRESENT') presentCount++;
-                    if (h.status === 'HALF DAY') halfCount++;
-                    if (h.status === 'ABSENT') absentCount++;
-                }
+            let fDate = window.formatDateStr(h.date);
+            let recMonth, recYear;
+            
+            if(/[a-zA-Z]/.test(fDate)) {
+                let p = fDate.split(' ');
+                recMonth = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"].indexOf(p[1]);
+                recYear = parseInt(p[2]);
             } else {
+                let p = h.date.split(/[-/]/);
+                let d = parseInt(p[0]); let m = parseInt(p[1]); let y = parseInt(p[2]);
+                if (m > 12) m = d; recMonth = m - 1; recYear = y < 100 ? y + 2000 : y;
+            }
+
+            if(recMonth === currentMonth && recYear === currentYear) {
                 if (h.status === 'PRESENT') presentCount++;
                 if (h.status === 'HALF DAY') halfCount++;
                 if (h.status === 'ABSENT') absentCount++;
             }
 
             let sColorClass = h.status === 'PRESENT' ? 'txt-green' : h.status === 'HALF DAY' ? 'txt-gold' : h.status === 'ABSENT' ? 'txt-red' : '';
-            historyHTML += `<tr><td>${h.date}</td><td class="${sColorClass}">${h.status}</td><td>${window.formatTimeAMPM(h.timeIn)} - ${window.formatTimeAMPM(h.timeOut)}</td><td class="txt-blue">₹${h.adv}</td></tr>`; 
+            historyHTML += `<tr><td>${fDate}</td><td class="${sColorClass}">${h.status}</td><td>${window.formatTimeAMPM(h.timeIn)} - ${window.formatTimeAMPM(h.timeOut)}</td><td class="txt-blue">₹${h.adv}</td></tr>`; 
         }); 
+
+        let advPrintHTML = w.advance > 0 ? `<div><div class="s-title">TOTAL ADVANCE ISSUED</div><div class="s-val txt-blue">₹${w.advance}</div></div>` : '';
 
         const content = `
             <div class="print-view">
                 <div class="report-title">STAFF REPORT: ${w.name.toUpperCase()}</div>
-                
-                <div class="summary-box">
-                    <div><div class="s-title">THIS MONTH PRESENT</div><div class="s-val txt-green">${presentCount}</div></div>
-                    <div><div class="s-title">THIS MONTH HALF DAY</div><div class="s-val txt-gold">${halfCount}</div></div>
-                    <div><div class="s-title">THIS MONTH ABSENT</div><div class="s-val txt-red">${absentCount}</div></div>
-                    <div><div class="s-title">TOTAL ADVANCE PENDING</div><div class="s-val txt-blue">₹${w.advance}</div></div>
-                </div>
-
                 <table class="print-table">
                     <thead class="th-gold"><tr><th>DATE</th><th>STATUS</th><th>TIMING</th><th>ADVANCE</th></tr></thead>
                     <tbody>${historyHTML}</tbody>
                 </table>
+                <div class="bottom-summary-box">
+                    <div><div class="s-title">THIS MONTH PRESENT</div><div class="s-val txt-green">${presentCount}</div></div>
+                    <div><div class="s-title">THIS MONTH HALF DAY</div><div class="s-val txt-gold">${halfCount}</div></div>
+                    <div><div class="s-title">THIS MONTH ABSENT</div><div class="s-val txt-red">${absentCount}</div></div>
+                    ${advPrintHTML}
+                </div>
             </div>`; 
         triggerPrint(content); 
     };
 
-    // Print Master Tables 
     window.exportDataPrint = function(type) { 
         let tableHTML = ''; let title = ''; let theadClass = '';
         
@@ -603,7 +677,8 @@
             tableHTML += `<thead class="${theadClass}"><tr><th>DATE</th><th>NAME</th><th>MOBILE</th><th>ITEM</th><th>QTY</th><th>RATE</th><th>TOTAL AMT</th><th>RECEIVED</th><th>PENDING</th></tr></thead><tbody>`; 
             let tQty=0, tTotal=0, tRecv=0, tPend=0; 
             window.appData.customers.forEach(c => { 
-                tableHTML += `<tr><td>${c.date}</td><td class="txt-bold">${c.name}</td><td>${c.mobile}</td><td class="txt-bold">${c.item}</td><td>${c.qty}</td><td>${c.rate}</td><td class="txt-blue">${c.total}</td><td class="txt-green">${c.advance}</td><td class="txt-red">${c.pending}</td></tr>`; 
+                let fDate = window.formatDateStr(c.date);
+                tableHTML += `<tr><td>${fDate}</td><td class="txt-bold">${c.name}</td><td>${c.mobile}</td><td class="txt-bold">${c.item}</td><td>${c.qty}</td><td>${c.rate}</td><td class="txt-blue">${c.total}</td><td class="txt-green">${c.advance}</td><td class="txt-red">${c.pending}</td></tr>`; 
                 tQty+=c.qty; tTotal+=c.total; tRecv+=c.advance; tPend+=c.pending; 
             }); 
             tableHTML += `<tr class="grand-total"><td colspan="4" class="text-right">GRAND TOTAL:</td><td class="txt-blue">${tQty}</td><td></td><td class="txt-blue">${tTotal}</td><td class="txt-green">${tRecv}</td><td class="txt-red">${tPend}</td></tr></tbody>`; 
@@ -613,8 +688,9 @@
             theadClass = 'th-gold';
             tableHTML += `<thead class="${theadClass}"><tr><th>DATE</th><th>NAME</th><th>STATUS</th><th>TIME IN</th><th>TIME OUT</th><th>ADVANCE</th></tr></thead><tbody>`; 
             window.appData.workers.forEach(w => { 
+                let fDate = window.formatDateStr(w.date);
                 let sColorClass = w.status === 'PRESENT' ? 'txt-green' : w.status === 'HALF DAY' ? 'txt-gold' : w.status === 'ABSENT' ? 'txt-red' : '';
-                tableHTML += `<tr><td>${w.date}</td><td>${w.name}</td><td class="${sColorClass}">${w.status}</td><td>${window.formatTimeAMPM(w.timeIn)}</td><td>${window.formatTimeAMPM(w.timeOut)}</td><td class="txt-blue">${w.advance}</td></tr>`; 
+                tableHTML += `<tr><td>${fDate}</td><td>${w.name}</td><td class="${sColorClass}">${w.status}</td><td>${window.formatTimeAMPM(w.timeIn)}</td><td>${window.formatTimeAMPM(w.timeOut)}</td><td class="txt-blue">${w.advance}</td></tr>`; 
             }); 
             tableHTML += '</tbody>';
         } 
@@ -623,7 +699,10 @@
             theadClass = 'th-red';
             tableHTML += `<thead class="${theadClass}"><tr><th>DATE</th><th>EXPENSE TYPE</th><th>AMOUNT (₹)</th></tr></thead><tbody>`; 
             let tAmt=0; 
-            window.appData.expenses.forEach(e => { tableHTML += `<tr><td>${e.date}</td><td class="txt-bold">${e.type}</td><td class="txt-red">${e.amount}</td></tr>`; tAmt+=e.amount; }); 
+            window.appData.expenses.forEach(e => { 
+                let fDate = window.formatDateStr(e.date);
+                tableHTML += `<tr><td>${fDate}</td><td class="txt-bold">${e.type}</td><td class="txt-red">${e.amount}</td></tr>`; tAmt+=e.amount; 
+            }); 
             tableHTML += `<tr class="grand-total"><td colspan="2" class="text-right">TOTAL EXPENSES:</td><td class="txt-red">${tAmt}</td></tr></tbody>`; 
         } 
         
